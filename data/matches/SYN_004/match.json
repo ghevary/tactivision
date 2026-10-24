@@ -1,0 +1,541 @@
+{
+  "schema_version": "1.0",
+  "match_id": "SYN_004",
+  "synthetic": true,
+  "data_origin": "generated_synthetic",
+  "generator_version": "1.0.0",
+  "seed": 260319,
+  "profile": "Direct attack vs aggressive high line",
+  "competition": "TactiVision Synthetic League",
+  "venue": "Moorfield Town Synthetic Ground",
+  "kickoff_utc": "2026-10-20T14:00:00Z",
+  "duration_sec": 5400,
+  "period_clock_policy": "elapsed_sec is match-clock seconds excluding halftime; period_elapsed_sec resets at each 45-minute period",
+  "pitch": {
+    "length_m": 105.0,
+    "width_m": 68.0,
+    "coordinate_convention": "absolute_xy_metres_x0_left_goal_y0_top_touchline; attack_direction explicitly defines each team direction"
+  },
+  "periods": [
+    {
+      "period": 1,
+      "start_sec": 0,
+      "end_sec": 2700,
+      "home_attacks_toward_x": 1
+    },
+    {
+      "period": 2,
+      "start_sec": 2700,
+      "end_sec": 5400,
+      "home_attacks_toward_x": -1
+    }
+  ],
+  "kickoff_team_id": "CLUB_A",
+  "teams": [
+    {
+      "team_id": "CLUB_A",
+      "display_name": "Moorfield Town",
+      "short_name": "MFT",
+      "side": "home",
+      "formation": "4-4-2",
+      "tactics": {
+        "press_intensity": 0.39,
+        "defensive_line_height": 0.35,
+        "attacking_width": 0.52,
+        "directness": 0.88
+      },
+      "tactical_identity": "Primary archetype: high_press; match scenario: Direct attack vs aggressive high line",
+      "starting_xi": [
+        "CLUB_A_P01",
+        "CLUB_A_P02",
+        "CLUB_A_P05",
+        "CLUB_A_P06",
+        "CLUB_A_P03",
+        "CLUB_A_P07",
+        "CLUB_A_P08",
+        "CLUB_A_P10",
+        "CLUB_A_P11",
+        "CLUB_A_P09",
+        "CLUB_A_P04"
+      ],
+      "synthetic_team_strength": 0.78
+    },
+    {
+      "team_id": "CLUB_E",
+      "display_name": "Port Alder FC",
+      "short_name": "PAF",
+      "side": "away",
+      "formation": "4-3-3",
+      "tactics": {
+        "press_intensity": 0.85,
+        "defensive_line_height": 0.83,
+        "attacking_width": 0.65,
+        "directness": 0.39
+      },
+      "tactical_identity": "Primary archetype: direct_attack; match scenario: Direct attack vs aggressive high line",
+      "starting_xi": [
+        "CLUB_E_P01",
+        "CLUB_E_P02",
+        "CLUB_E_P05",
+        "CLUB_E_P06",
+        "CLUB_E_P03",
+        "CLUB_E_P04",
+        "CLUB_E_P08",
+        "CLUB_E_P10",
+        "CLUB_E_P07",
+        "CLUB_E_P09",
+        "CLUB_E_P11"
+      ],
+      "synthetic_team_strength": 0.72
+    }
+  ],
+  "players": [
+    {
+      "player_id": "CLUB_A_P01",
+      "team_id": "CLUB_A",
+      "display_name": "Bilal Nakamura",
+      "role": "goalkeeper",
+      "shirt_number": 1,
+      "attributes": {
+        "pace": 0.791,
+        "passing": 0.535,
+        "defending": 0.625,
+        "stamina": 0.739
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 5,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P02",
+      "team_id": "CLUB_A",
+      "display_name": "Amir Keller",
+      "role": "fullback",
+      "shirt_number": 2,
+      "attributes": {
+        "pace": 0.81,
+        "passing": 0.83,
+        "defending": 0.686,
+        "stamina": 0.799
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P05",
+      "team_id": "CLUB_A",
+      "display_name": "Kai Muller",
+      "role": "center_back",
+      "shirt_number": 5,
+      "attributes": {
+        "pace": 0.756,
+        "passing": 0.679,
+        "defending": 0.668,
+        "stamina": 0.64
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 44
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P06",
+      "team_id": "CLUB_A",
+      "display_name": "Elias Bello",
+      "role": "center_back",
+      "shirt_number": 6,
+      "attributes": {
+        "pace": 0.831,
+        "passing": 0.731,
+        "defending": 0.626,
+        "stamina": 0.875
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 24
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P03",
+      "team_id": "CLUB_A",
+      "display_name": "Omar Nakamura",
+      "role": "fullback",
+      "shirt_number": 3,
+      "attributes": {
+        "pace": 0.749,
+        "passing": 0.693,
+        "defending": 0.909,
+        "stamina": 0.42
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P07",
+      "team_id": "CLUB_A",
+      "display_name": "Tomas Haugen",
+      "role": "winger",
+      "shirt_number": 7,
+      "attributes": {
+        "pace": 0.777,
+        "passing": 0.721,
+        "defending": 0.749,
+        "stamina": 0.608
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 58,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P08",
+      "team_id": "CLUB_A",
+      "display_name": "Bilal Bakker",
+      "role": "central_midfielder",
+      "shirt_number": 8,
+      "attributes": {
+        "pace": 0.718,
+        "passing": 0.798,
+        "defending": 0.621,
+        "stamina": 0.705
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 48,
+        "y": 40
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P10",
+      "team_id": "CLUB_A",
+      "display_name": "Marco Fontaine",
+      "role": "central_midfielder",
+      "shirt_number": 10,
+      "attributes": {
+        "pace": 0.665,
+        "passing": 0.671,
+        "defending": 0.779,
+        "stamina": 0.603
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 48,
+        "y": 28
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P11",
+      "team_id": "CLUB_A",
+      "display_name": "Samir Marchetti",
+      "role": "winger",
+      "shirt_number": 11,
+      "attributes": {
+        "pace": 0.796,
+        "passing": 0.601,
+        "defending": 0.648,
+        "stamina": 0.622
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 58,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P09",
+      "team_id": "CLUB_A",
+      "display_name": "Rafael Nakamura",
+      "role": "striker",
+      "shirt_number": 9,
+      "attributes": {
+        "pace": 0.594,
+        "passing": 0.606,
+        "defending": 0.716,
+        "stamina": 0.694
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 84,
+        "y": 27
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_A_P04",
+      "team_id": "CLUB_A",
+      "display_name": "Luca Markovic",
+      "role": "striker",
+      "shirt_number": 4,
+      "attributes": {
+        "pace": 0.565,
+        "passing": 0.742,
+        "defending": 0.635,
+        "stamina": 0.895
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 84,
+        "y": 41
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P01",
+      "team_id": "CLUB_E",
+      "display_name": "Hugo Bello",
+      "role": "goalkeeper",
+      "shirt_number": 1,
+      "attributes": {
+        "pace": 0.822,
+        "passing": 0.762,
+        "defending": 0.721,
+        "stamina": 0.739
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 5,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P02",
+      "team_id": "CLUB_E",
+      "display_name": "Rayan Arnesen",
+      "role": "fullback",
+      "shirt_number": 2,
+      "attributes": {
+        "pace": 0.555,
+        "passing": 0.758,
+        "defending": 0.575,
+        "stamina": 0.687
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P05",
+      "team_id": "CLUB_E",
+      "display_name": "Hugo Delgado",
+      "role": "center_back",
+      "shirt_number": 5,
+      "attributes": {
+        "pace": 0.533,
+        "passing": 0.704,
+        "defending": 0.695,
+        "stamina": 0.746
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 44
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P06",
+      "team_id": "CLUB_E",
+      "display_name": "Jonas Castillo",
+      "role": "center_back",
+      "shirt_number": 6,
+      "attributes": {
+        "pace": 0.787,
+        "passing": 0.608,
+        "defending": 0.666,
+        "stamina": 0.935
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 24
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P03",
+      "team_id": "CLUB_E",
+      "display_name": "Ibrahim Sato",
+      "role": "fullback",
+      "shirt_number": 3,
+      "attributes": {
+        "pace": 0.824,
+        "passing": 0.77,
+        "defending": 0.737,
+        "stamina": 0.768
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P04",
+      "team_id": "CLUB_E",
+      "display_name": "Ivan Rossi",
+      "role": "defensive_midfielder",
+      "shirt_number": 4,
+      "attributes": {
+        "pace": 0.847,
+        "passing": 0.84,
+        "defending": 0.764,
+        "stamina": 0.801
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 40,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P08",
+      "team_id": "CLUB_E",
+      "display_name": "Rayan Delgado",
+      "role": "central_midfielder",
+      "shirt_number": 8,
+      "attributes": {
+        "pace": 0.826,
+        "passing": 0.835,
+        "defending": 0.468,
+        "stamina": 0.637
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 55,
+        "y": 45
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P10",
+      "team_id": "CLUB_E",
+      "display_name": "Samir Castillo",
+      "role": "central_midfielder",
+      "shirt_number": 10,
+      "attributes": {
+        "pace": 0.714,
+        "passing": 0.96,
+        "defending": 0.698,
+        "stamina": 0.649
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 55,
+        "y": 23
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P07",
+      "team_id": "CLUB_E",
+      "display_name": "Anton Varga",
+      "role": "winger",
+      "shirt_number": 7,
+      "attributes": {
+        "pace": 0.851,
+        "passing": 0.817,
+        "defending": 0.833,
+        "stamina": 0.643
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 78,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P09",
+      "team_id": "CLUB_E",
+      "display_name": "Rayan Kowalski",
+      "role": "striker",
+      "shirt_number": 9,
+      "attributes": {
+        "pace": 0.783,
+        "passing": 0.634,
+        "defending": 0.753,
+        "stamina": 0.717
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 88,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_E_P11",
+      "team_id": "CLUB_E",
+      "display_name": "Milan Novak",
+      "role": "winger",
+      "shirt_number": 11,
+      "attributes": {
+        "pace": 0.86,
+        "passing": 0.673,
+        "defending": 0.883,
+        "stamina": 0.727
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 78,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    }
+  ],
+  "data_quality": {
+    "coordinates_unit": "metres",
+    "tracking_interval_sec": 5,
+    "all_teams_and_players_fictional": true,
+    "real_match_data_used": false,
+    "shot_quality_field": "shot_quality_proxy_not_validated_xg"
+  }
+}

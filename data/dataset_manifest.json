@@ -1,0 +1,333 @@
+{
+  "dataset_name": "TactiVision Synthetic Tactical Analytics Dataset",
+  "dataset_version": "1.1.0",
+  "generated_at_utc": "2026-10-16T17:26:57+00:00",
+  "generator": "src/generate_dataset.py + tools/normalize_five_club_league.py",
+  "generator_version": "1.1.0",
+  "synthetic_only": true,
+  "real_premier_league_data_included": false,
+  "league_format": "five_club_single_round_robin",
+  "club_count": 5,
+  "clubs": [
+    {
+      "club_id": "CLUB_A",
+      "display_name": "Moorfield Town",
+      "short_name": "MFT",
+      "primary_archetype": "high_press"
+    },
+    {
+      "club_id": "CLUB_B",
+      "display_name": "Stonebridge FC",
+      "short_name": "SBF",
+      "primary_archetype": "possession"
+    },
+    {
+      "club_id": "CLUB_C",
+      "display_name": "Redwick Athletic",
+      "short_name": "RWA",
+      "primary_archetype": "counterattack"
+    },
+    {
+      "club_id": "CLUB_D",
+      "display_name": "Northgate FC",
+      "short_name": "NGF",
+      "primary_archetype": "defensive_block"
+    },
+    {
+      "club_id": "CLUB_E",
+      "display_name": "Port Alder FC",
+      "short_name": "PAF",
+      "primary_archetype": "direct_attack"
+    }
+  ],
+  "player_registry_count": 55,
+  "stable_player_ids_across_matches": true,
+  "match_count": 10,
+  "matches": [
+    {
+      "match_id": "SYN_001",
+      "seed": 260016,
+      "profile": "High press vs compact block",
+      "home_team_id": "CLUB_A",
+      "home_team_name": "Moorfield Town",
+      "away_team_id": "CLUB_B",
+      "away_team_name": "Stonebridge FC",
+      "teams": {
+        "CLUB_A": "Moorfield Town",
+        "CLUB_B": "Stonebridge FC"
+      },
+      "events": 2242,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1210,
+      "shots": 20,
+      "goals": {
+        "CLUB_A": 0,
+        "CLUB_B": 0
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_002",
+      "seed": 260117,
+      "profile": "Patient possession vs direct counterattack",
+      "home_team_id": "CLUB_A",
+      "home_team_name": "Moorfield Town",
+      "away_team_id": "CLUB_C",
+      "away_team_name": "Redwick Athletic",
+      "teams": {
+        "CLUB_A": "Moorfield Town",
+        "CLUB_C": "Redwick Athletic"
+      },
+      "events": 2205,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1266,
+      "shots": 20,
+      "goals": {
+        "CLUB_A": 0,
+        "CLUB_C": 2
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_003",
+      "seed": 260218,
+      "profile": "Wide overload vs narrow defensive block",
+      "home_team_id": "CLUB_A",
+      "home_team_name": "Moorfield Town",
+      "away_team_id": "CLUB_D",
+      "away_team_name": "Northgate FC",
+      "teams": {
+        "CLUB_A": "Moorfield Town",
+        "CLUB_D": "Northgate FC"
+      },
+      "events": 2203,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1229,
+      "shots": 24,
+      "goals": {
+        "CLUB_A": 1,
+        "CLUB_D": 2
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_004",
+      "seed": 260319,
+      "profile": "Direct attack vs aggressive high line",
+      "home_team_id": "CLUB_A",
+      "home_team_name": "Moorfield Town",
+      "away_team_id": "CLUB_E",
+      "away_team_name": "Port Alder FC",
+      "teams": {
+        "CLUB_A": "Moorfield Town",
+        "CLUB_E": "Port Alder FC"
+      },
+      "events": 2241,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1247,
+      "shots": 27,
+      "goals": {
+        "CLUB_A": 1,
+        "CLUB_E": 3
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_005",
+      "seed": 260420,
+      "profile": "Pressing trap vs controlled build-up",
+      "home_team_id": "CLUB_B",
+      "home_team_name": "Stonebridge FC",
+      "away_team_id": "CLUB_C",
+      "away_team_name": "Redwick Athletic",
+      "teams": {
+        "CLUB_B": "Stonebridge FC",
+        "CLUB_C": "Redwick Athletic"
+      },
+      "events": 2255,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1249,
+      "shots": 21,
+      "goals": {
+        "CLUB_B": 2,
+        "CLUB_C": 1
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_006",
+      "seed": 260521,
+      "profile": "High press vs compact block",
+      "home_team_id": "CLUB_B",
+      "home_team_name": "Stonebridge FC",
+      "away_team_id": "CLUB_D",
+      "away_team_name": "Northgate FC",
+      "teams": {
+        "CLUB_B": "Stonebridge FC",
+        "CLUB_D": "Northgate FC"
+      },
+      "events": 2191,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1227,
+      "shots": 16,
+      "goals": {
+        "CLUB_B": 2,
+        "CLUB_D": 0
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_007",
+      "seed": 260622,
+      "profile": "Patient possession vs direct counterattack",
+      "home_team_id": "CLUB_B",
+      "home_team_name": "Stonebridge FC",
+      "away_team_id": "CLUB_E",
+      "away_team_name": "Port Alder FC",
+      "teams": {
+        "CLUB_B": "Stonebridge FC",
+        "CLUB_E": "Port Alder FC"
+      },
+      "events": 2237,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1241,
+      "shots": 16,
+      "goals": {
+        "CLUB_B": 1,
+        "CLUB_E": 1
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_008",
+      "seed": 260723,
+      "profile": "Wide overload vs narrow defensive block",
+      "home_team_id": "CLUB_C",
+      "home_team_name": "Redwick Athletic",
+      "away_team_id": "CLUB_D",
+      "away_team_name": "Northgate FC",
+      "teams": {
+        "CLUB_C": "Redwick Athletic",
+        "CLUB_D": "Northgate FC"
+      },
+      "events": 2216,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1212,
+      "shots": 22,
+      "goals": {
+        "CLUB_C": 3,
+        "CLUB_D": 3
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_009",
+      "seed": 260824,
+      "profile": "Direct attack vs aggressive high line",
+      "home_team_id": "CLUB_C",
+      "home_team_name": "Redwick Athletic",
+      "away_team_id": "CLUB_E",
+      "away_team_name": "Port Alder FC",
+      "teams": {
+        "CLUB_C": "Redwick Athletic",
+        "CLUB_E": "Port Alder FC"
+      },
+      "events": 2204,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1235,
+      "shots": 20,
+      "goals": {
+        "CLUB_C": 2,
+        "CLUB_E": 2
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    },
+    {
+      "match_id": "SYN_010",
+      "seed": 260925,
+      "profile": "Pressing trap vs controlled build-up",
+      "home_team_id": "CLUB_D",
+      "home_team_name": "Northgate FC",
+      "away_team_id": "CLUB_E",
+      "away_team_name": "Port Alder FC",
+      "teams": {
+        "CLUB_D": "Northgate FC",
+        "CLUB_E": "Port Alder FC"
+      },
+      "events": 2187,
+      "tracking_snapshots": 1081,
+      "players_per_snapshot": 22,
+      "passes": 1210,
+      "shots": 19,
+      "goals": {
+        "CLUB_D": 0,
+        "CLUB_E": 2
+      },
+      "voronoi_snapshots": 91,
+      "what_if_scenarios": 5,
+      "what_if_repetitions": 100,
+      "what_if_runs": 100,
+      "natural_language_query_fixtures": 10
+    }
+  ],
+  "totals": {
+    "events": 22181,
+    "tracking_snapshots": 10810,
+    "tracked_player_positions": 237820,
+    "what_if_scenarios": 50,
+    "what_if_runs": 1000,
+    "query_fixtures": 100,
+    "voronoi_snapshots": 910
+  },
+  "license_note": "Original synthetic data and generator. Clubs and players are fictional; do not represent these as real Premier League data.",
+  "id_convention": {
+    "club_ids": "CLUB_A..CLUB_E are persistent club identifiers",
+    "match_team_ids": "team_id is the persistent club ID; side indicates home or away",
+    "player_ids": "CLUB_[A-E]_P01..P11 are stable identities across matches"
+  }
+}

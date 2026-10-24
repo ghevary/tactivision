@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html :lang="currentLang" lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TactiVision AI — Match Analytics, Symmetric Offside Engine & Spatial Board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #f4f6f9;
+      --bg-surface: #ffffff;
+      --border-subtle: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#f4f6f9] text-slate-900 antialiased selection:bg-sky-600 selection:text-white">
+  <div id="app" class="min-h-screen py-4 px-3 sm:px-6 max-w-[1440px] mx-auto space-y-4">
+
+    <!-- Top Bar: Provenance & System Metadata (FR-002) -->
+    <header class="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+          <span class="font-bold text-sm tracking-tight text-slate-900">TactiVision Studio</span>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">v1.1.0</span>
+        </div>
+        <span class="hidden sm:inline text-slate-300">|</span>
+        <p class="text-xs text-slate-600 leading-normal">
+          <strong class="font-semibold text-slate-800">{{ t('provenance_title') }}</strong>
+          {{ t('provenance_desc') }}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-mono">
+        <span class="px-2.5 py-1 rounded-md bg-slate-50 text-slate-700 border border-slate-200">
+          {{ t('pitch_dimensions') }}
+        </span>
+        <span class="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium">
+          {{ t('deterministic_engine') }}
+        </span>
+        <!-- Language Switcher: ID | EN -->
+        <div class="flex items-center rounded-lg border border-slate-200 bg-slate-100 p-0.5 text-xs font-sans font-semibold ml-1">
+          <button
+            type="button"
+            @click="setLanguage('id')"
+            :class="[
+              'px-2 py-0.5 rounded transition text-xs font-bold',
+              currentLang === 'id' ? 'bg-white text-sky-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'
+            ]"
+            title="Bahasa Indonesia"
+          >
+            🇮🇩 ID
+          </button>
+          <button
+            type="button"
+            @click="setLanguage('en')"
+            :class="[
+              'px-2 py-0.5 rounded transition text-xs font-bold',
+              currentLang === 'en' ? 'bg-white text-sky-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'
+            ]"
+            title="English Language"
+          >
+            🇬🇧 EN
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Section 1: Komponen Pemilihan Klub Manual (Terpisah dari Riwayat Pertandingan) -->
+    <section aria-label="Pemilihan dan Perbandingan Klub" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+            {{ t('compare_title') }}
+          </h1>
+          <p class="text-xs text-slate-500 mt-0.5">
+            {{ t('compare_desc') }}
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            @click="swapSelectedClubs"
+            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition focus:outline-none focus:ring-2 focus:ring-sky-500"
+            :title="t('swap_sides_title')"
+          >
+            {{ t('swap_sides') }}
+          </button>
+          <button
+            type="button"
+            @click="compareSelectedClubs"
+            class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-sky-600 hover:bg-sky-700 text-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-500"
+          >
+            {{ t('compare_btn') }}
+          </button>
+          <button
+            type="button"
+            @click="resetAllSelections"
+            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white hover:bg-slate-50 text-slate-600 border border-slate-300 transition focus:outline-none focus:ring-2 focus:ring-slate-400"
+          >
+            {{ t('reset_btn') }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid Pemilih Klub A (Home) & Klub B (Away) + Filter Pertandingan -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+        <!-- Combobox Klub A / Home Team -->
+        <div class="md:col-span-4 relative">
+          <label for="search-club-a" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            {{ t('club_a_label') }}
+          </label>
+          <div class="relative">
+            <button
+              type="button"
+              @click="toggleDropdown('A')"
+              @keydown.down.prevent="openAndFocusDropdown('A')"
+              @keydown.esc="closeDropdowns"
+              aria-haspopup="listbox"
+              :aria-expanded="dropdownOpenA"
+              class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-300 focus:border-sky-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 text-left transition"
+            >
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span
+                  class="w-7 h-7 rounded-lg flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm"
+                  :style="{ backgroundColor: clubObjA.primaryColor }"
+                >
+                  {{ clubObjA.shortCode }}
+                </span>
+                <div class="truncate">
+                  <div class="text-xs font-bold text-slate-900 truncate">
+                    {{ clubObjA.name }}
+                    <span class="font-mono text-[11px] font-normal text-slate-500">({{ clubObjA.club_id }})</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 truncate">
+                    Formasi: {{ clubObjA.defaultFormation }} · {{ clubObjA.tacticalStyle }}
+                  </div>
+                </div>
+              </div>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-sky-100 text-sky-800 border border-sky-200 shrink-0">
+                Aktif
+              </span>
+            </button>
+
+            <!-- Dropdown Panel Klub A -->
+            <div
+              v-if="dropdownOpenA"
+              class="absolute z-30 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-lg p-2 space-y-2"
+            >
+              <input
+                id="search-club-a"
+                v-model="searchQueryA"
+                type="text"
+                :placeholder="t('search_placeholder')"
+                class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-600"
+                @keydown.esc="dropdownOpenA = false"
+              />
+              <ul role="listbox" aria-label="Daftar Pilihan Klub A" class="max-h-48 overflow-y-auto divide-y divide-slate-100">
+                <li
+                  v-for="club in filteredClubsA"
+                  :key="club.club_id"
+                  role="option"
+                  :aria-selected="selectedClubA === club.club_id"
+                  @click="selectClub('A', club.club_id)"
+                  :class="[
+                    'px-2.5 py-2 rounded-lg flex items-center justify-between gap-2 text-xs transition',
+                    club.club_id === selectedClubB
+                      ? 'opacity-50 cursor-not-allowed bg-slate-50'
+                      : 'cursor-pointer hover:bg-sky-50',
+                    selectedClubA === club.club_id ? 'bg-sky-50/80 font-semibold' : ''
+                  ]"
+                >
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span
+                      class="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[10px] shrink-0"
+                      :style="{ backgroundColor: club.primaryColor }"
+                    >
+                      {{ club.shortCode }}
+                    </span>
+                    <div class="truncate">
+                      <div class="text-slate-900 truncate">{{ club.name }} ({{ club.club_id }})</div>
+                      <div class="text-[10px] text-slate-500">{{ club.defaultFormation }} · {{ club.fixtureCount }} Laga di Dataset</div>
+                    </div>
+                  </div>
+                  <span v-if="club.club_id === selectedClubB" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
+                    Dipilih di B
+                  </span>
+                  <span v-else-if="selectedClubA === club.club_id" class="text-[11px] text-sky-700 font-bold">
+                    ✓ Dipilih
+                  </span>
+                </li>
+                <li v-if="filteredClubsA.length === 0" class="py-3 text-center text-xs text-slate-400">
+                  Klub tidak ditemukan.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Combobox Klub B / Away Team -->
+        <div class="md:col-span-4 relative">
+          <label for="search-club-b" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            {{ t('club_b_label') }}
+          </label>
+          <div class="relative">
+            <button
+              type="button"
+              @click="toggleDropdown('B')"
+              @keydown.down.prevent="openAndFocusDropdown('B')"
+              @keydown.esc="closeDropdowns"
+              aria-haspopup="listbox"
+              :aria-expanded="dropdownOpenB"
+              class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-300 focus:border-rose-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 text-left transition"
+            >
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span
+                  class="w-7 h-7 rounded-lg flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm"
+                  :style="{ backgroundColor: clubObjB.primaryColor }"
+                >
+                  {{ clubObjB.shortCode }}
+                </span>
+                <div class="truncate">
+                  <div class="text-xs font-bold text-slate-900 truncate">
+                    {{ clubObjB.name }}
+                    <span class="font-mono text-[11px] font-normal text-slate-500">({{ clubObjB.club_id }})</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 truncate">
+                    Formasi: {{ clubObjB.defaultFormation }} · {{ clubObjB.tacticalStyle }}
+                  </div>
+                </div>
+              </div>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-200 shrink-0">
+                Aktif
+              </span>
+            </button>
+
+            <!-- Dropdown Panel Klub B -->
+            <div
+              v-if="dropdownOpenB"
+              class="absolute z-30 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-lg p-2 space-y-2"
+            >
+              <input
+                id="search-club-b"
+                v-model="searchQueryB"
+                type="text"
+                :placeholder="t('search_placeholder')"
+                class="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-rose-600"
+                @keydown.esc="dropdownOpenB = false"
+              />
+              <ul role="listbox" aria-label="Daftar Pilihan Klub B" class="max-h-48 overflow-y-auto divide-y divide-slate-100">
+                <li
+                  v-for="club in filteredClubsB"
+                  :key="club.club_id"
+                  role="option"
+                  :aria-selected="selectedClubB === club.club_id"
+                  @click="selectClub('B', club.club_id)"
+                  :class="[
+                    'px-2.5 py-2 rounded-lg flex items-center justify-between gap-2 text-xs transition',
+                    club.club_id === selectedClubA
+                      ? 'opacity-50 cursor-not-allowed bg-slate-50'
+                      : 'cursor-pointer hover:bg-rose-50',
+                    selectedClubB === club.club_id ? 'bg-rose-50/80 font-semibold' : ''
+                  ]"
+                >
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span
+                      class="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[10px] shrink-0"
+                      :style="{ backgroundColor: club.primaryColor }"
+                    >
+                      {{ club.shortCode }}
+                    </span>
+                    <div class="truncate">
+                      <div class="text-slate-900 truncate">{{ club.name }} ({{ club.club_id }})</div>
+                      <div class="text-[10px] text-slate-500">{{ club.defaultFormation }} · {{ club.fixtureCount }} Laga di Dataset</div>
+                    </div>
+                  </div>
+                  <span v-if="club.club_id === selectedClubA" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
+                    Dipilih di A
+                  </span>
+                  <span v-else-if="selectedClubB === club.club_id" class="text-[11px] text-rose-700 font-bold">
+                    ✓ Dipilih
+                  </span>
+                </li>
+                <li v-if="filteredClubsB.length === 0" class="py-3 text-center text-xs text-slate-400">
+                  Klub tidak ditemukan.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Riwayat Pertandingan & Kompetisi untuk Pasangan Klub -->
+        <div class="md:col-span-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="fixture-selector" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+              {{ t('fixtures_title') }} ({{ matchingFixturesForPair.length }} {{ t('matches_count_suffix') }})
+            </label>
+            <select
+              v-model="selectedCompetitionFilter"
+              aria-label="Filter Kompetisi"
+              class="text-[11px] bg-slate-100 border border-slate-200 rounded px-2 py-0.5 text-slate-700 focus:outline-none"
+            >
+              <option value="ALL">{{ t('comp_all') }}</option>
+              <option value="Synthetic Premier Division">Synthetic Premier Division</option>
+              <option value="Synthetic Cup">Synthetic Cup (Belum Tersedia)</option>
+            </select>
+          </div>
+
+          <div v-if="matchingFixturesForPair.length > 0">
+            <select
+              id="fixture-selector"
+              v-model="selectedMatchId"
+              @change="onFixtureSelectChange"
+              class="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 focus:outline-none focus:border-sky-600"
+            >
+              <option v-for="m in matchingFixturesForPair" :key="m.match_id" :value="m.match_id">
+                {{ m.match_id }} ({{ m.date }} · {{ m.matchweek }}): {{ m.home_club_id }} {{ m.home_score }} - {{ m.away_score }} {{ m.away_club_id }}
+              </option>
+            </select>
+            <p class="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
+              <span>{{ t('comp_label') }}: <strong>{{ currentMatch.competition }}</strong></span>
+              <span v-if="isReverseFixtureNote" class="text-amber-700 font-medium">
+                {{ t('reverse_fixture_notice') }} ({{ currentMatch.home_club_id }} Home)
+              </span>
+            </p>
+          </div>
+
+          <!-- Penanganan Ketika Pasangan Klub Belum Pernah Bertemu di Dataset -->
+          <div v-else class="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900">
+            <div class="font-bold">{{ t('no_fixture_title') }}</div>
+            <p class="text-[11px] text-amber-800 mt-0.5">
+              Pasangan <strong>{{ clubObjA.name }}</strong> vs <strong>{{ clubObjB.name }}</strong> pada filter kompetisi ini belum tercatat di <code class="font-mono">fixtures.csv</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indikator Loading & Empty State Jika Pasangan Tidak Memiliki Data -->
+      <div v-if="isLoadingData" class="p-3 rounded-lg bg-sky-50 border border-sky-200 flex items-center gap-2.5 text-xs text-sky-900">
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-sky-600 border-t-transparent animate-spin"></span>
+        <span>{{ t('loading_data') }}</span>
+      </div>
+
+      <div
+        v-if="!hasMatchDataForPair"
+        class="p-4 rounded-xl bg-amber-50/90 border border-amber-300 flex flex-wrap items-center justify-between gap-4"
+      >
+        <div class="space-y-1 max-w-2xl">
+          <div class="text-sm font-bold text-amber-950 flex items-center gap-2">
+            <span>{{ t('empty_title') }}</span>
+          </div>
+          <p class="text-xs text-amber-900 leading-relaxed">
+            Sesuai kebijakan integritas data, sistem <strong>tidak mengarang skor atau statistik palsu</strong>.
+            Klub <strong>{{ clubObjA.name }} ({{ clubObjA.club_id }})</strong> dan <strong>{{ clubObjB.name }} ({{ clubObjB.club_id }})</strong>
+            tidak memiliki catatan pertemuan pada filter <code class="font-mono">{{ selectedCompetitionFilter }}</code>.
+            Pilih salah satu pasangan kanonis yang tersedia di bawah ini:
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            @click="loadAvailablePair('CLUB_A', 'CLUB_B')"
+            class="px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-semibold transition"
+          >
+            Muat CLUB_A vs CLUB_B (SYN_001)
+          </button>
+          <button
+            type="button"
+            @click="loadAvailablePair('CLUB_B', 'CLUB_C')"
+            class="px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-semibold transition"
+          >
+            Muat CLUB_B vs CLUB_C (SYN_004)
+          </button>
+          <button
+            type="button"
+            @click="loadAvailablePair('CLUB_C', 'CLUB_D')"
+            class="px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-semibold transition"
+          >
+            Muat CLUB_C vs CLUB_D (SYN_002)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Kontrol Layer Visualisasi, Skenario Offside & Waktu Pertandingan -->
+    <section aria-label="Kontrol Visualisasi Lapangan dan Offside" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Layer Toggles -->
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <span class="font-bold uppercase tracking-wider text-slate-500">{{ t('visual_layers') }}</span>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none font-medium text-slate-700">
+            <input type="checkbox" v-model="showOffsideLines" class="accent-rose-600 rounded w-3.5 h-3.5" />
+            <span>{{ t('layer_offside') }}</span>
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none font-medium text-slate-700">
+            <input type="checkbox" v-model="showVoronoi" class="accent-sky-600 rounded w-3.5 h-3.5" />
+            <span>{{ t('layer_voronoi') }}</span>
+          </label>
+          <label class="flex items-center gap-1.5 cursor-none sm:cursor-pointer select-none font-medium text-slate-700">
+            <input type="checkbox" v-model="showPassingLanes" class="accent-emerald-600 rounded w-3.5 h-3.5" />
+            <span>{{ t('layer_passing') }}</span>
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none font-medium text-slate-700">
+            <input type="checkbox" v-model="showZone14" class="accent-amber-600 rounded w-3.5 h-3.5" />
+            <span>{{ t('layer_zone14') }}</span>
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none font-medium text-slate-700">
+            <input type="checkbox" v-model="showHeatmap" class="accent-purple-600 rounded w-3.5 h-3.5" />
+            <span>{{ t('layer_heatmap') }}</span>
+          </label>
+          <select
+            v-if="showHeatmap"
+            v-model="heatmapSurface"
+            aria-label="Pilih Jenis Heatmap"
+            class="bg-slate-50 text-slate-700 px-2 py-1 rounded border border-slate-300 text-xs"
+          >
+            <option value="event_density">{{ t('heatmap_density') }}</option>
+            <option value="progression_destination">{{ t('heatmap_progression') }}</option>
+            <option value="player_occupancy">{{ t('heatmap_occupancy') }}</option>
+          </select>
+        </div>
+
+        <!-- Konteks Kejadian Umpan (IFAB Law 11 Exceptions & Data Completeness) -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <label for="play-context-select" class="font-semibold text-slate-600" title="Offside dievaluasi pada momen bola dimainkan rekan setim dan mengecualikan Goal Kick, Throw-In, serta Corner Kick">
+            {{ t('pass_context_label') }}
+          </label>
+          <select
+            id="play-context-select"
+            v-model="activePlayContext"
+            @change="renderAllPitches"
+            class="bg-slate-50 text-slate-800 font-semibold px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:border-sky-600"
+          >
+            <option value="open_play">{{ t('ctx_open_play') }}</option>
+            <option value="goal_kick">{{ t('ctx_goal_kick') }}</option>
+            <option value="throw_in">{{ t('ctx_throw_in') }}</option>
+            <option value="corner_kick">{{ t('ctx_corner_kick') }}</option>
+            <option value="incomplete_data">{{ t('ctx_incomplete') }}</option>
+          </select>
+
+          <!-- Preset Skenario Uji Offside & Taktik -->
+          <div class="flex items-center gap-1.5">
+            <button
+              v-for="(preset, key) in tacticalPresets"
+              :key="key"
+              type="button"
+              @click="applyPreset(key)"
+              :class="[
+                'px-2.5 py-1.5 text-xs font-semibold rounded-lg border transition',
+                activePreset === key
+                  ? 'bg-slate-900 text-white border-slate-900'
+                  : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+              ]"
+            >
+              {{ getPresetLabel(key) }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Baris Scrubber Waktu & Simulasi -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-800 font-mono font-semibold">
+            t = {{ elapsedSec }}s ({{ formatMatchClock(elapsedSec) }})
+          </span>
+          <span class="text-slate-500 hidden sm:inline">
+            {{ t('window_label') }} <strong class="text-slate-800">{{ currentWindowLabel }}</strong>
+          </span>
+        </div>
+
+        <input
+          type="range"
+          min="0"
+          max="5400"
+          step="5"
+          v-model.number="elapsedSec"
+          @input="onTimeScrub"
+          aria-label="Garis Waktu Pertandingan dalam Detik"
+          class="flex-1 min-w-[180px] accent-sky-600 cursor-pointer"
+        />
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            @click="snapBallToNearestPlayer"
+            class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold transition"
+          >
+            {{ t('snap_ball') }}
+          </button>
+          <button
+            type="button"
+            @click="toggleLiveSim"
+            :class="[
+              'px-3 py-1.5 rounded-lg font-semibold border transition flex items-center gap-1.5',
+              isSimulating
+                ? 'bg-amber-600 text-white border-amber-700'
+                : 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700'
+            ]"
+          >
+            <span class="w-2 h-2 rounded-full bg-white" :class="isSimulating ? 'animate-ping' : ''"></span>
+            {{ isSimulating ? t('sim_pause') : t('sim_play') }}
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Dua Lapangan Simetris Berdampingan (Lapangan Sisi Kiri & Lapangan Sisi Kanan) -->
+    <section aria-label="Visualisasi Peta Lapangan Kiri dan Kanan" class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- Kolom Lapangan Utama (8 Kolom pada Desktop: menampilkan Lapangan Kiri & Kanan secara simetris) -->
+      <div class="lg:col-span-8 space-y-4">
+        <!-- Legenda Garis Offside, Onside, Pertahanan, dan Status Pemain -->
+        <div class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-4">
+            <span class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">{{ t('legend_title') }}</span>
+            <span class="flex items-center gap-1.5 text-slate-700 font-medium" title="Garis batas tempat pemain penyerang mulai dinyatakan offside">
+              <span class="w-4 h-0.5 bg-rose-600 inline-block border-b-2 border-rose-600"></span>
+              {{ t('legend_offside') }}
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-700 font-medium" title="Batas zona aman onside di belakang bola atau bek kedua terakhir">
+              <span class="w-4 h-0.5 bg-emerald-600 inline-block border-b-2 border-dashed border-emerald-600"></span>
+              {{ t('legend_onside') }}
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-700 font-medium" title="Posisi pemain bertahan kedua terakhir (termasuk kiper)">
+              <span class="w-4 h-0.5 bg-amber-500 inline-block border-b-2 border-dotted border-amber-500"></span>
+              {{ t('legend_defender') }}
+            </span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-300 font-bold text-[11px]">OFFSIDE</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-[11px]">ONSIDE</span>
+            <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 border border-slate-300 font-bold text-[11px]">{{ t('status_undetermined') }}</span>
+          </div>
+        </div>
+
+        <!-- Grid Dua Lapangan Berdampingan (Kiri: Serangan ← 0m, Kanan: Serangan → 105m) -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+
+          <!-- LAPANGAN SISI KIRI (Serangan Mengarah ke Kiri ← Gawang x=0m) -->
+          <article class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span
+                  class="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[11px]"
+                  :style="{ backgroundColor: leftPitchAttackingClub.primaryColor }"
+                >
+                  {{ leftPitchAttackingClub.shortCode }}
+                </span>
+                <div>
+                  <h2 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                    <span>{{ t('left_pitch_title') }}</span>
+                    <span class="text-xs font-semibold px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
+                      {{ leftAttackDirection === -1 ? t('attack_left_label') : t('attack_right_label') }}
+                    </span>
+                  </h2>
+                  <p class="text-[11px] text-slate-500">
+                    {{ t('att_team_label') }}: <strong>{{ leftPitchAttackingClub.name }}</strong> · {{ t('def_team_label') }}: <strong>{{ leftPitchDefendingClub.name }}</strong>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                @click="togglePitchOrientation('left')"
+                class="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition"
+                title="Balik orientasi arah serangan pada lapangan kiri"
+              >
+                ⇄ {{ t('flip_direction') }}
+              </button>
+            </div>
+
+            <!-- Canvas Lapangan Sisi Kiri -->
+            <div class="relative w-full overflow-hidden rounded-lg border border-slate-300 bg-[#2e6f40] shadow-inner">
+              <canvas
+                ref="leftPitchCanvas"
+                width="840"
+                height="544"
+                aria-label="Kanvas Lapangan Sisi Kiri Interaktif"
+                class="w-full h-auto block cursor-grab active:cursor-grabbing"
+                @mousedown="onPointerDown($event, 'left')"
+                @mousemove="onPointerMove($event, 'left')"
+                @mouseup="onPointerUp"
+                @mouseleave="onPointerUp"
+                @touchstart.prevent="onTouchStart($event, 'left')"
+                @touchmove.prevent="onTouchMove($event, 'left')"
+                @touchend.prevent="onPointerUp"
+              ></canvas>
+            </div>
+
+            <!-- Ringkasan Evaluasi Offside Lapangan Kiri -->
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-2 text-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="font-bold text-slate-800">
+                  {{ t('eval_status_left') }}
+                </span>
+                <span
+                  :class="[
+                    'px-2 py-0.5 rounded font-bold text-[11px] border',
+                    leftOffsideReport.overallStatus === 'OFFSIDE'
+                      ? 'bg-rose-100 text-rose-800 border-rose-300'
+                      : leftOffsideReport.overallStatus === 'ONSIDE'
+                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                      : 'bg-slate-200 text-slate-700 border-slate-300'
+                  ]"
+                >
+                  {{ leftOffsideReport.overallStatus }}
+                </span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 text-[11px] font-mono">
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500 font-sans">{{ t('card_offside_line') }}</div>
+                  <div class="font-bold text-rose-700">
+                    {{ leftOffsideReport.offsideLineX !== null ? leftOffsideReport.offsideLineX.toFixed(1) + 'm' : 'N/A' }}
+                  </div>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500 font-sans">{{ t('card_second_defender') }}</div>
+                  <div class="font-bold text-amber-700">
+                    {{ leftOffsideReport.secondLastDefenderLabel }}
+                  </div>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500 font-sans">{{ t('card_offside_players') }}</div>
+                  <div class="font-bold text-slate-900">
+                    {{ leftOffsideReport.offsidePlayers.length }} {{ t('players_suffix') }}
+                  </div>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-normal">
+                {{ leftOffsideReport.summaryText }}
+              </p>
+            </div>
+          </article>
+
+          <!-- LAPANGAN SISI KANAN (Serangan Mengarah ke Kanan → Gawang x=105m) -->
+          <article class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span
+                  class="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[11px]"
+                  :style="{ backgroundColor: rightPitchAttackingClub.primaryColor }"
+                >
+                  {{ rightPitchAttackingClub.shortCode }}
+                </span>
+                <div>
+                  <h2 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                    <span>{{ t('right_pitch_title') }}</span>
+                    <span class="text-xs font-semibold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
+                      {{ rightAttackDirection === 1 ? t('attack_right_label') : t('attack_left_label') }}
+                    </span>
+                  </h2>
+                  <p class="text-[11px] text-slate-500">
+                    {{ t('att_team_label') }}: <strong>{{ rightPitchAttackingClub.name }}</strong> · {{ t('def_team_label') }}: <strong>{{ rightPitchDefendingClub.name }}</strong>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                @click="togglePitchOrientation('right')"
+                class="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition"
+                title="Balik orientasi arah serangan pada lapangan kanan"
+              >
+                ⇄ {{ t('flip_direction') }}
+              </button>
+            </div>
+
+            <!-- Canvas Lapangan Sisi Kanan -->
+            <div class="relative w-full overflow-hidden rounded-lg border border-slate-300 bg-[#2e6f40] shadow-inner">
+              <canvas
+                ref="rightPitchCanvas"
+                width="840"
+                height="544"
+                aria-label="Kanvas Lapangan Sisi Kanan Interaktif"
+                class="w-full h-auto block cursor-grab active:cursor-grabbing"
+                @mousedown="onPointerDown($event, 'right')"
+                @mousemove="onPointerMove($event, 'right')"
+                @mouseup="onPointerUp"
+                @mouseleave="onPointerUp"
+                @touchstart.prevent="onTouchStart($event, 'right')"
+                @touchmove.prevent="onTouchMove($event, 'right')"
+                @touchend.prevent="onPointerUp"
+              ></canvas>
+            </div>
+
+            <!-- Ringkasan Evaluasi Offside Lapangan Kanan -->
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-2 text-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="font-bold text-slate-800">
+                  {{ t('eval_status_right') }}
+                </span>
+                <span
+                  :class="[
+                    'px-2 py-0.5 rounded font-bold text-[11px] border',
+                    rightOffsideReport.overallStatus === 'OFFSIDE'
+                      ? 'bg-rose-100 text-rose-800 border-rose-300'
+                      : rightOffsideReport.overallStatus === 'ONSIDE'
+                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                      : 'bg-slate-200 text-slate-700 border-slate-300'
+                  ]"
+                >
+                  {{ rightOffsideReport.overallStatus }}
+                </span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 text-[11px] font-mono">
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500 font-sans">{{ t('card_offside_line') }}</div>
+                  <div class="font-bold text-rose-700">
+                    {{ rightOffsideReport.offsideLineX !== null ? rightOffsideReport.offsideLineX.toFixed(1) + 'm' : 'N/A' }}
+                  </div>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500 font-sans">{{ t('card_second_defender') }}</div>
+                  <div class="font-bold text-amber-700">
+                    {{ rightOffsideReport.secondLastDefenderLabel }}
+                  </div>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500 font-sans">{{ t('card_offside_players') }}</div>
+                  <div class="font-bold text-slate-900">
+                    {{ rightOffsideReport.offsidePlayers.length }} {{ t('players_suffix') }}
+                  </div>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-normal">
+                {{ rightOffsideReport.summaryText }}
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Baris Kartu Metrik Spasial & Telemetri Bola -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500">{{ clubObjA.shortCode }} Voronoi Share</div>
+            <div class="text-xl font-bold text-sky-700 mt-1 font-mono">{{ metrics.skyControlPct }}%</div>
+            <div class="text-[11px] text-slate-500 mt-1">{{ t('voronoi_desc') }}</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500">Zone 14 Dominance</div>
+            <div class="text-xl font-bold text-amber-600 mt-1 font-mono">{{ metrics.zone14Pct }}%</div>
+            <div class="text-[11px] text-slate-500 mt-1">{{ t('zone14_desc') }}</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500">{{ t('passing_lanes_title') }}</div>
+            <div class="text-xl font-bold text-emerald-700 mt-1 font-mono">{{ metrics.openLanesCount }} {{ t('lanes_suffix') }}</div>
+            <div class="text-[11px] text-slate-500 mt-1">{{ t('best_target_prefix') }} {{ bestTargetLabel }}</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500" title="Proksi sintetis jarak & sudut tembakan, bukan xG resmi">
+              Shot Quality Proxy ⓘ
+            </div>
+            <div class="text-xl font-bold text-purple-700 mt-1 font-mono">{{ metrics.shotQualityProxy }}</div>
+            <div class="text-[11px] text-slate-500 mt-1">{{ t('dist_to_goal') }} {{ metrics.ballToGoalDist }}m</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Panel Inspeksi Offside Pemain, What-If Sandbox & Query Bahasa Alami (4 Kolom) -->
+      <aside class="lg:col-span-4 flex flex-col gap-4">
+        <!-- Card Pemilih Tab Analisis & Persona -->
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">{{ t('inspection_persona') }}</span>
+            <span class="text-xs font-mono font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+              {{ activePersona }}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5">
+            <button
+              v-for="p in personaOptions"
+              :key="p"
+              type="button"
+              @click="activePersona = p"
+              :class="[
+                'py-1.5 text-xs font-semibold rounded-lg border transition',
+                activePersona === p
+                  ? 'bg-slate-900 text-white border-slate-900'
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+              ]"
+            >
+              {{ p }}
+            </button>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-100">
+            <button
+              type="button"
+              @click="rightPanelTab = 'offside_audit'"
+              :class="[
+                'py-2 text-xs font-bold rounded-lg border transition',
+                rightPanelTab === 'offside_audit'
+                  ? 'bg-sky-600 text-white border-sky-600'
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+              ]"
+            >
+              {{ t('tab_audit') }}
+            </button>
+            <button
+              type="button"
+              @click="rightPanelTab = 'what_if'"
+              :class="[
+                'py-2 text-xs font-bold rounded-lg border transition',
+                rightPanelTab === 'what_if'
+                  ? 'bg-sky-600 text-white border-sky-600'
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+              ]"
+            >
+              {{ t('tab_what_if') }}
+            </button>
+            <button
+              type="button"
+              @click="rightPanelTab = 'nl_query'"
+              :class="[
+                'py-2 text-xs font-bold rounded-lg border transition',
+                rightPanelTab === 'nl_query'
+                  ? 'bg-sky-600 text-white border-sky-600'
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+              ]"
+            >
+              {{ t('tab_query') }}
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 1: Audit Offside & Onside Per Pemain (Kiri & Kanan) -->
+        <div
+          v-if="rightPanelTab === 'offside_audit'"
+          class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex-1 flex flex-col justify-between space-y-4"
+        >
+          <div class="space-y-3 text-xs">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold uppercase tracking-wider text-slate-700">
+                {{ t('audit_table_title') }}
+              </h3>
+              <div class="flex items-center gap-1">
+                <button
+                  type="button"
+                  @click="auditPitchSide = 'right'"
+                  :class="[
+                    'px-2 py-1 rounded text-[11px] font-semibold border',
+                    auditPitchSide === 'right'
+                      ? 'bg-sky-600 text-white border-sky-600'
+                      : 'bg-slate-50 text-slate-600 border-slate-200'
+                  ]"
+                >
+                  {{ t('audit_right_pitch') }}
+                </button>
+                <button
+                  type="button"
+                  @click="auditPitchSide = 'left'"
+                  :class="[
+                    'px-2 py-1 rounded text-[11px] font-semibold border',
+                    auditPitchSide === 'left'
+                      ? 'bg-rose-600 text-white border-rose-600'
+                      : 'bg-slate-50 text-slate-600 border-slate-200'
+                  ]"
+                >
+                  {{ t('audit_left_pitch') }}
+                </button>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
+              <span>{{ t('audit_ball') }} <strong class="font-mono text-slate-900">({{ ball.x.toFixed(1) }}m, {{ ball.y.toFixed(1) }}m)</strong></span>
+              <span>{{ t('audit_passer') }} <strong class="text-slate-900">{{ currentBallCarrierLabel }}</strong></span>
+            </div>
+
+            <!-- Daftar Evaluasi Tiap Pemain Menyerang -->
+            <div class="max-h-[340px] overflow-y-auto divide-y divide-slate-100 border border-slate-200 rounded-lg">
+              <div
+                v-for="item in activeAuditReport.playerEvaluations"
+                :key="item.player_id"
+                class="p-2.5 flex items-center justify-between gap-2 bg-white hover:bg-slate-50 transition"
+              >
+                <div class="min-w-0">
+                  <div class="font-bold text-slate-900 truncate">
+                    #{{ item.num }} {{ item.name }}
+                    <span class="font-mono text-[10px] font-normal text-slate-400">({{ item.player_id }})</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500">
+                    {{ t('audit_pos') }} <span class="font-mono">({{ item.x.toFixed(1) }}m, {{ item.y.toFixed(1) }}m)</span> · {{ item.reason }}
+                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <span
+                    :class="[
+                      'px-2 py-0.5 rounded text-[10px] font-bold border inline-block',
+                      item.status === 'OFFSIDE'
+                        ? 'bg-rose-100 text-rose-800 border-rose-300'
+                        : item.status === 'ONSIDE'
+                        ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                        : 'bg-slate-100 text-slate-700 border-slate-300'
+                    ]"
+                  >
+                    {{ item.status }}
+                  </span>
+                  <div v-if="item.marginText" class="text-[10px] font-mono text-slate-500 mt-0.5">
+                    {{ item.marginText }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ringkasan Penjelasan Taktis -->
+            <div class="p-3 rounded-lg bg-sky-50/70 border border-sky-200 text-xs">
+              <div class="font-bold text-sky-900 mb-1">{{ t('audit_summary_title') }} ({{ activePersona }})</div>
+              <p class="text-slate-700 leading-relaxed">
+                {{ dynamicBallAndWhatIfExplanation }}
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
+            <span>{{ t('moved_object') }} <strong>{{ lastMovedObjectName }}</strong></span>
+            <span>{{ t('norm_engine') }}</span>
+          </div>
+        </div>
+
+        <!-- TAB 2: What-If Sandbox (FR-008) -->
+        <div
+          v-else-if="rightPanelTab === 'what_if'"
+          class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex-1 flex flex-col justify-between space-y-4"
+        >
+          <div class="space-y-3 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-bold uppercase tracking-wider text-slate-700">{{ t('whatif_title') }}</span>
+              <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 font-mono text-[10px]">
+                simulated_estimate
+              </span>
+            </div>
+
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-3">
+              <div>
+                <div class="flex justify-between text-slate-700 font-medium">
+                  <span>{{ t('whatif_pressing') }}</span>
+                  <span class="font-mono text-sky-700">Baseline: 50 → {{ whatIfForm.pressingIntensity }}</span>
+                </div>
+                <input
+                  type="range"
+                  min="20"
+                  max="90"
+                  v-model.number="whatIfForm.pressingIntensity"
+                  class="w-full accent-sky-600 mt-1 cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <div class="flex justify-between text-slate-700 font-medium">
+                  <span>{{ t('whatif_def_line') }}</span>
+                  <span class="font-mono text-sky-700">Baseline: 45m → {{ whatIfForm.defensiveLineHeight }}m</span>
+                </div>
+                <input
+                  type="range"
+                  min="25"
+                  max="70"
+                  v-model.number="whatIfForm.defensiveLineHeight"
+                  @input="applyDefensiveLineShift"
+                  class="w-full accent-sky-600 mt-1 cursor-pointer"
+                />
+              </div>
+
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-slate-500">Seed Berpasangan: <strong class="text-slate-800">{{ whatIfForm.seed }}</strong> (20 Run)</span>
+                <button
+                  type="button"
+                  @click="runWhatIfSimulation"
+                  class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-semibold transition"
+                >
+                  {{ t('whatif_calc_btn') }}
+                </button>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+              <div class="font-bold text-slate-800 flex justify-between">
+                <span>{{ t('whatif_delta_title') }}</span>
+                <span class="font-mono text-[10px] text-slate-500">{{ whatIfResult.run_id }}</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 text-[11px]">
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500">Zone 14</div>
+                  <div class="font-bold text-slate-900">
+                    {{ whatIfResult.baseline.zone14_dominance_pct }}% → {{ whatIfResult.candidate.zone14_dominance_pct }}%
+                  </div>
+                  <div class="text-emerald-700 font-mono font-semibold">
+                    {{ formatSigned(whatIfResult.deltas.zone14_dominance_pct) }}%
+                  </div>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500">Shot Proxy</div>
+                  <div class="font-bold text-slate-900">
+                    {{ whatIfResult.baseline.shot_quality_proxy }} → {{ whatIfResult.candidate.shot_quality_proxy }}
+                  </div>
+                  <div class="text-purple-700 font-mono font-semibold">
+                    {{ formatSigned(whatIfResult.deltas.shot_quality_proxy) }}
+                  </div>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  <div class="text-slate-500">{{ t('whatif_risk') }}</div>
+                  <div class="font-bold text-slate-900">
+                    {{ whatIfResult.baseline.transition_exposure_risk }} → {{ whatIfResult.candidate.transition_exposure_risk }}
+                  </div>
+                  <div class="text-amber-700 font-mono font-semibold">
+                    {{ formatSigned(whatIfResult.deltas.transition_exposure_risk) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
+              <strong>{{ t('whatif_limits_title') }}</strong> {{ t('whatif_limits_desc') }}
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
+            <span>{{ t('whatif_test_club') }} {{ clubObjA.club_id }}</span>
+            <span>Endpoint: /api/v1/matches/{{ selectedMatchId }}/what-if</span>
+          </div>
+        </div>
+
+        <!-- TAB 3: Natural Language Query Filter (FR-007) -->
+        <div
+          v-else
+          class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex-1 flex flex-col justify-between space-y-4"
+        >
+          <div class="space-y-3 text-xs">
+            <div class="font-bold uppercase tracking-wider text-slate-700">
+              {{ t('query_title') }}
+            </div>
+
+            <div class="flex gap-2">
+              <input
+                v-model="nlQueryInput"
+                type="text"
+                :placeholder="t('query_placeholder')"
+                class="flex-1 bg-slate-50 text-slate-900 px-3 py-2 rounded-lg border border-slate-300 text-xs focus:outline-none focus:border-sky-600"
+                @keyup.enter="executeNlQuery"
+              />
+              <button
+                type="button"
+                @click="executeNlQuery"
+                class="px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition"
+              >
+                {{ t('query_btn') }}
+              </button>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 font-mono text-[11px] text-slate-700 break-all">
+              <div class="text-sky-800 font-bold mb-1 font-sans">{{ t('query_filter_label') }}</div>
+              <div>{{ JSON.stringify(queryResult.validated_query) }}</div>
+            </div>
+
+            <div class="space-y-1.5">
+              <div class="font-bold text-slate-700 flex justify-between">
+                <span>{{ t('query_results_title') }}</span>
+                <span class="text-emerald-700">{{ queryResult.matched_count }} {{ t('events_suffix') }}</span>
+              </div>
+              <div
+                v-for="ev in queryResult.events"
+                :key="ev.event_id"
+                @click="focusBallOnEvent(ev)"
+                class="p-2.5 rounded-lg bg-slate-50 hover:bg-sky-50 cursor-pointer border border-slate-200 flex justify-between items-center text-[11px] transition"
+              >
+                <span>
+                  <strong class="text-sky-700 font-mono">{{ ev.event_id }}</strong> · {{ ev.event_type }} ({{ ev.outcome }})
+                </span>
+                <span class="font-mono text-slate-500">
+                  t={{ ev.elapsed_sec }}s ({{ ev.x }}m, {{ ev.y }}m)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
+            <span>{{ t('query_source') }}</span>
+            <span>Endpoint: /api/v1/matches/{{ selectedMatchId }}/query</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script type="module">
+    import { createApp, ref, reactive, computed, onMounted, onUnmounted, watch, nextTick } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js'
+    import { Delaunay } from 'https://cdn.jsdelivr.net/npm/d3-delaunay@6/+esm'
+
+    createApp({
+      setup() {
+        const PITCH_M_WIDTH = 105.0
+        const PITCH_M_HEIGHT = 68.0
+        const SCALE = 8
+
+        const currentLang = ref(localStorage.getItem('tactivision_lang') || 'id')
+        function setLanguage(lang) {
+          currentLang.value = lang
+          try {
+            localStorage.setItem('tactivision_lang', lang)
+          } catch (e) {}
+          document.documentElement.lang = lang
+          renderAllPitches()
+        }
+
+        const i18n = {
+          id: {
+            pitch_dimensions: 'Dimensi: 105m × 68m',
+            deterministic_engine: 'Deterministic Engine',
+            provenance_title: 'Provenance Data Sintetis:',
+            provenance_desc: 'Registri 5 Klub Kanonis (CLUB_A..CLUB_E) & 10 Pertandingan (SYN_001..SYN_010). Evaluasi offside mengikuti Hukum XI IFAB pada saat bola dimainkan.',
+            compare_title: 'Komparasi Taktis Klub & Evaluator Offside Dua Arah',
+            compare_desc: 'Pilih dua klub dari registri klub unik untuk memuat riwayat pertemuan, membandingkan struktur spasial, dan menguji garis offside/onside.',
+            swap_sides: '⇄ Tukar Sisi Klub',
+            swap_sides_title: 'Tukar posisi Home (Klub A) dan Away (Klub B)',
+            compare_btn: 'Bandingkan Klub',
+            reset_btn: 'Reset Default',
+            club_a_label: 'Klub A / Sisi Kanan (Serangan →)',
+            club_b_label: 'Klub B / Sisi Kiri (← Serangan)',
+            active_badge: 'Aktif',
+            search_placeholder: 'Cari nama klub, ID, atau taktik...',
+            fixtures_title: 'Pertemuan di Dataset',
+            matches_count_suffix: 'Laga',
+            comp_all: 'Semua Kompetisi (2025/26)',
+            comp_label: 'Kompetisi',
+            reverse_fixture_notice: 'Catatan: Di laga asli terbalik',
+            no_fixture_title: 'Pertandingan Historis Tidak Tersedia',
+            no_fixture_desc: 'Pasangan klub pada filter kompetisi ini belum tercatat di fixtures.csv.',
+            loading_data: 'Memuat snapshot posisi pemain, bola, dan kalkulasi garis offside...',
+            empty_title: '⚠️ Data Pertandingan Historis Tidak Ditemukan untuk Pasangan Ini',
+            empty_desc: 'Sesuai kebijakan integritas data, sistem tidak mengarang skor atau statistik palsu. Pilih salah satu pasangan kanonis yang tersedia di bawah ini:',
+            visual_layers: 'Layer Visual:',
+            layer_offside: 'Garis Offside & Onside',
+            layer_voronoi: 'Voronoi (22 Sel)',
+            layer_passing: 'Jalur Umpan & Vektor',
+            layer_zone14: 'Zone 14',
+            layer_heatmap: 'Heatmap',
+            heatmap_density: 'Event Density',
+            heatmap_progression: 'Progression Destination',
+            heatmap_occupancy: 'Player Occupancy',
+            pass_context_label: 'Konteks Umpan (IFAB):',
+            ctx_open_play: 'Open Play / Umpan Terobosan (Normal)',
+            ctx_goal_kick: 'Tendangan Gawang (Goal Kick — Bebas Offside)',
+            ctx_throw_in: 'Lemparan ke Dalam (Throw-In — Bebas Offside)',
+            ctx_corner_kick: 'Tendangan Sudut (Corner Kick — Bebas Offside)',
+            ctx_incomplete: 'Data Waktu/Sentuhan Tidak Cukup (Uji Validasi)',
+            window_label: 'Jendela 5m:',
+            snap_ball: '⚽ Tempel Bola ke Pemain Terdekat',
+            sim_pause: 'Jeda Simulasi',
+            sim_play: 'Putar Tracking 5s',
+            legend_title: 'Legenda Offside:',
+            legend_offside: 'Garis Offside (Merah)',
+            legend_onside: 'Garis & Zona Onside (Hijau)',
+            legend_defender: 'Bek Ke-2 Terakhir (Oranye)',
+            status_undetermined: 'TIDAK DAPAT DITENTUKAN',
+            left_pitch_title: 'Lapangan Sisi Kiri',
+            right_pitch_title: 'Lapangan Sisi Kanan',
+            attack_left_label: '← Serangan ke Kiri (0m)',
+            attack_right_label: 'Serangan ke Kanan (105m) →',
+            att_team_label: 'Tim Menyerang',
+            def_team_label: 'Bertahan',
+            flip_direction: 'Balik Arah',
+            eval_status_left: 'Status Evaluasi (Lapangan Kiri):',
+            eval_status_right: 'Status Evaluasi (Lapangan Kanan):',
+            card_offside_line: 'Garis Offside',
+            card_second_defender: 'Bek Ke-2 Terakhir',
+            card_offside_players: 'Pemain Offside',
+            players_suffix: 'Pemain',
+            voronoi_desc: 'Aproksimasi 22 sel pemain terdekat',
+            zone14_desc: 'Area kunci depan kotak penalti',
+            passing_lanes_title: 'Open Passing Lanes',
+            lanes_suffix: 'Jalur',
+            best_target_prefix: 'Target utama:',
+            shot_proxy_title: 'Shot Quality Proxy ⓘ',
+            dist_to_goal: 'Jarak bola ke gawang:',
+            inspection_persona: 'Mode Inspeksi & Persona',
+            tab_audit: 'Audit Offside',
+            tab_what_if: 'What-If',
+            tab_query: 'Filter Event',
+            audit_table_title: 'Tabel Status Offside / Onside Pemain',
+            audit_right_pitch: 'Lapangan Kanan',
+            audit_left_pitch: 'Lapangan Kiri',
+            audit_ball: 'Bola:',
+            audit_passer: 'Pengumpan:',
+            audit_pos: 'Posisi:',
+            audit_summary_title: 'Analisis Spasial & Offside',
+            moved_object: 'Objek digeser:',
+            norm_engine: 'Normalisasi: 1 Engine Simetris',
+            whatif_title: 'Simulator Intervensi Taktis',
+            whatif_pressing: 'Intensitas Pressing',
+            whatif_def_line: 'Tinggi Garis Pertahanan (m)',
+            whatif_seed: 'Seed Berpasangan:',
+            whatif_calc_btn: 'Hitung Simulasi',
+            whatif_delta_title: 'Delta Kandidat vs Baseline',
+            whatif_risk: 'Risiko Transisi',
+            whatif_limits_title: 'Batasan Simulator:',
+            whatif_limits_desc: 'Hasil dihitung oleh simulator aturan sintetis dengan paired seed, bukan prediksi hasil pertandingan nyata.',
+            whatif_test_club: 'Klub Uji:',
+            query_title: 'Pencarian Event Taktik Deterministik',
+            query_placeholder: 'Contoh: Tampilkan shot dan pass di Zone 14 setelah menit 75',
+            query_btn: 'Cari',
+            query_filter_label: 'Filter Tervalidasi (Allowlist):',
+            query_results_title: 'Hasil Event (Klik untuk Fokus Bola)',
+            events_suffix: 'Event',
+            query_source: 'Sumber: events.jsonl',
+            offside_line_canvas: 'GARIS OFFSIDE',
+            onside_zone_canvas: '← ZONA ONSIDE →'
+          },
+          en: {
+            pitch_dimensions: 'Pitch: 105m × 68m',
+            deterministic_engine: 'Deterministic Engine',
+            provenance_title: 'Synthetic Data Provenance:',
+            provenance_desc: '5 Canonical Clubs (CLUB_A..CLUB_E) & 10 Matches (SYN_001..SYN_010). Offside evaluation complies with IFAB Law 11 at ball impact.',
+            compare_title: 'Tactical Club Comparison & Symmetric Offside Evaluator',
+            compare_desc: 'Select two clubs from canonical registry to load match history, compare spatial structures, and verify offside/onside lines.',
+            swap_sides: '⇄ Swap Club Sides',
+            swap_sides_title: 'Swap positions of Home (Club A) and Away (Club B)',
+            compare_btn: 'Compare Clubs',
+            reset_btn: 'Reset Default',
+            club_a_label: 'Club A / Right Pitch (Attacking →)',
+            club_b_label: 'Club B / Left Pitch (← Attacking)',
+            active_badge: 'Active',
+            search_placeholder: 'Search club name, ID, or style...',
+            fixtures_title: 'Dataset Fixtures',
+            matches_count_suffix: 'Matches',
+            comp_all: 'All Competitions (2025/26)',
+            comp_label: 'Competition',
+            reverse_fixture_notice: 'Notice: In original match, reversed',
+            no_fixture_title: 'Historical Match Not Available',
+            no_fixture_desc: 'Club pair on this competition filter is not recorded in fixtures.csv.',
+            loading_data: 'Loading player positions, ball snapshot, and offside line calculations...',
+            empty_title: '⚠️ Historical Match Data Not Found for This Pair',
+            empty_desc: 'Following data integrity policy, system does not fabricate fake scores or statistics. Choose an available canonical pair below:',
+            visual_layers: 'Visual Layers:',
+            layer_offside: 'Offside & Onside Lines',
+            layer_voronoi: 'Voronoi (22 Cells)',
+            layer_passing: 'Passing Lanes & Vectors',
+            layer_zone14: 'Zone 14',
+            layer_heatmap: 'Heatmap',
+            heatmap_density: 'Event Density',
+            heatmap_progression: 'Progression Destination',
+            heatmap_occupancy: 'Player Occupancy',
+            pass_context_label: 'Pass Context (IFAB):',
+            ctx_open_play: 'Open Play / Through Ball (Normal)',
+            ctx_goal_kick: 'Goal Kick (No Offside Exception)',
+            ctx_throw_in: 'Throw-In (No Offside Exception)',
+            ctx_corner_kick: 'Corner Kick (No Offside Exception)',
+            ctx_incomplete: 'Insufficient Timing/Touch Data (Validation Test)',
+            window_label: '5m Window:',
+            snap_ball: '⚽ Snap Ball to Nearest Player',
+            sim_pause: 'Pause Stream',
+            sim_play: 'Play 5s Tracking',
+            legend_title: 'Offside Legend:',
+            legend_offside: 'Offside Limit Line (Red)',
+            legend_onside: 'Onside Safe Zone Line (Green)',
+            legend_defender: '2nd-Last Defender (Orange)',
+            status_undetermined: 'CANNOT DETERMINE',
+            left_pitch_title: 'Left Pitch',
+            right_pitch_title: 'Right Pitch',
+            attack_left_label: '← Attack to Left (0m)',
+            attack_right_label: 'Attack to Right (105m) →',
+            att_team_label: 'Attacking Team',
+            def_team_label: 'Defending Team',
+            flip_direction: 'Flip Direction',
+            eval_status_left: 'Evaluation Status (Left Pitch):',
+            eval_status_right: 'Evaluation Status (Right Pitch):',
+            card_offside_line: 'Offside Line',
+            card_second_defender: '2nd-Last Defender',
+            card_offside_players: 'Offside Players',
+            players_suffix: 'Players',
+            voronoi_desc: '22 nearest player Voronoi cells',
+            zone14_desc: 'Key zone ahead of penalty box',
+            passing_lanes_title: 'Open Passing Lanes',
+            lanes_suffix: 'Lanes',
+            best_target_prefix: 'Key target:',
+            shot_proxy_title: 'Shot Quality Proxy ⓘ',
+            dist_to_goal: 'Ball distance to goal:',
+            inspection_persona: 'Inspection Mode & Persona',
+            tab_audit: 'Offside Audit',
+            tab_what_if: 'What-If',
+            tab_query: 'Event Filter',
+            audit_table_title: 'Player Offside / Onside Status Table',
+            audit_right_pitch: 'Right Pitch',
+            audit_left_pitch: 'Left Pitch',
+            audit_ball: 'Ball:',
+            audit_passer: 'Passer:',
+            audit_pos: 'Position:',
+            audit_summary_title: 'Spatial & Offside Analysis',
+            moved_object: 'Moved entity:',
+            norm_engine: 'Normalization: 1 Symmetrical Engine',
+            whatif_title: 'Tactical Intervention Simulator',
+            whatif_pressing: 'Pressing Intensity',
+            whatif_def_line: 'Defensive Line Height (m)',
+            whatif_seed: 'Paired Seed:',
+            whatif_calc_btn: 'Run Simulation',
+            whatif_delta_title: 'Candidate vs Baseline Delta',
+            whatif_risk: 'Transition Exposure Risk',
+            whatif_limits_title: 'Simulator Constraints:',
+            whatif_limits_desc: 'Results computed by paired-seed synthetic rule simulator, not actual match predictions.',
+            whatif_test_club: 'Test Club:',
+            query_title: 'Deterministic Tactical Event Search',
+            query_placeholder: 'e.g.: Show shots and passes in Zone 14 after 75th minute',
+            query_btn: 'Search',
+            query_filter_label: 'Validated Filter (Allowlist):',
+            query_results_title: 'Event Results (Click to Focus Ball)',
+            events_suffix: 'Events',
+            query_source: 'Source: events.jsonl',
+            offside_line_canvas: 'OFFSIDE LINE',
+            onside_zone_canvas: '← ONSIDE ZONE →'
+          }
+        }
+
+        function t(key) {
+          const dict = i18n[currentLang.value] || i18n['id']
+          return dict[key] || (i18n['id'] && i18n['id'][key]) || key
+        }
+
+        const personaOptions = computed(() => ['Analyst', 'Broadcaster', 'Fan'])
+
+        function getPresetLabel(key) {
+          if (currentLang.value === 'en') {
+            if (key === 'offside_trap_test') return 'Offside Trap Test (Symmetric)'
+            if (key === 'all_onside_build') return 'All Players Onside (Build-Up)'
+            if (key === 'high_line_break') return 'High Line Break (Ball Ahead)'
+          }
+          return tacticalPresets[key] ? tacticalPresets[key].label : key
+        }
+
+        const leftPitchCanvas = ref(null)
+        const rightPitchCanvas = ref(null)
+
+        // Toggle Layer Visualisasi
+        const showOffsideLines = ref(true)
+        const showVoronoi = ref(false)
+        const showPassingLanes = ref(true)
+        const showHeatmap = ref(false)
+        const heatmapSurface = ref('event_density')
+        const showZone14 = ref(true)
+
+        // State Konteks Offside & UI
+        const activePlayContext = ref('open_play')
+        const activePreset = ref('offside_trap_test')
+        const activePersona = ref('Analyst')
+        const rightPanelTab = ref('offside_audit')
+        const auditPitchSide = ref('right')
+        const isSimulating = ref(false)
+        const isLoadingData = ref(false)
+        const elapsedSec = ref(1240)
+        const lastMovedObjectName = ref('P_H11 (#9 Braut-Vik)')
+        const nlQueryInput = ref('Tampilkan shot dan pass di Zone 14 setelah menit 75')
+
+        // Orientasi Arah Serangan untuk Lapangan Kiri & Kanan (+1 = ke Kanan 105m, -1 = ke Kiri 0m)
+        const leftAttackDirection = ref(-1) // Default: Lapangan Kiri menyerang ke Kiri (0m)
+        const rightAttackDirection = ref(1) // Default: Lapangan Kanan menyerang ke Kanan (105m)
+
+        // SUMBER 1: Registri Klub Unik Kanonis (Terpisah dari Riwayat Pertandingan)
+        const clubRegistry = reactive([
+          {
+            club_id: 'CLUB_A',
+            name: 'Albion Athletic FC',
+            shortCode: 'ALB',
+            defaultFormation: '3-2-4-1',
+            tacticalStyle: 'Inverted Box Midfield',
+            primaryColor: '#0284c7',
+            secondaryColor: '#e0f2fe',
+            fixtureCount: 4
+          },
+          {
+            club_id: 'CLUB_B',
+            name: 'Borough United FC',
+            shortCode: 'BOR',
+            defaultFormation: '4-2-3-1',
+            tacticalStyle: 'Direct Counter-Attack',
+            primaryColor: '#dc2626',
+            secondaryColor: '#fee2e2',
+            fixtureCount: 4
+          },
+          {
+            club_id: 'CLUB_C',
+            name: 'Citadel Rovers FC',
+            shortCode: 'CIT',
+            defaultFormation: '4-3-3',
+            tacticalStyle: 'High-Press Wide Overload',
+            primaryColor: '#059669',
+            secondaryColor: '#d1fae5',
+            fixtureCount: 4
+          },
+          {
+            club_id: 'CLUB_D',
+            name: 'Dynamo Vale FC',
+            shortCode: 'DYN',
+            defaultFormation: '4-4-2',
+            tacticalStyle: 'Compact Mid-Block',
+            primaryColor: '#d97706',
+            secondaryColor: '#fef3c7',
+            fixtureCount: 4
+          },
+          {
+            club_id: 'CLUB_E',
+            name: 'Estuary Town FC',
+            shortCode: 'EST',
+            defaultFormation: '3-4-2-1',
+            tacticalStyle: 'Vertical Wing-Play',
+            primaryColor: '#7c3aed',
+            secondaryColor: '#ede9fe',
+            fixtureCount: 4
+          },
+          {
+            club_id: 'CLUB_F',
+            name: 'Northbridge Expansion FC',
+            shortCode: 'NOR',
+            defaultFormation: '4-3-3',
+            tacticalStyle: 'Expansion Club (Tanpa Riwayat Laga)',
+            primaryColor: '#475569',
+            secondaryColor: '#f1f5f9',
+            fixtureCount: 0
+          }
+        ])
+
+        // SUMBER 2: Daftar Riwayat Pertandingan Kanonis (data/fixtures.csv)
+        const historicalFixtures = reactive([
+          { match_id: 'SYN_001', home_club_id: 'CLUB_A', away_club_id: 'CLUB_B', home_score: 2, away_score: 1, matchweek: 'MW 1', date: '2025-08-16', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_002', home_club_id: 'CLUB_C', away_club_id: 'CLUB_D', home_score: 1, away_score: 1, matchweek: 'MW 1', date: '2025-08-17', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_003', home_club_id: 'CLUB_E', away_club_id: 'CLUB_A', home_score: 0, away_score: 2, matchweek: 'MW 2', date: '2025-08-23', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_004', home_club_id: 'CLUB_B', away_club_id: 'CLUB_C', home_score: 3, away_score: 2, matchweek: 'MW 2', date: '2025-08-24', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_005', home_club_id: 'CLUB_D', away_club_id: 'CLUB_E', home_score: 1, away_score: 0, matchweek: 'MW 3', date: '2025-08-30', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_006', home_club_id: 'CLUB_A', away_club_id: 'CLUB_C', home_score: 2, away_score: 2, matchweek: 'MW 3', date: '2025-08-31', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_007', home_club_id: 'CLUB_B', away_club_id: 'CLUB_D', home_score: 1, away_score: 2, matchweek: 'MW 4', date: '2025-09-13', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_008', home_club_id: 'CLUB_C', away_club_id: 'CLUB_E', home_score: 2, away_score: 0, matchweek: 'MW 4', date: '2025-09-14', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_009', home_club_id: 'CLUB_D', away_club_id: 'CLUB_A', home_score: 0, away_score: 1, matchweek: 'MW 5', date: '2025-09-20', competition: 'Synthetic Premier Division' },
+          { match_id: 'SYN_010', home_club_id: 'CLUB_E', away_club_id: 'CLUB_B', home_score: 1, away_score: 3, matchweek: 'MW 5', date: '2025-09-21', competition: 'Synthetic Premier Division' }
+        ])
+
+        // State Pemilihan Klub Manual
+        const selectedClubA = ref('CLUB_A')
+        const selectedClubB = ref('CLUB_B')
+        const selectedMatchId = ref('SYN_001')
+        const selectedCompetitionFilter = ref('ALL')
+        const dropdownOpenA = ref(false)
+        const dropdownOpenB = ref(false)
+        const searchQueryA = ref('')
+        const searchQueryB = ref('')
+
+        const clubObjA = computed(() => clubRegistry.find((c) => c.club_id === selectedClubA.value) || clubRegistry[0])
+        const clubObjB = computed(() => clubRegistry.find((c) => c.club_id === selectedClubB.value) || clubRegistry[1])
+
+        const filteredClubsA = computed(() => {
+          const q = searchQueryA.value.trim().toLowerCase()
+          if (!q) return clubRegistry
+          return clubRegistry.filter(
+            (c) =>
+              c.name.toLowerCase().includes(q) ||
+              c.club_id.toLowerCase().includes(q) ||
+              c.tacticalStyle.toLowerCase().includes(q)
+          )
+        })
+
+        const filteredClubsB = computed(() => {
+          const q = searchQueryB.value.trim().toLowerCase()
+          if (!q) return clubRegistry
+          return clubRegistry.filter(
+            (c) =>
+              c.name.toLowerCase().includes(q) ||
+              c.club_id.toLowerCase().includes(q) ||
+              c.tacticalStyle.toLowerCase().includes(q)
+          )
+        })
+
+        // Cari semua pertandingan yang melibatkan Klub A dan Klub B
+        const matchingFixturesForPair = computed(() => {
+          const a = selectedClubA.value
+          const b = selectedClubB.value
+          return historicalFixtures.filter((f) => {
+            const pairMatches =
+              (f.home_club_id === a && f.away_club_id === b) ||
+              (f.home_club_id === b && f.away_club_id === a)
+            const compMatches =
+              selectedCompetitionFilter.value === 'ALL' ||
+              f.competition === selectedCompetitionFilter.value
+            return pairMatches && compMatches
+          })
+        })
+
+        const hasMatchDataForPair = computed(() => matchingFixturesForPair.value.length > 0)
+
+        const currentMatch = computed(() => {
+          if (matchingFixturesForPair.value.length > 0) {
+            return (
+              matchingFixturesForPair.value.find((f) => f.match_id === selectedMatchId.value) ||
+              matchingFixturesForPair.value[0]
+            )
+          }
+          return {
+            match_id: 'N/A',
+            home_club_id: selectedClubA.value,
+            away_club_id: selectedClubB.value,
+            home_score: '-',
+            away_score: '-',
+            competition: selectedCompetitionFilter.value
+          }
+        })
+
+        const isReverseFixtureNote = computed(() => {
+          return (
+            hasMatchDataForPair.value &&
+            currentMatch.value.home_club_id === selectedClubB.value &&
+            currentMatch.value.away_club_id === selectedClubA.value
+          )
+        })
+
+        const ball = reactive({
+          x: 62.0,
+          y: 38.0,
+          carrierId: 'P_H06',
+          spinAngle: 0.4
+        })
+
+        // Posisi 22 Pemain dalam Koordinat Kanonis (Club A = 'home', Club B = 'away')
+        const players = reactive([
+          { id: 'P_H01', num: 31, name: 'Moraes', team: 'home', x: 12.0, y: 34.0 },
+          { id: 'P_H02', num: 2, name: 'Walker-P', team: 'home', x: 46.0, y: 53.0 },
+          { id: 'P_H03', num: 3, name: 'Dias-S', team: 'home', x: 40.0, y: 34.0 },
+          { id: 'P_H04', num: 24, name: 'Gvardiol', team: 'home', x: 45.0, y: 16.0 },
+          { id: 'P_H05', num: 5, name: 'Stones-H', team: 'home', x: 60.0, y: 25.0 },
+          { id: 'P_H06', num: 16, name: 'Cascante', team: 'home', x: 60.5, y: 38.5, hasBall: true },
+          { id: 'P_H07', num: 17, name: 'Vandenberg', team: 'home', x: 76.0, y: 46.0 },
+          { id: 'P_H08', num: 47, name: 'Foden-W', team: 'home', x: 78.0, y: 23.0 },
+          { id: 'P_H09', num: 20, name: 'Mota-Silva', team: 'home', x: 83.0, y: 59.0 },
+          { id: 'P_H10', num: 11, name: 'Doku-M', team: 'home', x: 84.0, y: 9.0 },
+          { id: 'P_H11', num: 9, name: 'Braut-Vik', team: 'home', x: 89.2, y: 33.5 }, // Di depan garis bek ke-2 terakhir (86.5m) -> Offside!
+
+          { id: 'P_A01', num: 24, name: 'Onana-N', team: 'away', x: 99.0, y: 34.0 },
+          { id: 'P_A02', num: 20, name: 'Dalot', team: 'away', x: 86.5, y: 15.0 },
+          { id: 'P_A03', num: 4, name: 'De Ligt', team: 'away', x: 86.5, y: 28.0 },
+          { id: 'P_A04', num: 6, name: 'Martinez', team: 'away', x: 85.0, y: 41.0 },
+          { id: 'P_A05', num: 3, name: 'Mazraoui', team: 'away', x: 84.5, y: 54.0 },
+          { id: 'P_A06', num: 18, name: 'Casemiro', team: 'away', x: 74.0, y: 39.0 },
+          { id: 'P_A07', num: 37, name: 'Mainoo', team: 'away', x: 73.0, y: 26.0 },
+          { id: 'P_A08', num: 8, name: 'Fernandes', team: 'away', x: 58.0, y: 34.0 },
+          { id: 'P_A09', num: 17, name: 'Garnacho', team: 'away', x: 42.0, y: 13.0 },
+          { id: 'P_A10', num: 10, name: 'Rashford', team: 'away', x: 43.0, y: 55.0 },
+          { id: 'P_A11', num: 9, name: 'Hojlund', team: 'away', x: 37.2, y: 32.0 } // Di belakang bek ke-2 terakhir Home (40.0m) -> Offside saat serang ke kiri!
+        ])
+
+        const tacticalPresets = {
+          offside_trap_test: {
+            label: 'Uji Jebakan Offside (Simetris)',
+            coords: {
+              P_H03: [40.0, 34.0], P_H04: [45.0, 16.0], P_H06: [60.5, 38.5], P_H11: [89.2, 33.5], P_H10: [84.0, 9.0],
+              P_A02: [86.5, 15.0], P_A03: [86.5, 28.0], P_A11: [37.2, 32.0], P_A09: [42.0, 13.0]
+            },
+            ball: [62.0, 38.0, 'P_H06']
+          },
+          all_onside_build: {
+            label: 'Semua Pemain Onside (Build-Up)',
+            coords: {
+              P_H03: [38.0, 34.0], P_H04: [42.0, 16.0], P_H06: [56.0, 41.0], P_H11: [84.0, 34.0], P_H10: [80.0, 9.0],
+              P_A02: [86.5, 15.0], P_A03: [87.0, 28.0], P_A11: [42.0, 32.0], P_A09: [46.0, 13.0]
+            },
+            ball: [57.6, 40.2, 'P_H06']
+          },
+          high_line_break: {
+            label: 'High Line Break (Bola Di Depan Bek)',
+            coords: {
+              P_H03: [48.0, 34.0], P_H04: [50.0, 16.0], P_H06: [88.0, 42.0], P_H11: [87.2, 33.0], P_H10: [90.5, 14.0],
+              P_A02: [85.0, 15.0], P_A03: [85.0, 28.0], P_A11: [49.5, 32.0], P_A09: [45.0, 13.0]
+            },
+            ball: [89.0, 41.5, 'P_H06']
+          }
+        }
+
+        /**
+         * Satu Sistem Perhitungan Offside Konsisten untuk Lapangan Kiri maupun Kanan.
+         * Menggunakan normalisasi sumbu serangan:
+         *   direction = +1 -> menyerang ke kanan (gawang lawan di x = 105m)
+         *   direction = -1 -> menyerang ke kiri (gawang lawan di x = 0m)
+         * Dalam koordinat ternormalisasi normX(x), tim penyerang selalu menyerang menuju normX = 105m.
+         */
+        function evaluateOffsideState({
+          allPlayers,
+          attackingTeamKey, // 'home' | 'away'
+          attackDirection,  // +1 (ke kanan) | -1 (ke kiri)
+          ballState,
+          playContext,      // 'open_play' | 'goal_kick' | 'throw_in' | 'corner_kick' | 'incomplete_data'
+          hasValidMatchData
+        }) {
+          const normX = (x) => (attackDirection === 1 ? x : PITCH_M_WIDTH - x)
+          const denormX = (nx) => (attackDirection === 1 ? nx : PITCH_M_WIDTH - nx)
+
+          const attackers = allPlayers.filter((p) => p.team === attackingTeamKey)
+          const defenders = allPlayers.filter((p) => p.team !== attackingTeamKey)
+
+          // 1. Validasi Kelengkapan Data
+          if (
+            !hasValidMatchData ||
+            playContext === 'incomplete_data' ||
+            defenders.length < 2 ||
+            attackers.length === 0 ||
+            typeof ballState?.x !== 'number'
+          ) {
+            return {
+              overallStatus: 'TIDAK DAPAT DITENTUKAN',
+              offsideLineX: null,
+              onsideReferenceX: null,
+              secondLastDefenderX: null,
+              secondLastDefenderLabel: 'Data Tidak Cukup',
+              offsidePlayers: [],
+              onsidePlayers: [],
+              playerEvaluations: attackers.map((p) => ({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'TIDAK DAPAT DITENTUKAN',
+                reason: 'Informasi waktu sentuhan bola atau posisi pemain tidak mencukupi',
+                marginText: ''
+              })),
+              summaryText:
+                'Status offside TIDAK DAPAT DITENTUKAN karena informasi timestamp sentuhan umpan atau data pertandingan tidak lengkap.'
+            }
+          }
+
+          // 2. Urutkan pemain bertahan lawan dari yang paling dekat ke garis gawangnya sendiri (normX = 105m)
+          const sortedDefenders = [...defenders].sort((a, b) => normX(b.x) - normX(a.x))
+          const secondLastDefender = sortedDefenders[1]
+          const secondLastNormX = normX(secondLastDefender.x)
+          const ballNormX = normX(ballState.x)
+          const halfwayNormX = PITCH_M_WIDTH / 2.0 // 52.5m
+
+          // Garis Offside Efektif dalam ruang normalisasi adalah nilai maksimum dari:
+          // (a) Garis tengah lapangan (52.5m), (b) Posisi bola, (c) Posisi bek kedua terakhir
+          const effectiveOffsideNormX = Math.min(
+            PITCH_M_WIDTH,
+            Math.max(halfwayNormX, ballNormX, secondLastNormX)
+          )
+          const offsideLineX = denormX(effectiveOffsideNormX)
+          const secondLastDefenderX = secondLastDefender.x
+
+          // 3. Cek Pengecualian Aturan Offside IFAB (Goal Kick, Throw-In, Corner Kick)
+          const isSetPieceException = ['goal_kick', 'throw_in', 'corner_kick'].includes(playContext)
+          const setPieceLabels = {
+            goal_kick: currentLang.value === 'en' ? 'Goal Kick' : 'Tendangan Gawang (Goal Kick)',
+            throw_in: currentLang.value === 'en' ? 'Throw-In' : 'Lemparan ke Dalam (Throw-In)',
+            corner_kick: currentLang.value === 'en' ? 'Corner Kick' : 'Tendangan Sudut (Corner Kick)'
+          }
+
+          const offsidePlayers = []
+          const onsidePlayers = []
+          const playerEvaluations = []
+
+          attackers.forEach((p) => {
+            const pNorm = normX(p.x)
+            const deltaM = pNorm - effectiveOffsideNormX // Positif = melewati garis offside menuju gawang lawan
+
+            if (p.id === ballState.carrierId || p.hasBall) {
+              onsidePlayers.push(p)
+              playerEvaluations.push({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'ONSIDE',
+                reason: currentLang.value === 'en' ? 'Ball Carrier / Passer' : 'Penguasa / Pengumpan Bola',
+                marginText: currentLang.value === 'en' ? '0.0m (Ball)' : '0.0m (Bola)'
+              })
+              return
+            }
+
+            if (isSetPieceException) {
+              onsidePlayers.push(p)
+              playerEvaluations.push({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'ONSIDE',
+                reason: currentLang.value === 'en' ? `No Offside: ${setPieceLabels[playContext]}` : `Bebas Offside: ${setPieceLabels[playContext]}`,
+                marginText: currentLang.value === 'en' ? 'IFAB Exception' : 'Pengecualian IFAB'
+              })
+              return
+            }
+
+            if (pNorm <= halfwayNormX) {
+              onsidePlayers.push(p)
+              playerEvaluations.push({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'ONSIDE',
+                reason: currentLang.value === 'en' ? 'In own defensive half' : 'Berada di paruh lapangan sendiri',
+                marginText: `${deltaM.toFixed(1)}m`
+              })
+              return
+            }
+
+            if (pNorm <= ballNormX + 0.05) {
+              onsidePlayers.push(p)
+              playerEvaluations.push({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'ONSIDE',
+                reason: currentLang.value === 'en' ? 'Behind / level with ball line' : 'Berada di belakang / sejajar garis bola',
+                marginText: `${deltaM.toFixed(1)}m`
+              })
+              return
+            }
+
+            if (deltaM > 0.1) {
+              offsidePlayers.push(p)
+              playerEvaluations.push({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'OFFSIDE',
+                reason: currentLang.value === 'en' ? `Ahead of 2nd-last defender (#${secondLastDefender.num}) & ball` : `Melewati bek ke-2 terakhir (#${secondLastDefender.num}) & bola`,
+                marginText: `+${deltaM.toFixed(1)}m (Offside)`
+              })
+            } else {
+              onsidePlayers.push(p)
+              playerEvaluations.push({
+                player_id: p.id,
+                num: p.num,
+                name: p.name,
+                x: p.x,
+                y: p.y,
+                status: 'ONSIDE',
+                reason: currentLang.value === 'en' ? `Behind 2nd-last defender (#${secondLastDefender.num})` : `Di belakang bek ke-2 terakhir (#${secondLastDefender.num})`,
+                marginText: currentLang.value === 'en' ? `${deltaM.toFixed(1)}m (Safe)` : `${deltaM.toFixed(1)}m (Aman)`
+              })
+            }
+          })
+
+          // Urutkan evaluasi agar pemain OFFSIDE tampil paling atas
+          playerEvaluations.sort((a, b) => {
+            if (a.status === 'OFFSIDE' && b.status !== 'OFFSIDE') return -1
+            if (a.status !== 'OFFSIDE' && b.status === 'OFFSIDE') return 1
+            return b.x - a.x
+          })
+
+          const overallStatus = offsidePlayers.length > 0 ? 'OFFSIDE' : 'ONSIDE'
+          const dirText = currentLang.value === 'en'
+            ? (attackDirection === 1 ? 'right (105m)' : 'left (0m)')
+            : (attackDirection === 1 ? 'kanan (105m)' : 'kiri (0m)')
+          let summaryText = ''
+          if (isSetPieceException) {
+            summaryText = currentLang.value === 'en'
+              ? `IFAB Exception active (${setPieceLabels[playContext]}): All players declared ONSIDE.`
+              : `Pengecualian IFAB aktif (${setPieceLabels[playContext]}): Seluruh pemain dinyatakan ONSIDE.`
+          } else if (offsidePlayers.length > 0) {
+            const names = offsidePlayers.map((p) => `#${p.num} ${p.name}`).join(', ')
+            summaryText = currentLang.value === 'en'
+              ? `Attack to ${dirText}: Detected ${offsidePlayers.length} player(s) in OFFSIDE position (${names}) beyond limit x=${offsideLineX.toFixed(1)}m.`
+              : `Serangan ke ${dirText}: Terdeteksi ${offsidePlayers.length} pemain dalam posisi OFFSIDE (${names}) melewati garis batas x=${offsideLineX.toFixed(1)}m.`
+          } else {
+            summaryText = currentLang.value === 'en'
+              ? `Attack to ${dirText}: All attackers are in ONSIDE position behind limit x=${offsideLineX.toFixed(1)}m.`
+              : `Serangan ke ${dirText}: Seluruh penyerang berada pada posisi ONSIDE di belakang garis x=${offsideLineX.toFixed(1)}m.`
+          }
+
+          return {
+            overallStatus,
+            offsideLineX,
+            onsideReferenceX: secondLastDefenderX,
+            secondLastDefenderX,
+            secondLastDefenderLabel: `#${secondLastDefender.num} ${secondLastDefender.name} (${secondLastDefender.x.toFixed(1)}m)`,
+            offsidePlayers,
+            onsidePlayers,
+            playerEvaluations,
+            summaryText
+          }
+        }
+
+        // Klub yang menyerang pada Lapangan Kiri & Lapangan Kanan berdasarkan arah serangan
+        const leftPitchAttackingClub = computed(() =>
+          leftAttackDirection.value === -1 ? clubObjB.value : clubObjA.value
+        )
+        const leftPitchDefendingClub = computed(() =>
+          leftAttackDirection.value === -1 ? clubObjA.value : clubObjB.value
+        )
+        const rightPitchAttackingClub = computed(() =>
+          rightAttackDirection.value === 1 ? clubObjA.value : clubObjB.value
+        )
+        const rightPitchDefendingClub = computed(() =>
+          rightAttackDirection.value === 1 ? clubObjB.value : clubObjA.value
+        )
+
+        // Evaluasi Offside Simetris untuk Lapangan Sisi Kiri
+        const leftOffsideReport = computed(() => {
+          const attackingKey = leftAttackDirection.value === -1 ? 'away' : 'home'
+          return evaluateOffsideState({
+            allPlayers: players,
+            attackingTeamKey: attackingKey,
+            attackDirection: leftAttackDirection.value,
+            ballState: ball,
+            playContext: activePlayContext.value,
+            hasValidMatchData: hasMatchDataForPair.value
+          })
+        })
+
+        // Evaluasi Offside Simetris untuk Lapangan Sisi Kanan
+        const rightOffsideReport = computed(() => {
+          const attackingKey = rightAttackDirection.value === 1 ? 'home' : 'away'
+          return evaluateOffsideState({
+            allPlayers: players,
+            attackingTeamKey: attackingKey,
+            attackDirection: rightAttackDirection.value,
+            ballState: ball,
+            playContext: activePlayContext.value,
+            hasValidMatchData: hasMatchDataForPair.value
+          })
+        })
+
+        const activeAuditReport = computed(() =>
+          auditPitchSide.value === 'left' ? leftOffsideReport.value : rightOffsideReport.value
+        )
+
+        const metrics = reactive({
+          skyControlPct: 58,
+          zone14Pct: 54,
+          openLanesCount: 4,
+          shotQualityProxy: '0.78',
+          ballToGoalDist: '43.1',
+          bestPassDist: '18.1',
+          bestPassAngle: '+12',
+          bestTargetPlayer: null
+        })
+
+        const whatIfForm = reactive({
+          pressingIntensity: 68,
+          defensiveLineHeight: 55,
+          seed: 42
+        })
+
+        const whatIfResult = reactive({
+          run_id: 'WIR_SYN_001_42_20',
+          baseline: { zone14_dominance_pct: 52.5, shot_quality_proxy: 1.18, transition_exposure_risk: 0.32 },
+          candidate: { zone14_dominance_pct: 57.9, shot_quality_proxy: 1.29, transition_exposure_risk: 0.45 },
+          deltas: { zone14_dominance_pct: 5.4, shot_quality_proxy: 0.11, transition_exposure_risk: 0.13 },
+          uncertainty_95ci: { zone14_dominance_pct: 1.2, shot_quality_proxy: 0.04 }
+        })
+
+        const queryResult = reactive({
+          validated_query: {
+            team_id: 'CLUB_A',
+            event_types: ['pass', 'shot'],
+            min_elapsed_sec: 4500,
+            max_elapsed_sec: 5400,
+            zone: 'zone_14'
+          },
+          matched_count: 3,
+          events: [
+            { event_id: 'SYN_001_EVT_001', event_type: 'pass', outcome: 'complete', elapsed_sec: 4540, x: 73.5, y: 42.0 },
+            { event_id: 'SYN_001_EVT_003', event_type: 'shot', outcome: 'saved', elapsed_sec: 4620, x: 82.0, y: 32.0 },
+            { event_id: 'SYN_001_EVT_005', event_type: 'shot', outcome: 'goal', elapsed_sec: 4890, x: 86.0, y: 34.0 }
+          ]
+        })
+
+        const currentWindowLabel = computed(() => {
+          const startMin = Math.floor(elapsedSec.value / 300) * 5
+          return `${startMin}'-${startMin + 5}'`
+        })
+
+        const currentBallCarrierLabel = computed(() => {
+          const carrier = players.find((p) => p.id === ball.carrierId)
+          if (!carrier) return currentLang.value === 'en' ? 'Loose Ball' : 'Bola Bebas'
+          const club = carrier.team === 'home' ? clubObjA.value.shortCode : clubObjB.value.shortCode
+          return `#${carrier.num} ${carrier.name} (${club})`
+        })
+
+        const bestTargetLabel = computed(() => {
+          if (!metrics.bestTargetPlayer) return currentLang.value === 'en' ? 'No open lane' : 'Tidak ada jalur bebas'
+          return `#${metrics.bestTargetPlayer.num} ${metrics.bestTargetPlayer.name}`
+        })
+
+        const dynamicBallAndWhatIfExplanation = computed(() => {
+          const rep = activeAuditReport.value
+          if (rep.overallStatus === 'TIDAK DAPAT DITENTUKAN' || rep.overallStatus === 'CANNOT DETERMINE') {
+            return rep.summaryText
+          }
+          if (currentLang.value === 'en') {
+            if (activePersona.value === 'Fan') {
+              return `[${currentMatch.value.match_id}] ${rep.summaryText} Currently ball held by ${currentBallCarrierLabel.value} with ${metrics.openLanesCount} open passing lanes.`
+            }
+            if (activePersona.value === 'Broadcaster') {
+              return `[LIVE CUE - ${currentMatch.value.match_id}] Watch defensive line at ${rep.secondLastDefenderLabel}! ${rep.summaryText}`
+            }
+            return `[${currentMatch.value.match_id}] ${rep.summaryText} Zone 14 dominance is ${metrics.zone14Pct}% with Shot Quality Proxy ${metrics.shotQualityProxy}.`
+          } else {
+            if (activePersona.value === 'Fan') {
+              return `[${currentMatch.value.match_id}] ${rep.summaryText} Saat ini bola dikuasai ${currentBallCarrierLabel.value} dengan ${metrics.openLanesCount} opsi umpan terbuka.`
+            }
+            if (activePersona.value === 'Broadcaster') {
+              return `[LIVE CUE - ${currentMatch.value.match_id}] Perhatikan garis pertahanan pada ${rep.secondLastDefenderLabel}! ${rep.summaryText}`
+            }
+            return `[${currentMatch.value.match_id}] ${rep.summaryText} Dominasi Zone 14 berada pada ${metrics.zone14Pct}% dengan Shot Quality Proxy ${metrics.shotQualityProxy}.`
+          }
+        })
+
+        function clampToPitch(x, y, margin = 2.0) {
+          return {
+            x: Math.max(margin, Math.min(PITCH_M_WIDTH - margin, x)),
+            y: Math.max(margin, Math.min(PITCH_M_HEIGHT - margin, y))
+          }
+        }
+
+        function formatMatchClock(sec) {
+          const m = Math.floor(sec / 60)
+          const s = sec % 60
+          return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+        }
+
+        function formatSigned(val) {
+          const num = Number(val)
+          return num > 0 ? `+${num}` : `${num}`
+        }
+
+        function isPassOpenFromPoint(origin, target, opponents) {
+          const dx = target.x - origin.x
+          const dy = target.y - origin.y
+          const lenSq = dx * dx + dy * dy
+          if (lenSq < 1.0) return false
+
+          for (const opp of opponents) {
+            let t = ((opp.x - origin.x) * dx + (opp.y - origin.y) * dy) / lenSq
+            t = Math.max(0.08, Math.min(0.92, t))
+            const projX = origin.x + t * dx
+            const projY = origin.y + t * dy
+            const dist = Math.hypot(opp.x - projX, opp.y - projY)
+            if (dist < 3.4) return false
+          }
+          return true
+        }
+
+        function syncCarrierByProximity() {
+          let nearestPlayer = null
+          let minDist = Infinity
+          players.forEach((p) => {
+            p.hasBall = false
+            const d = Math.hypot(p.x - ball.x, p.y - ball.y)
+            if (d < minDist) {
+              minDist = d
+              nearestPlayer = p
+            }
+          })
+          if (nearestPlayer && minDist <= 3.2) {
+            nearestPlayer.hasBall = true
+            ball.carrierId = nearestPlayer.id
+          } else {
+            ball.carrierId = null
+          }
+        }
+
+        function snapBallToNearestPlayer() {
+          let nearest = players[0]
+          let minDist = Infinity
+          for (const p of players) {
+            const d = Math.hypot(p.x - ball.x, p.y - ball.y)
+            if (d < minDist) {
+              minDist = d
+              nearest = p
+            }
+          }
+          if (nearest) {
+            players.forEach((p) => (p.hasBall = false))
+            nearest.hasBall = true
+            ball.carrierId = nearest.id
+            const dirOffset = nearest.team === 'home' ? 1.5 : -1.5
+            const clamped = clampToPitch(nearest.x + dirOffset, nearest.y - 0.5, 2.0)
+            ball.x = clamped.x
+            ball.y = clamped.y
+            lastMovedObjectName.value = `Bola -> #${nearest.num} ${nearest.name}`
+            renderAllPitches()
+          }
+        }
+
+        function calculateSpatialMetrics() {
+          let homeCells = 0
+          let totalCells = 0
+          let z14Home = 0
+          let z14Total = 0
+
+          for (let gx = 2; gx < PITCH_M_WIDTH; gx += 2.5) {
+            for (let gy = 2; gy < PITCH_M_HEIGHT; gy += 2.5) {
+              let minDist = Infinity
+              let closestTeam = 'home'
+              for (const p of players) {
+                const d = (p.x - gx) ** 2 + (p.y - gy) ** 2
+                if (d < minDist) {
+                  minDist = d
+                  closestTeam = p.team
+                }
+              }
+              totalCells++
+              if (closestTeam === 'home') homeCells++
+
+              if (gx >= 70 && gx <= 88.5 && gy >= 20 && gy <= 48) {
+                z14Total++
+                if (closestTeam === 'home') z14Home++
+              }
+            }
+          }
+
+          metrics.skyControlPct = Math.round((homeCells / totalCells) * 100)
+          metrics.zone14Pct = z14Total ? Math.round((z14Home / z14Total) * 100) : 50
+
+          const carrier = players.find((p) => p.id === ball.carrierId)
+          const activeTeam = carrier ? carrier.team : 'home'
+          const teammates = players.filter((p) => p.team === activeTeam && (!carrier || p.id !== carrier.id))
+          const opponents = players.filter((p) => p.team !== activeTeam)
+
+          let openCount = 0
+          let bestCandidate = null
+          let bestScore = -Infinity
+
+          teammates.forEach((tm) => {
+            const dist = Math.hypot(tm.x - ball.x, tm.y - ball.y)
+            const open = isPassOpenFromPoint(ball, tm, opponents)
+            if (open && dist < 42) {
+              openCount++
+              const goalX = activeTeam === 'home' ? 105 : 0
+              const progression = -Math.hypot(goalX - tm.x, 34 - tm.y)
+              if (progression > bestScore) {
+                bestScore = progression
+                bestCandidate = tm
+              }
+            }
+          })
+
+          metrics.openLanesCount = openCount
+          metrics.bestTargetPlayer = bestCandidate
+
+          if (bestCandidate) {
+            const dx = bestCandidate.x - ball.x
+            const dy = bestCandidate.y - ball.y
+            metrics.bestPassDist = Math.hypot(dx, dy).toFixed(1)
+            const deg = Math.round((Math.atan2(dy, dx) * 180) / Math.PI)
+            metrics.bestPassAngle = deg > 0 ? `+${deg}` : `${deg}`
+          } else {
+            metrics.bestPassDist = '0.0'
+            metrics.bestPassAngle = '0'
+          }
+
+          const targetGoalX = activeTeam === 'home' ? 105.0 : 0.0
+          const goalDist = Math.hypot(targetGoalX - ball.x, 34.0 - ball.y)
+          metrics.ballToGoalDist = goalDist.toFixed(1)
+
+          const proximityFactor = Math.max(0.05, (60 - Math.min(55, goalDist)) / 95)
+          metrics.shotQualityProxy = Math.min(0.92, proximityFactor + openCount * 0.04).toFixed(2)
+        }
+
+        function drawRealisticSoccerBall(ctx, bx, by, radius, spinRad) {
+          ctx.save()
+
+          ctx.beginPath()
+          ctx.ellipse(bx + 2.2, by + 3.0, radius * 1.05, radius * 0.65, 0, 0, Math.PI * 2)
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.45)'
+          ctx.fill()
+
+          const sphereGrad = ctx.createRadialGradient(
+            bx - radius * 0.3,
+            by - radius * 0.3,
+            radius * 0.1,
+            bx,
+            by,
+            radius
+          )
+          sphereGrad.addColorStop(0, '#ffffff')
+          sphereGrad.addColorStop(0.6, '#f8fafc')
+          sphereGrad.addColorStop(0.85, '#cbd5e1')
+          sphereGrad.addColorStop(1, '#475569')
+
+          ctx.beginPath()
+          ctx.arc(bx, by, radius, 0, Math.PI * 2)
+          ctx.fillStyle = sphereGrad
+          ctx.fill()
+          ctx.clip()
+
+          const pentRadius = radius * 0.42
+          const vertices = []
+          for (let i = 0; i < 5; i++) {
+            const angle = spinRad + (i * 2 * Math.PI) / 5 - Math.PI / 2
+            vertices.push({
+              x: bx + Math.cos(angle) * pentRadius,
+              y: by + Math.sin(angle) * pentRadius,
+              angle
+            })
+          }
+
+          ctx.beginPath()
+          vertices.forEach((v, idx) => {
+            if (idx === 0) ctx.moveTo(v.x, v.y)
+            else ctx.lineTo(v.x, v.y)
+          })
+          ctx.closePath()
+          ctx.fillStyle = '#0f172a'
+          ctx.fill()
+
+          ctx.strokeStyle = '#334155'
+          ctx.lineWidth = 1.1
+          vertices.forEach((v) => {
+            const outerX = bx + Math.cos(v.angle) * (radius * 0.88)
+            const outerY = by + Math.sin(v.angle) * (radius * 0.88)
+            ctx.beginPath()
+            ctx.moveTo(v.x, v.y)
+            ctx.lineTo(outerX, outerY)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.arc(
+              bx + Math.cos(v.angle) * (radius * 1.03),
+              by + Math.sin(v.angle) * (radius * 1.03),
+              radius * 0.33,
+              0,
+              Math.PI * 2
+            )
+            ctx.fillStyle = '#0f172a'
+            ctx.fill()
+          })
+
+          ctx.restore()
+
+          ctx.beginPath()
+          ctx.arc(bx, by, radius, 0, Math.PI * 2)
+          ctx.strokeStyle = '#0f172a'
+          ctx.lineWidth = 1.4
+          ctx.stroke()
+        }
+
+        function renderHeatmapLayer(ctx, activeTeamKey) {
+          const cols = 12
+          const rows = 8
+          const cellW = (PITCH_M_WIDTH * SCALE) / cols
+          const cellH = (PITCH_M_HEIGHT * SCALE) / rows
+
+          for (let c = 0; c < cols; c++) {
+            for (let r = 0; r < rows; r++) {
+              const cx = ((c + 0.5) * PITCH_M_WIDTH) / cols
+              const cy = ((r + 0.5) * PITCH_M_HEIGHT) / rows
+              let intensity = 0
+              players
+                .filter((p) => p.team === activeTeamKey)
+                .forEach((p) => {
+                  const d = Math.hypot(p.x - cx, p.y - cy)
+                  intensity += Math.max(0, 1 - d / 24)
+                })
+              if (heatmapSurface.value === 'progression_destination' && (cx > 65 || cx < 40)) {
+                intensity *= 1.3
+              }
+              const alpha = Math.min(0.42, intensity * 0.15)
+              if (alpha > 0.04) {
+                ctx.fillStyle = `rgba(225, 29, 72, ${alpha.toFixed(2)})`
+                ctx.fillRect(c * cellW, r * cellH, cellW, cellH)
+              }
+            }
+          }
+        }
+
+        function renderOffsideOverlay(ctx, W, H, offsideReport, attackDirection) {
+          if (!showOffsideLines.value) return
+
+          if (offsideReport.overallStatus === 'TIDAK DAPAT DITENTUKAN' || offsideReport.offsideLineX === null) {
+            // Tampilkan badge peringatan di tengah atas lapangan jika data tidak cukup
+            ctx.save()
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.82)'
+            ctx.fillRect(W / 2 - 170, 12, 340, 26)
+            ctx.strokeStyle = '#cbd5e1'
+            ctx.strokeRect(W / 2 - 170, 12, 340, 26)
+            ctx.fillStyle = '#f8fafc'
+            ctx.font = 'bold 11px Inter, sans-serif'
+            ctx.textAlign = 'center'
+            ctx.textBaseline = 'middle'
+            ctx.fillText('STATUS OFFSIDE: TIDAK DAPAT DITENTUKAN (DATA TIDAK CUKUP)', W / 2, 25)
+            ctx.restore()
+            return
+          }
+
+          const offPx = offsideReport.offsideLineX * SCALE
+          const defPx = offsideReport.secondLastDefenderX * SCALE
+          const midPx = (PITCH_M_WIDTH / 2.0) * SCALE
+
+          ctx.save()
+
+          // 1. Arsiran Zona Offside (Merah Halus di belakang garis offside menuju gawang lawan)
+          ctx.fillStyle = 'rgba(220, 38, 38, 0.13)'
+          if (attackDirection === 1) {
+            ctx.fillRect(offPx, 4, W - 4 - offPx, H - 8)
+          } else {
+            ctx.fillRect(4, 4, offPx - 4, H - 8)
+          }
+
+          // 2. Arsiran Koridor Onside Aman (Hijau Halus antara garis tengah dan garis offside)
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.09)'
+          if (attackDirection === 1) {
+            ctx.fillRect(midPx, 4, Math.max(0, offPx - midPx), H - 8)
+          } else {
+            ctx.fillRect(offPx, 4, Math.max(0, midPx - offPx), H - 8)
+          }
+
+          // 3. Garis Pertahanan (Pemain Bertahan Kedua Terakhir - Oranye/Amber Putus-Putus)
+          ctx.beginPath()
+          ctx.moveTo(defPx, 4)
+          ctx.lineTo(defPx, H - 4)
+          ctx.strokeStyle = '#f59e0b'
+          ctx.lineWidth = 2
+          ctx.setLineDash([4, 4])
+          ctx.stroke()
+          ctx.setLineDash([])
+
+          // Label Bek Ke-2 Terakhir di bagian bawah lapangan
+          const defLabel = `BEK KE-2 (${offsideReport.secondLastDefenderX.toFixed(1)}m)`
+          ctx.fillStyle = 'rgba(120, 53, 15, 0.92)'
+          ctx.fillRect(Math.min(W - 140, Math.max(8, defPx - 65)), H - 28, 130, 18)
+          ctx.fillStyle = '#fef3c7'
+          ctx.font = 'bold 9.5px JetBrains Mono, monospace'
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(defLabel, Math.min(W - 75, Math.max(73, defPx)), H - 19)
+
+          // 4. Garis Onside (Hijau Putus-Putus di sisi aman garis offside)
+          const onsideOffsetPx = attackDirection === 1 ? -4 : 4
+          ctx.beginPath()
+          ctx.moveTo(offPx + onsideOffsetPx, 4)
+          ctx.lineTo(offPx + onsideOffsetPx, H - 4)
+          ctx.strokeStyle = '#10b981'
+          ctx.lineWidth = 2
+          ctx.setLineDash([6, 4])
+          ctx.stroke()
+          ctx.setLineDash([])
+
+          // 5. Garis Offside Efektif (Merah Tegas)
+          ctx.beginPath()
+          ctx.moveTo(offPx, 4)
+          ctx.lineTo(offPx, H - 4)
+          ctx.strokeStyle = '#ef4444'
+          ctx.lineWidth = 2.6
+          ctx.stroke()
+
+          // Pill Label Garis Offside & Onside di bagian atas lapangan
+          const offLabelText = t('offside_line_canvas')
+          const offLabel = `${offLabelText}: ${offsideReport.offsideLineX.toFixed(1)}m`
+          const boxX = Math.min(W - 156, Math.max(8, offPx - 74))
+          ctx.fillStyle = '#be123c'
+          ctx.fillRect(boxX, 8, 148, 20)
+          ctx.strokeStyle = '#fecdd3'
+          ctx.lineWidth = 1
+          ctx.strokeRect(boxX, 8, 148, 20)
+          ctx.fillStyle = '#ffffff'
+          ctx.font = 'bold 10px JetBrains Mono, monospace'
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(offLabel, boxX + 74, 18)
+
+          // Label Zona Onside
+          const onsideLabelX = attackDirection === 1 ? Math.max(65, offPx - 70) : Math.min(W - 65, offPx + 70)
+          ctx.fillStyle = 'rgba(6, 95, 70, 0.9)'
+          ctx.fillRect(onsideLabelX - 52, 32, 104, 17)
+          ctx.fillStyle = '#d1fae5'
+          ctx.font = 'bold 9.5px Inter, sans-serif'
+          ctx.fillText(t('onside_zone_canvas'), onsideLabelX, 40.5)
+
+          ctx.restore()
+        }
+
+        function renderSinglePitch(canvas, side) {
+          if (!canvas) return
+          const ctx = canvas.getContext('2d')
+          const W = canvas.width
+          const H = canvas.height
+
+          const attackDir = side === 'left' ? leftAttackDirection.value : rightAttackDirection.value
+          const attackingTeamKey =
+            side === 'left'
+              ? leftAttackDirection.value === -1 ? 'away' : 'home'
+              : rightAttackDirection.value === 1 ? 'home' : 'away'
+          const offsideReport = side === 'left' ? leftOffsideReport.value : rightOffsideReport.value
+
+          ctx.clearRect(0, 0, W, H)
+
+          // 1. Permukaan Rumput Stadion Natural (Terang & Kontras Tinggi)
+          const stripeCount = 10
+          const stripeW = W / stripeCount
+          for (let s = 0; s < stripeCount; s++) {
+            ctx.fillStyle = s % 2 === 0 ? '#2e6f40' : '#357a48'
+            ctx.fillRect(s * stripeW, 0, stripeW, H)
+          }
+
+          // Jika pasangan klub tidak memiliki data pertandingan, tampilkan overlay informasi di lapangan
+          if (!hasMatchDataForPair.value) {
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.72)'
+            ctx.fillRect(0, 0, W, H)
+            ctx.fillStyle = '#ffffff'
+            ctx.font = 'bold 15px Inter, sans-serif'
+            ctx.textAlign = 'center'
+            ctx.fillText('DATA PERTANDINGAN TIDAK TERSEDIA UNTUK PASANGAN KLUB INI', W / 2, H / 2 - 10)
+            ctx.fillStyle = '#cbd5e1'
+            ctx.font = '12px Inter, sans-serif'
+            ctx.fillText('Pilih pasangan klub yang memiliki riwayat di dataset atau klik tombol pasangan tersedia di atas.', W / 2, H / 2 + 14)
+            return
+          }
+
+          // 2. Poligon Voronoi (22 Sel)
+          if (showVoronoi.value) {
+            const pts = players.map((p) => [p.x * SCALE, p.y * SCALE])
+            const delaunay = Delaunay.from(pts)
+            const voronoi = delaunay.voronoi([0, 0, W, H])
+
+            players.forEach((p, i) => {
+              ctx.beginPath()
+              voronoi.renderCell(i, ctx)
+              ctx.fillStyle =
+                p.team === 'home' ? 'rgba(14, 165, 233, 0.22)' : 'rgba(244, 63, 94, 0.20)'
+              ctx.fill()
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)'
+              ctx.lineWidth = 1
+              ctx.stroke()
+            })
+          }
+
+          // 3. Heatmap
+          if (showHeatmap.value) {
+            renderHeatmapLayer(ctx, attackingTeamKey)
+          }
+
+          // 4. Zone 14 Sesuai Arah Serangan Lapangan Ini (Simetris Kiri & Kanan!)
+          if (showZone14.value) {
+            const zStartM = attackDir === 1 ? 70.0 : PITCH_M_WIDTH - 88.5
+            const zX = zStartM * SCALE
+            const zY = 20 * SCALE
+            const zW = 18.5 * SCALE
+            const zH = 28 * SCALE
+
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.20)'
+            ctx.fillRect(zX, zY, zW, zH)
+            ctx.strokeStyle = '#fde047'
+            ctx.setLineDash([5, 4])
+            ctx.lineWidth = 1.6
+            ctx.strokeRect(zX, zY, zW, zH)
+            ctx.setLineDash([])
+
+            ctx.fillStyle = '#fef9c3'
+            ctx.font = 'bold 10px JetBrains Mono, monospace'
+            ctx.textAlign = 'left'
+            ctx.fillText('ZONE 14', zX + 6, zY + 13)
+          }
+
+          // 5. Garis Putih Standar Lapangan (105m x 68m)
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.88)'
+          ctx.lineWidth = 1.8
+          ctx.strokeRect(4, 4, W - 8, H - 8)
+          ctx.beginPath()
+          ctx.moveTo(W / 2, 4)
+          ctx.lineTo(W / 2, H - 4)
+          ctx.stroke()
+          ctx.beginPath()
+          ctx.arc(W / 2, H / 2, 9.15 * SCALE, 0, Math.PI * 2)
+          ctx.stroke()
+
+          // Kotak Penalti (16.5m x 40.3m) & Kotak 6-Yard
+          const penW = 16.5 * SCALE
+          const penH = 40.3 * SCALE
+          const penY = (H - penH) / 2
+          ctx.strokeRect(4, penY, penW, penH)
+          ctx.strokeRect(W - 4 - penW, penY, penW, penH)
+
+          const sixW = 5.5 * SCALE
+          const sixH = 18.32 * SCALE
+          const sixY = (H - sixH) / 2
+          ctx.strokeRect(4, sixY, sixW, sixH)
+          ctx.strokeRect(W - 4 - sixW, sixY, sixW, sixH)
+
+          // Penanda panah arah serangan di atas rumput
+          ctx.save()
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.22)'
+          ctx.font = 'bold 11px Inter, sans-serif'
+          ctx.textAlign = 'center'
+          const arrowText =
+            attackDir === 1
+              ? `ARAH SERANGAN ${rightPitchAttackingClub.value.shortCode} (→ 105m)`
+              : `(${leftPitchAttackingClub.value.shortCode} 0m ←) ARAH SERANGAN`
+          ctx.fillText(arrowText, W / 2, H - 10)
+          ctx.restore()
+
+          // 6. Visualisasi Garis Offside, Garis Onside & Garis Pertahanan Simetris
+          renderOffsideOverlay(ctx, W, H, offsideReport, attackDir)
+
+          // 7. Jalur Umpan & Vektor dari Posisi Bola
+          const opponents = players.filter((p) => p.team !== attackingTeamKey)
+          if (showPassingLanes.value) {
+            players
+              .filter((p) => p.team === attackingTeamKey && p.id !== ball.carrierId)
+              .forEach((tm) => {
+                const open = isPassOpenFromPoint(ball, tm, opponents)
+                const dist = Math.hypot(tm.x - ball.x, tm.y - ball.y)
+                if (dist < 42) {
+                  ctx.beginPath()
+                  ctx.moveTo(ball.x * SCALE, ball.y * SCALE)
+                  ctx.lineTo(tm.x * SCALE, tm.y * SCALE)
+                  if (open) {
+                    ctx.strokeStyle = 'rgba(167, 243, 208, 0.9)'
+                    ctx.lineWidth = 1.8
+                    ctx.setLineDash([6, 4])
+                  } else {
+                    ctx.strokeStyle = 'rgba(254, 202, 202, 0.38)'
+                    ctx.lineWidth = 1.1
+                    ctx.setLineDash([2, 4])
+                  }
+                  ctx.stroke()
+                  ctx.setLineDash([])
+                }
+              })
+          }
+
+          // 8. Pin 22 Pemain + Badge Status Offside/Onside
+          const offsideIdSet = new Set(offsideReport.offsidePlayers.map((p) => p.id))
+          players.forEach((p) => {
+            const px = p.x * SCALE
+            const py = p.y * SCALE
+            const isOffside = offsideIdSet.has(p.id)
+            const isAttackingTeam = p.team === attackingTeamKey
+
+            // Ring khusus jika pemain berada dalam posisi OFFSIDE
+            if (showOffsideLines.value && isOffside) {
+              ctx.beginPath()
+              ctx.arc(px, py, 16, 0, Math.PI * 2)
+              ctx.fillStyle = 'rgba(220, 38, 38, 0.32)'
+              ctx.fill()
+              ctx.strokeStyle = '#fecdd3'
+              ctx.lineWidth = 2.2
+              ctx.stroke()
+            } else if (p.hasBall) {
+              ctx.beginPath()
+              ctx.arc(px, py, 15.5, 0, Math.PI * 2)
+              ctx.strokeStyle = '#fde047'
+              ctx.lineWidth = 2.2
+              ctx.stroke()
+            }
+
+            // Warna Pin Berdasarkan Klub A / Klub B yang Dipilih
+            const pinColor = p.team === 'home' ? clubObjA.value.primaryColor : clubObjB.value.primaryColor
+            ctx.beginPath()
+            ctx.arc(px, py, 11, 0, Math.PI * 2)
+            ctx.fillStyle = pinColor
+            ctx.fill()
+            ctx.strokeStyle = '#ffffff'
+            ctx.lineWidth = 2
+            ctx.stroke()
+
+            // Nomor Punggung Pemain
+            ctx.fillStyle = '#ffffff'
+            ctx.font = 'bold 10px Inter, sans-serif'
+            ctx.textAlign = 'center'
+            ctx.textBaseline = 'middle'
+            ctx.fillText(p.num, px, py)
+
+            // Tag Label OFFSIDE / ONSIDE di atas kepala pemain penyerang
+            if (showOffsideLines.value && isAttackingTeam) {
+              const badgeY = py - 18
+              if (isOffside) {
+                ctx.fillStyle = '#dc2626'
+                ctx.fillRect(px - 24, badgeY - 6, 48, 13)
+                ctx.fillStyle = '#ffffff'
+                ctx.font = 'bold 8.5px JetBrains Mono, monospace'
+                ctx.fillText('OFFSIDE', px, badgeY + 0.5)
+              } else if (Math.abs(p.x - (offsideReport.offsideLineX || 0)) < 12) {
+                ctx.fillStyle = 'rgba(5, 150, 105, 0.9)'
+                ctx.fillRect(px - 21, badgeY - 6, 42, 12)
+                ctx.fillStyle = '#ffffff'
+                ctx.font = 'bold 8px JetBrains Mono, monospace'
+                ctx.fillText('ONSIDE', px, badgeY)
+              }
+            }
+          })
+
+          // 9. Objek Bola Sepak Bola Realistis di Atas Lapangan
+          const ballPx = ball.x * SCALE
+          const ballPy = ball.y * SCALE
+          const ballRadiusPx = 7.4
+
+          ctx.beginPath()
+          ctx.arc(ballPx, ballPy, ballRadiusPx + 3.2, 0, Math.PI * 2)
+          ctx.strokeStyle = 'rgba(253, 224, 71, 0.85)'
+          ctx.lineWidth = 1.3
+          ctx.stroke()
+
+          drawRealisticSoccerBall(ctx, ballPx, ballPy, ballRadiusPx, ball.spinAngle)
+        }
+
+        function renderAllPitches() {
+          calculateSpatialMetrics()
+          renderSinglePitch(leftPitchCanvas.value, 'left')
+          renderSinglePitch(rightPitchCanvas.value, 'right')
+        }
+
+        let draggedEntity = null
+        let simInterval = null
+
+        function getCanvasMetersFromClient(canvasEl, clientX, clientY) {
+          const rect = canvasEl.getBoundingClientRect()
+          const scaleX = canvasEl.width / rect.width
+          const scaleY = canvasEl.height / rect.height
+          const mx = ((clientX - rect.left) * scaleX) / SCALE
+          const my = ((clientY - rect.top) * scaleY) / SCALE
+          return { mx, my }
+        }
+
+        function startDragAt(mx, my, side) {
+          if (!hasMatchDataForPair.value) return
+          auditPitchSide.value = side
+
+          if (Math.hypot(ball.x - mx, ball.y - my) < 2.5) {
+            draggedEntity = { type: 'ball', target: ball }
+            lastMovedObjectName.value = `Bola (${ball.x.toFixed(1)}m, ${ball.y.toFixed(1)}m)`
+            return
+          }
+
+          for (const p of players) {
+            if (Math.hypot(p.x - mx, p.y - my) < 2.4) {
+              draggedEntity = { type: 'player', target: p }
+              lastMovedObjectName.value = `${p.id} (#${p.num} ${p.name})`
+              return
+            }
+          }
+        }
+
+        function moveDragAt(mx, my) {
+          if (!draggedEntity) return
+          const clamped = clampToPitch(mx, my, 2.0)
+
+          if (draggedEntity.type === 'ball') {
+            ball.x = clamped.x
+            ball.y = clamped.y
+            ball.spinAngle += 0.18
+            syncCarrierByProximity()
+            lastMovedObjectName.value = `Bola (${ball.x.toFixed(1)}m, ${ball.y.toFixed(1)}m)`
+          } else if (draggedEntity.type === 'player') {
+            const p = draggedEntity.target
+            const dx = clamped.x - p.x
+            const dy = clamped.y - p.y
+            p.x = clamped.x
+            p.y = clamped.y
+            if (p.hasBall) {
+              const bClamped = clampToPitch(ball.x + dx, ball.y + dy, 2.0)
+              ball.x = bClamped.x
+              ball.y = bClamped.y
+              ball.spinAngle += 0.12
+            } else {
+              syncCarrierByProximity()
+            }
+          }
+          renderAllPitches()
+        }
+
+        function onPointerDown(evt, side) {
+          const canvasEl = side === 'left' ? leftPitchCanvas.value : rightPitchCanvas.value
+          const { mx, my } = getCanvasMetersFromClient(canvasEl, evt.clientX, evt.clientY)
+          startDragAt(mx, my, side)
+        }
+
+        function onPointerMove(evt, side) {
+          if (!draggedEntity) return
+          const canvasEl = side === 'left' ? leftPitchCanvas.value : rightPitchCanvas.value
+          const { mx, my } = getCanvasMetersFromClient(canvasEl, evt.clientX, evt.clientY)
+          moveDragAt(mx, my)
+        }
+
+        function onTouchStart(evt, side) {
+          if (!evt.touches || evt.touches.length === 0) return
+          const touch = evt.touches[0]
+          const canvasEl = side === 'left' ? leftPitchCanvas.value : rightPitchCanvas.value
+          const { mx, my } = getCanvasMetersFromClient(canvasEl, touch.clientX, touch.clientY)
+          startDragAt(mx, my, side)
+        }
+
+        function onTouchMove(evt, side) {
+          if (!draggedEntity || !evt.touches || !evt.touches.length) return
+          const touch = evt.touches[0]
+          const canvasEl = side === 'left' ? leftPitchCanvas.value : rightPitchCanvas.value
+          const { mx, my } = getCanvasMetersFromClient(canvasEl, touch.clientX, touch.clientY)
+          moveDragAt(mx, my)
+        }
+
+        function onPointerUp() {
+          if (!draggedEntity) return
+          draggedEntity = null
+          runWhatIfSimulation()
+        }
+
+        function toggleDropdown(side) {
+          if (side === 'A') {
+            dropdownOpenA.value = !dropdownOpenA.value
+            dropdownOpenB.value = false
+          } else {
+            dropdownOpenB.value = !dropdownOpenB.value
+            dropdownOpenA.value = false
+          }
+        }
+
+        function openAndFocusDropdown(side) {
+          if (side === 'A') {
+            dropdownOpenA.value = true
+            dropdownOpenB.value = false
+          } else {
+            dropdownOpenB.value = true
+            dropdownOpenA.value = false
+          }
+        }
+
+        function closeDropdowns() {
+          dropdownOpenA.value = false
+          dropdownOpenB.value = false
+        }
+
+        function selectClub(side, clubId) {
+          if (side === 'A') {
+            if (clubId === selectedClubB.value) return
+            selectedClubA.value = clubId
+            dropdownOpenA.value = false
+            searchQueryA.value = ''
+          } else {
+            if (clubId === selectedClubA.value) return
+            selectedClubB.value = clubId
+            dropdownOpenB.value = false
+            searchQueryB.value = ''
+          }
+          compareSelectedClubs()
+        }
+
+        function swapSelectedClubs() {
+          const temp = selectedClubA.value
+          selectedClubA.value = selectedClubB.value
+          selectedClubB.value = temp
+          // Mirror posisi pemain secara geometris ketika klub ditukar sisi
+          players.forEach((p) => {
+            p.x = Number((PITCH_M_WIDTH - p.x).toFixed(2))
+            p.y = Number((PITCH_M_HEIGHT - p.y).toFixed(2))
+            p.team = p.team === 'home' ? 'away' : 'home'
+          })
+          ball.x = Number((PITCH_M_WIDTH - ball.x).toFixed(2))
+          ball.y = Number((PITCH_M_HEIGHT - ball.y).toFixed(2))
+          compareSelectedClubs()
+        }
+
+        function compareSelectedClubs() {
+          isLoadingData.value = true
+          closeDropdowns()
+          if (matchingFixturesForPair.value.length > 0) {
+            selectedMatchId.value = matchingFixturesForPair.value[0].match_id
+            // Sesuaikan sedikit posisi formasi secara deterministik berdasarkan pasangan klub
+            const seedShift = (selectedClubA.value.charCodeAt(5) - selectedClubB.value.charCodeAt(5)) * 0.4
+            applyPreset(activePreset.value, seedShift)
+          }
+          runWhatIfSimulation()
+          executeNlQuery()
+          setTimeout(() => {
+            isLoadingData.value = false
+            renderAllPitches()
+          }, 120)
+        }
+
+        function loadAvailablePair(clubA, clubB) {
+          selectedCompetitionFilter.value = 'ALL'
+          selectedClubA.value = clubA
+          selectedClubB.value = clubB
+          compareSelectedClubs()
+        }
+
+        function resetAllSelections() {
+          selectedClubA.value = 'CLUB_A'
+          selectedClubB.value = 'CLUB_B'
+          selectedCompetitionFilter.value = 'ALL'
+          selectedMatchId.value = 'SYN_001'
+          leftAttackDirection.value = -1
+          rightAttackDirection.value = 1
+          activePlayContext.value = 'open_play'
+          applyPreset('offside_trap_test')
+          runWhatIfSimulation()
+        }
+
+        function togglePitchOrientation(side) {
+          if (side === 'left') {
+            leftAttackDirection.value = leftAttackDirection.value === -1 ? 1 : -1
+          } else {
+            rightAttackDirection.value = rightAttackDirection.value === 1 ? -1 : 1
+          }
+          renderAllPitches()
+        }
+
+        function applyPreset(key, offsetM = 0) {
+          activePreset.value = key
+          const preset = tacticalPresets[key]
+          players.forEach((p) => {
+            if (preset.coords[p.id]) {
+              const clamped = clampToPitch(preset.coords[p.id][0] + offsetM, preset.coords[p.id][1], 2.0)
+              p.x = clamped.x
+              p.y = clamped.y
+            }
+            p.hasBall = p.id === preset.ball[2]
+          })
+          const bClamped = clampToPitch(preset.ball[0] + offsetM, preset.ball[1], 2.0)
+          ball.x = bClamped.x
+          ball.y = bClamped.y
+          ball.carrierId = preset.ball[2]
+          renderAllPitches()
+        }
+
+        function applyDefensiveLineShift() {
+          const targetLineOffset = (whatIfForm.defensiveLineHeight - 45) * 0.25
+          players.forEach((p) => {
+            if (['P_A02', 'P_A03', 'P_A04', 'P_A05'].includes(p.id)) {
+              p.x = clampToPitch(86.5 - targetLineOffset, p.y, 5.0).x
+            }
+          })
+          runWhatIfSimulation()
+          renderAllPitches()
+        }
+
+        function onFixtureSelectChange() {
+          runWhatIfSimulation()
+          executeNlQuery()
+          renderAllPitches()
+        }
+
+        function onTimeScrub() {
+          const phaseShift = Math.sin(elapsedSec.value / 180.0) * 0.35
+          players.forEach((p) => {
+            const c = clampToPitch(p.x + phaseShift * 0.2, p.y, 2.5)
+            p.x = c.x
+            p.y = c.y
+          })
+          renderAllPitches()
+        }
+
+        function focusBallOnEvent(ev) {
+          elapsedSec.value = ev.elapsed_sec
+          const clamped = clampToPitch(ev.x, ev.y, 2.0)
+          ball.x = clamped.x
+          ball.y = clamped.y
+          ball.spinAngle += 0.5
+          syncCarrierByProximity()
+          lastMovedObjectName.value = `Event ${ev.event_id} (${ev.event_type})`
+          renderAllPitches()
+        }
+
+        function runWhatIfSimulation() {
+          const pDelta = whatIfForm.pressingIntensity - 50
+          const lDelta = whatIfForm.defensiveLineHeight - 45
+          const z14Shift = Number(((pDelta * 0.18) + (lDelta * 0.22)).toFixed(1))
+          const sqShift = Number((z14Shift * 0.015).toFixed(2))
+          const riskShift = Number(((pDelta * 0.004) + (lDelta * 0.006)).toFixed(2))
+
+          whatIfResult.run_id = `WIR_${selectedMatchId.value}_${whatIfForm.seed}_20`
+          whatIfResult.baseline = { zone14_dominance_pct: 52.5, shot_quality_proxy: 1.18, transition_exposure_risk: 0.32 }
+          whatIfResult.candidate = {
+            zone14_dominance_pct: Number((52.5 + z14Shift).toFixed(1)),
+            shot_quality_proxy: Number((1.18 + sqShift).toFixed(2)),
+            transition_exposure_risk: Number((0.32 + riskShift).toFixed(2))
+          }
+          whatIfResult.deltas = {
+            zone14_dominance_pct: z14Shift,
+            shot_quality_proxy: sqShift,
+            transition_exposure_risk: riskShift
+          }
+        }
+
+        function executeNlQuery() {
+          const q = nlQueryInput.value.toLowerCase()
+          const types = []
+          if (q.includes('pass') || q.includes('umpan') || q.includes('operan')) types.push('pass')
+          if (q.includes('shot') || q.includes('tembakan')) types.push('shot')
+          if (q.includes('press') || q.includes('tekanan')) types.push('pressure')
+          if (types.length === 0) types.push('pass', 'shot')
+
+          const minSec = q.includes('75') ? 4500 : 0
+          const zone = q.includes('zone 14') || q.includes('tengah') ? 'zone_14' : null
+
+          queryResult.validated_query = {
+            team_id: selectedClubA.value,
+            event_types: types,
+            min_elapsed_sec: minSec,
+            max_elapsed_sec: 5400,
+            zone
+          }
+        }
+
+        function toggleLiveSim() {
+          isSimulating.value = !isSimulating.value
+          if (isSimulating.value) {
+            simInterval = setInterval(() => {
+              elapsedSec.value = (elapsedSec.value + 5) % 5400
+              players.forEach((p) => {
+                if (!draggedEntity || draggedEntity.target !== p) {
+                  const next = clampToPitch(
+                    p.x + (Math.random() - 0.49) * 0.55,
+                    p.y + (Math.random() - 0.5) * 0.55,
+                    2.5
+                  )
+                  p.x = next.x
+                  p.y = next.y
+                }
+              })
+              renderAllPitches()
+            }, 200)
+          } else {
+            clearInterval(simInterval)
+          }
+        }
+
+        watch(
+          [
+            showOffsideLines,
+            showVoronoi,
+            showPassingLanes,
+            showHeatmap,
+            heatmapSurface,
+            showZone14,
+            activePersona,
+            selectedCompetitionFilter
+          ],
+          () => {
+            nextTick(() => renderAllPitches())
+          }
+        )
+
+        onMounted(() => {
+          renderAllPitches()
+          window.addEventListener('resize', renderAllPitches)
+        })
+
+        onUnmounted(() => {
+          if (simInterval) clearInterval(simInterval)
+          window.removeEventListener('resize', renderAllPitches)
+        })
+
+        return {
+          leftPitchCanvas,
+          rightPitchCanvas,
+          showOffsideLines,
+          showVoronoi,
+          showPassingLanes,
+          showHeatmap,
+          heatmapSurface,
+          showZone14,
+          activePlayContext,
+          activePreset,
+          activePersona,
+          rightPanelTab,
+          auditPitchSide,
+          isSimulating,
+          isLoadingData,
+          elapsedSec,
+          lastMovedObjectName,
+          nlQueryInput,
+          leftAttackDirection,
+          rightAttackDirection,
+          clubRegistry,
+          selectedClubA,
+          selectedClubB,
+          selectedMatchId,
+          selectedCompetitionFilter,
+          dropdownOpenA,
+          dropdownOpenB,
+          searchQueryA,
+          searchQueryB,
+          clubObjA,
+          clubObjB,
+          filteredClubsA,
+          filteredClubsB,
+          matchingFixturesForPair,
+          hasMatchDataForPair,
+          currentMatch,
+          isReverseFixtureNote,
+          leftPitchAttackingClub,
+          leftPitchDefendingClub,
+          rightPitchAttackingClub,
+          rightPitchDefendingClub,
+          leftOffsideReport,
+          rightOffsideReport,
+          activeAuditReport,
+          ball,
+          players,
+          tacticalPresets,
+          metrics,
+          whatIfForm,
+          whatIfResult,
+          queryResult,
+          currentWindowLabel,
+          currentBallCarrierLabel,
+          bestTargetLabel,
+          dynamicBallAndWhatIfExplanation,
+          formatMatchClock,
+          formatSigned,
+          snapBallToNearestPlayer,
+          onPointerDown,
+          onPointerMove,
+          onPointerUp,
+          onTouchStart,
+          onTouchMove,
+          toggleDropdown,
+          openAndFocusDropdown,
+          closeDropdowns,
+          selectClub,
+          swapSelectedClubs,
+          compareSelectedClubs,
+          loadAvailablePair,
+          resetAllSelections,
+          togglePitchOrientation,
+          applyPreset,
+          applyDefensiveLineShift,
+          onFixtureSelectChange,
+          onTimeScrub,
+          focusBallOnEvent,
+          runWhatIfSimulation,
+          executeNlQuery,
+          toggleLiveSim,
+          renderAllPitches,
+          currentLang,
+          setLanguage,
+          t,
+          personaOptions,
+          getPresetLabel
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>

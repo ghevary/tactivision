@@ -1,0 +1,27 @@
+{
+  "match_id": "SYN_002",
+  "seed": 260117,
+  "profile": "Patient possession vs direct counterattack",
+  "home_team_id": "CLUB_A",
+  "home_team_name": "Moorfield Town",
+  "away_team_id": "CLUB_C",
+  "away_team_name": "Redwick Athletic",
+  "teams": {
+    "CLUB_A": "Moorfield Town",
+    "CLUB_C": "Redwick Athletic"
+  },
+  "events": 2205,
+  "tracking_snapshots": 1081,
+  "players_per_snapshot": 22,
+  "passes": 1266,
+  "shots": 20,
+  "goals": {
+    "CLUB_A": 0,
+    "CLUB_C": 2
+  },
+  "voronoi_snapshots": 91,
+  "what_if_scenarios": 5,
+  "what_if_repetitions": 100,
+  "what_if_runs": 100,
+  "natural_language_query_fixtures": 10
+}

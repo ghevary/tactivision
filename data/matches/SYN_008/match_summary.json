@@ -1,0 +1,27 @@
+{
+  "match_id": "SYN_008",
+  "seed": 260723,
+  "profile": "Wide overload vs narrow defensive block",
+  "home_team_id": "CLUB_C",
+  "home_team_name": "Redwick Athletic",
+  "away_team_id": "CLUB_D",
+  "away_team_name": "Northgate FC",
+  "teams": {
+    "CLUB_C": "Redwick Athletic",
+    "CLUB_D": "Northgate FC"
+  },
+  "events": 2216,
+  "tracking_snapshots": 1081,
+  "players_per_snapshot": 22,
+  "passes": 1212,
+  "shots": 22,
+  "goals": {
+    "CLUB_C": 3,
+    "CLUB_D": 3
+  },
+  "voronoi_snapshots": 91,
+  "what_if_scenarios": 5,
+  "what_if_repetitions": 100,
+  "what_if_runs": 100,
+  "natural_language_query_fixtures": 10
+}

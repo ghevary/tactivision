@@ -1,0 +1,11 @@
+match_id,profile,seed,competition,home_team_id,home_team_name,away_team_id,away_team_name,formation_home,formation_away,duration_sec,tracking_interval_sec
+SYN_001,High press vs compact block,260016,TactiVision Synthetic League,CLUB_A,Moorfield Town,CLUB_B,Stonebridge FC,4-3-3,4-2-3-1,5400,5
+SYN_002,Patient possession vs direct counterattack,260117,TactiVision Synthetic League,CLUB_A,Moorfield Town,CLUB_C,Redwick Athletic,4-2-3-1,4-4-2,5400,5
+SYN_003,Wide overload vs narrow defensive block,260218,TactiVision Synthetic League,CLUB_A,Moorfield Town,CLUB_D,Northgate FC,4-3-3,4-4-2,5400,5
+SYN_004,Direct attack vs aggressive high line,260319,TactiVision Synthetic League,CLUB_A,Moorfield Town,CLUB_E,Port Alder FC,4-4-2,4-3-3,5400,5
+SYN_005,Pressing trap vs controlled build-up,260420,TactiVision Synthetic League,CLUB_B,Stonebridge FC,CLUB_C,Redwick Athletic,4-2-3-1,4-3-3,5400,5
+SYN_006,High press vs compact block,260521,TactiVision Synthetic League,CLUB_B,Stonebridge FC,CLUB_D,Northgate FC,4-3-3,4-2-3-1,5400,5
+SYN_007,Patient possession vs direct counterattack,260622,TactiVision Synthetic League,CLUB_B,Stonebridge FC,CLUB_E,Port Alder FC,4-2-3-1,4-4-2,5400,5
+SYN_008,Wide overload vs narrow defensive block,260723,TactiVision Synthetic League,CLUB_C,Redwick Athletic,CLUB_D,Northgate FC,4-3-3,4-4-2,5400,5
+SYN_009,Direct attack vs aggressive high line,260824,TactiVision Synthetic League,CLUB_C,Redwick Athletic,CLUB_E,Port Alder FC,4-4-2,4-3-3,5400,5
+SYN_010,Pressing trap vs controlled build-up,260925,TactiVision Synthetic League,CLUB_D,Northgate FC,CLUB_E,Port Alder FC,4-2-3-1,4-3-3,5400,5

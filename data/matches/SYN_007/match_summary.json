@@ -1,0 +1,27 @@
+{
+  "match_id": "SYN_007",
+  "seed": 260622,
+  "profile": "Patient possession vs direct counterattack",
+  "home_team_id": "CLUB_B",
+  "home_team_name": "Stonebridge FC",
+  "away_team_id": "CLUB_E",
+  "away_team_name": "Port Alder FC",
+  "teams": {
+    "CLUB_B": "Stonebridge FC",
+    "CLUB_E": "Port Alder FC"
+  },
+  "events": 2237,
+  "tracking_snapshots": 1081,
+  "players_per_snapshot": 22,
+  "passes": 1241,
+  "shots": 16,
+  "goals": {
+    "CLUB_B": 1,
+    "CLUB_E": 1
+  },
+  "voronoi_snapshots": 91,
+  "what_if_scenarios": 5,
+  "what_if_repetitions": 100,
+  "what_if_runs": 100,
+  "natural_language_query_fixtures": 10
+}

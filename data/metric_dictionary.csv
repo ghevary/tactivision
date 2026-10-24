@@ -1,0 +1,9 @@
+metric,unit,definition,caveat
+possession_share,fraction,Estimated from five-second tracking snapshots by possessing_team_id,"higher is more possession, not necessarily better"
+pass_completion_rate,fraction,completed passes / pass attempts,range 0-1
+progressive_passes_completed,count,Completed passes with progressive_distance_m >= 8,threshold is a project design choice
+shot_quality_proxy_sum,proxy units,Sum of shot_quality_proxy values,NOT real xG; synthetic heuristic only
+entries_final_third,count,Pass/carry endpoints cross into attack-frame x >= 70m,depends on event coordinate convention
+central_space_exposure_index,index 0-100,Rule-based What-If simulation estimate,higher means more modelled central-space exposure; not a measured real-world property
+pressing_success_rate,fraction,Rule-based What-If simulator output,synthetic estimate; not empirical
+area_share_of_pitch,fraction,Bounded Voronoi cell area / 7140m2,"geometric nearest-player territory, not ball control"

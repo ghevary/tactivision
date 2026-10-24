@@ -1,0 +1,27 @@
+{
+  "match_id": "SYN_003",
+  "seed": 260218,
+  "profile": "Wide overload vs narrow defensive block",
+  "home_team_id": "CLUB_A",
+  "home_team_name": "Moorfield Town",
+  "away_team_id": "CLUB_D",
+  "away_team_name": "Northgate FC",
+  "teams": {
+    "CLUB_A": "Moorfield Town",
+    "CLUB_D": "Northgate FC"
+  },
+  "events": 2203,
+  "tracking_snapshots": 1081,
+  "players_per_snapshot": 22,
+  "passes": 1229,
+  "shots": 24,
+  "goals": {
+    "CLUB_A": 1,
+    "CLUB_D": 2
+  },
+  "voronoi_snapshots": 91,
+  "what_if_scenarios": 5,
+  "what_if_repetitions": 100,
+  "what_if_runs": 100,
+  "natural_language_query_fixtures": 10
+}

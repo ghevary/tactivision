@@ -1,0 +1,27 @@
+{
+  "match_id": "SYN_001",
+  "seed": 260016,
+  "profile": "High press vs compact block",
+  "home_team_id": "CLUB_A",
+  "home_team_name": "Moorfield Town",
+  "away_team_id": "CLUB_B",
+  "away_team_name": "Stonebridge FC",
+  "teams": {
+    "CLUB_A": "Moorfield Town",
+    "CLUB_B": "Stonebridge FC"
+  },
+  "events": 2242,
+  "tracking_snapshots": 1081,
+  "players_per_snapshot": 22,
+  "passes": 1210,
+  "shots": 20,
+  "goals": {
+    "CLUB_A": 0,
+    "CLUB_B": 0
+  },
+  "voronoi_snapshots": 91,
+  "what_if_scenarios": 5,
+  "what_if_repetitions": 100,
+  "what_if_runs": 100,
+  "natural_language_query_fixtures": 10
+}

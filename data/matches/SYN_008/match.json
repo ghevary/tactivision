@@ -1,0 +1,541 @@
+{
+  "schema_version": "1.0",
+  "match_id": "SYN_008",
+  "synthetic": true,
+  "data_origin": "generated_synthetic",
+  "generator_version": "1.0.0",
+  "seed": 260723,
+  "profile": "Wide overload vs narrow defensive block",
+  "competition": "TactiVision Synthetic League",
+  "venue": "Redwick Athletic Synthetic Ground",
+  "kickoff_utc": "2026-10-24T14:00:00Z",
+  "duration_sec": 5400,
+  "period_clock_policy": "elapsed_sec is match-clock seconds excluding halftime; period_elapsed_sec resets at each 45-minute period",
+  "pitch": {
+    "length_m": 105.0,
+    "width_m": 68.0,
+    "coordinate_convention": "absolute_xy_metres_x0_left_goal_y0_top_touchline; attack_direction explicitly defines each team direction"
+  },
+  "periods": [
+    {
+      "period": 1,
+      "start_sec": 0,
+      "end_sec": 2700,
+      "home_attacks_toward_x": 1
+    },
+    {
+      "period": 2,
+      "start_sec": 2700,
+      "end_sec": 5400,
+      "home_attacks_toward_x": -1
+    }
+  ],
+  "kickoff_team_id": "CLUB_C",
+  "teams": [
+    {
+      "team_id": "CLUB_C",
+      "display_name": "Redwick Athletic",
+      "short_name": "RWA",
+      "side": "home",
+      "formation": "4-3-3",
+      "tactics": {
+        "press_intensity": 0.67,
+        "defensive_line_height": 0.64,
+        "attacking_width": 0.87,
+        "directness": 0.42
+      },
+      "tactical_identity": "Primary archetype: counterattack; match scenario: Wide overload vs narrow defensive block",
+      "starting_xi": [
+        "CLUB_C_P01",
+        "CLUB_C_P02",
+        "CLUB_C_P05",
+        "CLUB_C_P06",
+        "CLUB_C_P03",
+        "CLUB_C_P04",
+        "CLUB_C_P08",
+        "CLUB_C_P10",
+        "CLUB_C_P07",
+        "CLUB_C_P09",
+        "CLUB_C_P11"
+      ],
+      "synthetic_team_strength": 0.7
+    },
+    {
+      "team_id": "CLUB_D",
+      "display_name": "Northgate FC",
+      "short_name": "NGF",
+      "side": "away",
+      "formation": "4-4-2",
+      "tactics": {
+        "press_intensity": 0.42,
+        "defensive_line_height": 0.4,
+        "attacking_width": 0.34,
+        "directness": 0.63
+      },
+      "tactical_identity": "Primary archetype: defensive_block; match scenario: Wide overload vs narrow defensive block",
+      "starting_xi": [
+        "CLUB_D_P01",
+        "CLUB_D_P02",
+        "CLUB_D_P05",
+        "CLUB_D_P06",
+        "CLUB_D_P03",
+        "CLUB_D_P07",
+        "CLUB_D_P08",
+        "CLUB_D_P10",
+        "CLUB_D_P11",
+        "CLUB_D_P09",
+        "CLUB_D_P04"
+      ],
+      "synthetic_team_strength": 0.66
+    }
+  ],
+  "players": [
+    {
+      "player_id": "CLUB_C_P01",
+      "team_id": "CLUB_C",
+      "display_name": "Kwame Novak",
+      "role": "goalkeeper",
+      "shirt_number": 1,
+      "attributes": {
+        "pace": 0.774,
+        "passing": 0.478,
+        "defending": 0.822,
+        "stamina": 0.489
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 5,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P02",
+      "team_id": "CLUB_C",
+      "display_name": "Ivan Arnesen",
+      "role": "fullback",
+      "shirt_number": 2,
+      "attributes": {
+        "pace": 0.494,
+        "passing": 0.743,
+        "defending": 0.707,
+        "stamina": 0.651
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P05",
+      "team_id": "CLUB_C",
+      "display_name": "Dami Marchetti",
+      "role": "center_back",
+      "shirt_number": 5,
+      "attributes": {
+        "pace": 0.732,
+        "passing": 0.699,
+        "defending": 0.622,
+        "stamina": 0.819
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 44
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P06",
+      "team_id": "CLUB_C",
+      "display_name": "Rafael Adeyemi",
+      "role": "center_back",
+      "shirt_number": 6,
+      "attributes": {
+        "pace": 0.618,
+        "passing": 0.875,
+        "defending": 0.608,
+        "stamina": 0.78
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 24
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P03",
+      "team_id": "CLUB_C",
+      "display_name": "Soren Nakamura",
+      "role": "fullback",
+      "shirt_number": 3,
+      "attributes": {
+        "pace": 0.689,
+        "passing": 0.701,
+        "defending": 0.457,
+        "stamina": 0.67
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P04",
+      "team_id": "CLUB_C",
+      "display_name": "Elias Castillo",
+      "role": "defensive_midfielder",
+      "shirt_number": 4,
+      "attributes": {
+        "pace": 0.704,
+        "passing": 0.514,
+        "defending": 0.59,
+        "stamina": 0.672
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 40,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P08",
+      "team_id": "CLUB_C",
+      "display_name": "Arne Keller",
+      "role": "central_midfielder",
+      "shirt_number": 8,
+      "attributes": {
+        "pace": 0.548,
+        "passing": 0.508,
+        "defending": 0.719,
+        "stamina": 0.661
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 55,
+        "y": 45
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P10",
+      "team_id": "CLUB_C",
+      "display_name": "Kwame Moretti",
+      "role": "central_midfielder",
+      "shirt_number": 10,
+      "attributes": {
+        "pace": 0.614,
+        "passing": 0.681,
+        "defending": 0.721,
+        "stamina": 0.907
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 55,
+        "y": 23
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P07",
+      "team_id": "CLUB_C",
+      "display_name": "Mika Castillo",
+      "role": "winger",
+      "shirt_number": 7,
+      "attributes": {
+        "pace": 0.62,
+        "passing": 0.662,
+        "defending": 0.819,
+        "stamina": 0.595
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 78,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P09",
+      "team_id": "CLUB_C",
+      "display_name": "Rafael Bergstrom",
+      "role": "striker",
+      "shirt_number": 9,
+      "attributes": {
+        "pace": 0.84,
+        "passing": 0.574,
+        "defending": 0.73,
+        "stamina": 0.641
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 88,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_C_P11",
+      "team_id": "CLUB_C",
+      "display_name": "Tomas Mensah",
+      "role": "winger",
+      "shirt_number": 11,
+      "attributes": {
+        "pace": 0.919,
+        "passing": 0.674,
+        "defending": 0.804,
+        "stamina": 0.645
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 78,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P01",
+      "team_id": "CLUB_D",
+      "display_name": "Samir Lindholm",
+      "role": "goalkeeper",
+      "shirt_number": 1,
+      "attributes": {
+        "pace": 0.756,
+        "passing": 0.593,
+        "defending": 0.749,
+        "stamina": 0.474
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 5,
+        "y": 34
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P02",
+      "team_id": "CLUB_D",
+      "display_name": "Dami Silva",
+      "role": "fullback",
+      "shirt_number": 2,
+      "attributes": {
+        "pace": 0.836,
+        "passing": 0.628,
+        "defending": 0.715,
+        "stamina": 0.884
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P05",
+      "team_id": "CLUB_D",
+      "display_name": "Yuki Osei",
+      "role": "center_back",
+      "shirt_number": 5,
+      "attributes": {
+        "pace": 0.712,
+        "passing": 0.675,
+        "defending": 0.788,
+        "stamina": 0.754
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 44
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P06",
+      "team_id": "CLUB_D",
+      "display_name": "Amir Haugen",
+      "role": "center_back",
+      "shirt_number": 6,
+      "attributes": {
+        "pace": 0.644,
+        "passing": 0.642,
+        "defending": 0.78,
+        "stamina": 0.903
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 18,
+        "y": 24
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P03",
+      "team_id": "CLUB_D",
+      "display_name": "Noah Petrov",
+      "role": "fullback",
+      "shirt_number": 3,
+      "attributes": {
+        "pace": 0.58,
+        "passing": 0.724,
+        "defending": 0.624,
+        "stamina": 0.811
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 25,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P07",
+      "team_id": "CLUB_D",
+      "display_name": "Mika Sato",
+      "role": "winger",
+      "shirt_number": 7,
+      "attributes": {
+        "pace": 0.568,
+        "passing": 0.96,
+        "defending": 0.719,
+        "stamina": 0.782
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 58,
+        "y": 58
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P08",
+      "team_id": "CLUB_D",
+      "display_name": "Anton Haugen",
+      "role": "central_midfielder",
+      "shirt_number": 8,
+      "attributes": {
+        "pace": 0.478,
+        "passing": 0.742,
+        "defending": 0.771,
+        "stamina": 0.794
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 48,
+        "y": 40
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P10",
+      "team_id": "CLUB_D",
+      "display_name": "Oscar Nakamura",
+      "role": "central_midfielder",
+      "shirt_number": 10,
+      "attributes": {
+        "pace": 0.551,
+        "passing": 0.852,
+        "defending": 0.69,
+        "stamina": 0.621
+      },
+      "preferred_foot": "right",
+      "base_position_attack_frame": {
+        "x": 48,
+        "y": 28
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P11",
+      "team_id": "CLUB_D",
+      "display_name": "Oscar Mensah",
+      "role": "winger",
+      "shirt_number": 11,
+      "attributes": {
+        "pace": 0.629,
+        "passing": 0.673,
+        "defending": 0.757,
+        "stamina": 0.725
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 58,
+        "y": 10
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P09",
+      "team_id": "CLUB_D",
+      "display_name": "Milan Keller",
+      "role": "striker",
+      "shirt_number": 9,
+      "attributes": {
+        "pace": 0.621,
+        "passing": 0.907,
+        "defending": 0.69,
+        "stamina": 0.74
+      },
+      "preferred_foot": "both",
+      "base_position_attack_frame": {
+        "x": 84,
+        "y": 27
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    },
+    {
+      "player_id": "CLUB_D_P04",
+      "team_id": "CLUB_D",
+      "display_name": "Mateo Fontaine",
+      "role": "striker",
+      "shirt_number": 4,
+      "attributes": {
+        "pace": 0.86,
+        "passing": 0.583,
+        "defending": 0.715,
+        "stamina": 0.783
+      },
+      "preferred_foot": "left",
+      "base_position_attack_frame": {
+        "x": 84,
+        "y": 41
+      },
+      "minutes_expected": 90,
+      "is_starting": true
+    }
+  ],
+  "data_quality": {
+    "coordinates_unit": "metres",
+    "tracking_interval_sec": 5,
+    "all_teams_and_players_fictional": true,
+    "real_match_data_used": false,
+    "shot_quality_field": "shot_quality_proxy_not_validated_xg"
+  }
+}

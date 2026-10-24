@@ -1,0 +1,13 @@
+event_type,description,important_fields
+kick_off,Kick-off or restart marker,restart_type
+period_end,End of a period,score
+full_time,Full time marker,final_score
+pass,Attempted pass,"start,end,target_player_id,outcome,progressive_distance_m"
+carry,Ball carry/dribble,"start,end,distance_m,outcome"
+shot,Shot attempt,"location,shot_quality_proxy,outcome"
+pressure,Defensive pressure action,"target_player_id,pressure_intensity"
+tackle,Tackle action,"target_player_id,outcome"
+interception,Interception action,"target_player_id,outcome"
+duel,Contested duel,"target_player_id,outcome"
+foul,Foul action,"target_player_id,outcome"
+possession_change,Team possession changed,"from_team_id,to_team_id,trigger"

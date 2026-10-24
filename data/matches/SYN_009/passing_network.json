@@ -1,0 +1,1556 @@
+{
+  "match_id": "SYN_009",
+  "method": "directed weighted graph of intended pass connections; incomplete passes remain attempts but do not imply completed receiver touches",
+  "nodes": [
+    {
+      "player_id": "CLUB_C_P01",
+      "team_id": "CLUB_C",
+      "display_name": "Kwame Novak",
+      "role": "goalkeeper",
+      "shirt_number": 1,
+      "passes_attempted": 0,
+      "passes_completed": 0
+    },
+    {
+      "player_id": "CLUB_C_P02",
+      "team_id": "CLUB_C",
+      "display_name": "Ivan Arnesen",
+      "role": "fullback",
+      "shirt_number": 2,
+      "passes_attempted": 23,
+      "passes_completed": 14
+    },
+    {
+      "player_id": "CLUB_C_P05",
+      "team_id": "CLUB_C",
+      "display_name": "Dami Marchetti",
+      "role": "center_back",
+      "shirt_number": 5,
+      "passes_attempted": 18,
+      "passes_completed": 13
+    },
+    {
+      "player_id": "CLUB_C_P06",
+      "team_id": "CLUB_C",
+      "display_name": "Rafael Adeyemi",
+      "role": "center_back",
+      "shirt_number": 6,
+      "passes_attempted": 23,
+      "passes_completed": 19
+    },
+    {
+      "player_id": "CLUB_C_P03",
+      "team_id": "CLUB_C",
+      "display_name": "Soren Nakamura",
+      "role": "fullback",
+      "shirt_number": 3,
+      "passes_attempted": 26,
+      "passes_completed": 14
+    },
+    {
+      "player_id": "CLUB_C_P07",
+      "team_id": "CLUB_C",
+      "display_name": "Mika Castillo",
+      "role": "winger",
+      "shirt_number": 7,
+      "passes_attempted": 29,
+      "passes_completed": 21
+    },
+    {
+      "player_id": "CLUB_C_P08",
+      "team_id": "CLUB_C",
+      "display_name": "Arne Keller",
+      "role": "central_midfielder",
+      "shirt_number": 8,
+      "passes_attempted": 36,
+      "passes_completed": 25
+    },
+    {
+      "player_id": "CLUB_C_P10",
+      "team_id": "CLUB_C",
+      "display_name": "Kwame Moretti",
+      "role": "central_midfielder",
+      "shirt_number": 10,
+      "passes_attempted": 32,
+      "passes_completed": 25
+    },
+    {
+      "player_id": "CLUB_C_P11",
+      "team_id": "CLUB_C",
+      "display_name": "Tomas Mensah",
+      "role": "winger",
+      "shirt_number": 11,
+      "passes_attempted": 25,
+      "passes_completed": 20
+    },
+    {
+      "player_id": "CLUB_C_P09",
+      "team_id": "CLUB_C",
+      "display_name": "Rafael Bergstrom",
+      "role": "striker",
+      "shirt_number": 9,
+      "passes_attempted": 179,
+      "passes_completed": 147
+    },
+    {
+      "player_id": "CLUB_C_P04",
+      "team_id": "CLUB_C",
+      "display_name": "Elias Castillo",
+      "role": "striker",
+      "shirt_number": 4,
+      "passes_attempted": 180,
+      "passes_completed": 145
+    },
+    {
+      "player_id": "CLUB_E_P01",
+      "team_id": "CLUB_E",
+      "display_name": "Hugo Bello",
+      "role": "goalkeeper",
+      "shirt_number": 1,
+      "passes_attempted": 0,
+      "passes_completed": 0
+    },
+    {
+      "player_id": "CLUB_E_P02",
+      "team_id": "CLUB_E",
+      "display_name": "Rayan Arnesen",
+      "role": "fullback",
+      "shirt_number": 2,
+      "passes_attempted": 22,
+      "passes_completed": 16
+    },
+    {
+      "player_id": "CLUB_E_P05",
+      "team_id": "CLUB_E",
+      "display_name": "Hugo Delgado",
+      "role": "center_back",
+      "shirt_number": 5,
+      "passes_attempted": 63,
+      "passes_completed": 49
+    },
+    {
+      "player_id": "CLUB_E_P06",
+      "team_id": "CLUB_E",
+      "display_name": "Jonas Castillo",
+      "role": "center_back",
+      "shirt_number": 6,
+      "passes_attempted": 72,
+      "passes_completed": 55
+    },
+    {
+      "player_id": "CLUB_E_P03",
+      "team_id": "CLUB_E",
+      "display_name": "Ibrahim Sato",
+      "role": "fullback",
+      "shirt_number": 3,
+      "passes_attempted": 25,
+      "passes_completed": 18
+    },
+    {
+      "player_id": "CLUB_E_P04",
+      "team_id": "CLUB_E",
+      "display_name": "Ivan Rossi",
+      "role": "defensive_midfielder",
+      "shirt_number": 4,
+      "passes_attempted": 40,
+      "passes_completed": 32
+    },
+    {
+      "player_id": "CLUB_E_P08",
+      "team_id": "CLUB_E",
+      "display_name": "Rayan Delgado",
+      "role": "central_midfielder",
+      "shirt_number": 8,
+      "passes_attempted": 75,
+      "passes_completed": 61
+    },
+    {
+      "player_id": "CLUB_E_P10",
+      "team_id": "CLUB_E",
+      "display_name": "Samir Castillo",
+      "role": "central_midfielder",
+      "shirt_number": 10,
+      "passes_attempted": 67,
+      "passes_completed": 52
+    },
+    {
+      "player_id": "CLUB_E_P07",
+      "team_id": "CLUB_E",
+      "display_name": "Anton Varga",
+      "role": "winger",
+      "shirt_number": 7,
+      "passes_attempted": 84,
+      "passes_completed": 73
+    },
+    {
+      "player_id": "CLUB_E_P09",
+      "team_id": "CLUB_E",
+      "display_name": "Rayan Kowalski",
+      "role": "striker",
+      "shirt_number": 9,
+      "passes_attempted": 130,
+      "passes_completed": 106
+    },
+    {
+      "player_id": "CLUB_E_P11",
+      "team_id": "CLUB_E",
+      "display_name": "Milan Novak",
+      "role": "winger",
+      "shirt_number": 11,
+      "passes_attempted": 86,
+      "passes_completed": 71
+    }
+  ],
+  "edges": [
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P02",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 7,
+      "completed": 4,
+      "completion_rate": 0.5714,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 60.782
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P02",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 7,
+      "completed": 4,
+      "completion_rate": 0.5714,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 30.241
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P02",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 27.968
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P02",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 64.63
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P02",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 35.392
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P02",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 2,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 55.186
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 4,
+      "completed": 1,
+      "completion_rate": 0.25,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 65.243
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P05",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 35.537
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P06",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 16.011
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 34.619
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 5,
+      "completed": 3,
+      "completion_rate": 0.6,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 58.534
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 6,
+      "completed": 4,
+      "completion_rate": 0.6667,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 27.851
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P03",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 6,
+      "completed": 2,
+      "completion_rate": 0.3333,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 30.364
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P04",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 9,
+      "completed": 6,
+      "completion_rate": 0.6667,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 30.954
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P04",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 38.07
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P04",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 165,
+      "completed": 135,
+      "completion_rate": 0.8182,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 14.086
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P04",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 41.024
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P04",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 40.903
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P02",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 15.094
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P03",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 32.841
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 62.244
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 38.539
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 29.791
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 6,
+      "completed": 3,
+      "completion_rate": 0.5,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 61.993
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 33.614
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P05",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 53.483
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P03",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 14.43
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 5,
+      "completed": 5,
+      "completion_rate": 1.0,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 67.676
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P05",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 18.866
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 52.894
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 33.572
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 4,
+      "completed": 3,
+      "completion_rate": 0.75,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 63.313
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 29.059
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P06",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 4,
+      "completed": 3,
+      "completion_rate": 0.75,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 38.533
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P07",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 14,
+      "completed": 8,
+      "completion_rate": 0.5714,
+      "progressive_completed": 8,
+      "mean_pass_distance_m": 31.246
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P07",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 5,
+      "completed": 5,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 20.209
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P07",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 7,
+      "completed": 5,
+      "completion_rate": 0.7143,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 40.323
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P07",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 31.085
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P03",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 35.634
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 11,
+      "completed": 7,
+      "completion_rate": 0.6364,
+      "progressive_completed": 7,
+      "mean_pass_distance_m": 36.217
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P05",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 17.073
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 7,
+      "completed": 6,
+      "completion_rate": 0.8571,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 21.174
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 11,
+      "completed": 8,
+      "completion_rate": 0.7273,
+      "progressive_completed": 8,
+      "mean_pass_distance_m": 38.687
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 11.868
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P08",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 29.39
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P09",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 163,
+      "completed": 131,
+      "completion_rate": 0.8037,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 14.066
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P09",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 40.709
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P09",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 4,
+      "completed": 4,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 39.726
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P09",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 37.875
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P09",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 6,
+      "completed": 6,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 31.309
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P10",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 11,
+      "completed": 8,
+      "completion_rate": 0.7273,
+      "progressive_completed": 8,
+      "mean_pass_distance_m": 38.621
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P10",
+      "target_player_id": "CLUB_C_P07",
+      "attempts": 4,
+      "completed": 3,
+      "completion_rate": 0.75,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 30.712
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P10",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 12.4
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P10",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 11,
+      "completed": 9,
+      "completion_rate": 0.8182,
+      "progressive_completed": 9,
+      "mean_pass_distance_m": 35.908
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P10",
+      "target_player_id": "CLUB_C_P11",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 20.347
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P11",
+      "target_player_id": "CLUB_C_P04",
+      "attempts": 5,
+      "completed": 5,
+      "completion_rate": 1.0,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 40.687
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P11",
+      "target_player_id": "CLUB_C_P08",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 29.907
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P11",
+      "target_player_id": "CLUB_C_P09",
+      "attempts": 17,
+      "completed": 13,
+      "completion_rate": 0.7647,
+      "progressive_completed": 13,
+      "mean_pass_distance_m": 30.893
+    },
+    {
+      "team_id": "CLUB_C",
+      "source_player_id": "CLUB_C_P11",
+      "target_player_id": "CLUB_C_P10",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 18.231
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 50.663
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 30.595
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P05",
+      "attempts": 6,
+      "completed": 4,
+      "completion_rate": 0.6667,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 17.057
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 52.413
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 6,
+      "completed": 4,
+      "completion_rate": 0.6667,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 33.268
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 69.094
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P02",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 48.799
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P02",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 52.642
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 4,
+      "completed": 4,
+      "completion_rate": 1.0,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 30.507
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P05",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 38.159
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P06",
+      "attempts": 4,
+      "completed": 3,
+      "completion_rate": 0.75,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 16.635
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 74.285
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 3,
+      "completed": 2,
+      "completion_rate": 0.6667,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 48.802
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 67.962
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 6,
+      "completed": 4,
+      "completion_rate": 0.6667,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 33.219
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P03",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 52.812
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 31.029
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P05",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 25.209
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P06",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 25.252
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 4,
+      "completed": 2,
+      "completion_rate": 0.5,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 46.599
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 15,
+      "completed": 13,
+      "completion_rate": 0.8667,
+      "progressive_completed": 13,
+      "mean_pass_distance_m": 19.013
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 7,
+      "completed": 6,
+      "completion_rate": 0.8571,
+      "progressive_completed": 6,
+      "mean_pass_distance_m": 48.564
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 5,
+      "completed": 3,
+      "completion_rate": 0.6,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 19.508
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P04",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 4,
+      "completed": 3,
+      "completion_rate": 0.75,
+      "progressive_completed": 3,
+      "mean_pass_distance_m": 46.209
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P02",
+      "attempts": 12,
+      "completed": 10,
+      "completion_rate": 0.8333,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 17.075
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 37.704
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 8,
+      "completed": 7,
+      "completion_rate": 0.875,
+      "progressive_completed": 7,
+      "mean_pass_distance_m": 24.26
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P06",
+      "attempts": 8,
+      "completed": 6,
+      "completion_rate": 0.75,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 22.078
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 5,
+      "completed": 2,
+      "completion_rate": 0.4,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 61.646
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 5,
+      "completed": 5,
+      "completion_rate": 1.0,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 36.748
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 5,
+      "completed": 4,
+      "completion_rate": 0.8,
+      "progressive_completed": 4,
+      "mean_pass_distance_m": 70.461
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 16,
+      "completed": 12,
+      "completion_rate": 0.75,
+      "progressive_completed": 12,
+      "mean_pass_distance_m": 43.536
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P05",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 1,
+      "mean_pass_distance_m": 70.028
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P02",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 38.817
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 15,
+      "completed": 14,
+      "completion_rate": 0.9333,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 16.974
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 17,
+      "completed": 11,
+      "completion_rate": 0.6471,
+      "progressive_completed": 11,
+      "mean_pass_distance_m": 24.351
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P05",
+      "attempts": 5,
+      "completed": 2,
+      "completion_rate": 0.4,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 21.946
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 6,
+      "completed": 5,
+      "completion_rate": 0.8333,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 70.059
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 9,
+      "completed": 7,
+      "completion_rate": 0.7778,
+      "progressive_completed": 7,
+      "mean_pass_distance_m": 43.547
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 2,
+      "mean_pass_distance_m": 70.008
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 10,
+      "completed": 7,
+      "completion_rate": 0.7,
+      "progressive_completed": 7,
+      "mean_pass_distance_m": 36.526
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P06",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 6,
+      "completed": 5,
+      "completion_rate": 0.8333,
+      "progressive_completed": 5,
+      "mean_pass_distance_m": 61.11
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P07",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 3,
+      "completed": 3,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 48.119
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P07",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 19,
+      "completed": 17,
+      "completion_rate": 0.8947,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 28.237
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P07",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 51,
+      "completed": 43,
+      "completion_rate": 0.8431,
+      "progressive_completed": 43,
+      "mean_pass_distance_m": 28.178
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P07",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 2,
+      "completed": 2,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 46.486
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P07",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 9,
+      "completed": 8,
+      "completion_rate": 0.8889,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 52.943
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P02",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 33.252
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 50.431
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 5,
+      "completed": 5,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 19.755
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P06",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 43.767
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 26,
+      "completed": 19,
+      "completion_rate": 0.7308,
+      "progressive_completed": 18,
+      "mean_pass_distance_m": 27.503
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 23,
+      "completed": 19,
+      "completion_rate": 0.8261,
+      "progressive_completed": 19,
+      "mean_pass_distance_m": 35.747
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 9,
+      "completed": 9,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 24.407
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P08",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 8,
+      "completed": 6,
+      "completion_rate": 0.75,
+      "progressive_completed": 6,
+      "mean_pass_distance_m": 44.856
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 71.284
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 50.708
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P06",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 74.433
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 53,
+      "completed": 41,
+      "completion_rate": 0.7736,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 28.228
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 11,
+      "completed": 10,
+      "completion_rate": 0.9091,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 36.809
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 16,
+      "completed": 14,
+      "completion_rate": 0.875,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 36.825
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P09",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 47,
+      "completed": 40,
+      "completion_rate": 0.8511,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 28.266
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P02",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 49.747
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 2,
+      "completed": 1,
+      "completion_rate": 0.5,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 34.218
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 4,
+      "completed": 4,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 19.221
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P05",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 45.478
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 14,
+      "completed": 8,
+      "completion_rate": 0.5714,
+      "progressive_completed": 8,
+      "mean_pass_distance_m": 44.938
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 10,
+      "completed": 10,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 24.271
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 13,
+      "completed": 10,
+      "completion_rate": 0.7692,
+      "progressive_completed": 10,
+      "mean_pass_distance_m": 35.77
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P10",
+      "target_player_id": "CLUB_E_P11",
+      "attempts": 22,
+      "completed": 18,
+      "completion_rate": 0.8182,
+      "progressive_completed": 18,
+      "mean_pass_distance_m": 28.143
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P11",
+      "target_player_id": "CLUB_E_P03",
+      "attempts": 1,
+      "completed": 1,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 56.856
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P11",
+      "target_player_id": "CLUB_E_P04",
+      "attempts": 4,
+      "completed": 4,
+      "completion_rate": 1.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 48.35
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P11",
+      "target_player_id": "CLUB_E_P07",
+      "attempts": 8,
+      "completed": 7,
+      "completion_rate": 0.875,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 52.936
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P11",
+      "target_player_id": "CLUB_E_P08",
+      "attempts": 1,
+      "completed": 0,
+      "completion_rate": 0.0,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 46.683
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P11",
+      "target_player_id": "CLUB_E_P09",
+      "attempts": 62,
+      "completed": 50,
+      "completion_rate": 0.8065,
+      "progressive_completed": 50,
+      "mean_pass_distance_m": 28.295
+    },
+    {
+      "team_id": "CLUB_E",
+      "source_player_id": "CLUB_E_P11",
+      "target_player_id": "CLUB_E_P10",
+      "attempts": 10,
+      "completed": 9,
+      "completion_rate": 0.9,
+      "progressive_completed": 0,
+      "mean_pass_distance_m": 28.973
+    }
+  ]
+}

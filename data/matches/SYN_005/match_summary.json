@@ -1,0 +1,27 @@
+{
+  "match_id": "SYN_005",
+  "seed": 260420,
+  "profile": "Pressing trap vs controlled build-up",
+  "home_team_id": "CLUB_B",
+  "home_team_name": "Stonebridge FC",
+  "away_team_id": "CLUB_C",
+  "away_team_name": "Redwick Athletic",
+  "teams": {
+    "CLUB_B": "Stonebridge FC",
+    "CLUB_C": "Redwick Athletic"
+  },
+  "events": 2255,
+  "tracking_snapshots": 1081,
+  "players_per_snapshot": 22,
+  "passes": 1249,
+  "shots": 21,
+  "goals": {
+    "CLUB_B": 2,
+    "CLUB_C": 1
+  },
+  "voronoi_snapshots": 91,
+  "what_if_scenarios": 5,
+  "what_if_repetitions": 100,
+  "what_if_runs": 100,
+  "natural_language_query_fixtures": 10
+}
