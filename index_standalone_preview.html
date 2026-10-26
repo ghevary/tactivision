@@ -589,8 +589,15 @@
                 <div>
                   <h2 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                     <span>{{ t('left_pitch_title') }}</span>
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
-                      {{ leftAttackDirection === -1 ? t('attack_left_label') : t('attack_right_label') }}
+                    <span
+                      :class="[
+                        'text-xs font-semibold px-2 py-0.5 rounded border',
+                        leftAttackDirection === 1
+                          ? 'bg-sky-50 text-sky-800 border-sky-200'
+                          : 'bg-rose-50 text-rose-800 border-rose-200'
+                      ]"
+                    >
+                      {{ leftAttackDirection === 1 ? t('attack_right_label') : t('attack_left_label') }}
                     </span>
                   </h2>
                   <p class="text-[11px] text-slate-500">
@@ -684,8 +691,15 @@
                 <div>
                   <h2 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                     <span>{{ t('right_pitch_title') }}</span>
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
-                      {{ rightAttackDirection === 1 ? t('attack_right_label') : t('attack_left_label') }}
+                    <span
+                      :class="[
+                        'text-xs font-semibold px-2 py-0.5 rounded border',
+                        rightAttackDirection === -1
+                          ? 'bg-rose-50 text-rose-800 border-rose-200'
+                          : 'bg-sky-50 text-sky-800 border-sky-200'
+                      ]"
+                    >
+                      {{ rightAttackDirection === -1 ? t('attack_left_label') : t('attack_right_label') }}
                     </span>
                   </h2>
                   <p class="text-[11px] text-slate-500">
@@ -878,27 +892,35 @@
               <div class="flex items-center gap-1">
                 <button
                   type="button"
-                  @click="auditPitchSide = 'right'"
+                  @click="auditPitchSide = 'left'"
                   :class="[
-                    'px-2 py-1 rounded text-[11px] font-semibold border',
-                    auditPitchSide === 'right'
-                      ? 'bg-sky-600 text-white border-sky-600'
-                      : 'bg-slate-50 text-slate-600 border-slate-200'
+                    'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
+                    auditPitchSide === 'left'
+                      ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                   ]"
                 >
-                  {{ t('audit_right_pitch') }}
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :style="{ backgroundColor: auditPitchSide === 'left' ? '#ffffff' : leftPitchAttackingClub.primaryColor }"
+                  ></span>
+                  <span>{{ t('audit_left_pitch') }}</span>
                 </button>
                 <button
                   type="button"
-                  @click="auditPitchSide = 'left'"
+                  @click="auditPitchSide = 'right'"
                   :class="[
-                    'px-2 py-1 rounded text-[11px] font-semibold border',
-                    auditPitchSide === 'left'
-                      ? 'bg-rose-600 text-white border-rose-600'
-                      : 'bg-slate-50 text-slate-600 border-slate-200'
+                    'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
+                    auditPitchSide === 'right'
+                      ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                   ]"
                 >
-                  {{ t('audit_left_pitch') }}
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :style="{ backgroundColor: auditPitchSide === 'right' ? '#ffffff' : rightPitchAttackingClub.primaryColor }"
+                  ></span>
+                  <span>{{ t('audit_right_pitch') }}</span>
                 </button>
               </div>
             </div>
@@ -972,31 +994,15 @@
                   simulated_estimate
                 </span>
               </div>
-              <!-- Pitch Side Selector for What-If (Right vs Left Pitch) -->
+              <!-- Pitch Side Selector for What-If (Left vs Right Pitch) -->
               <div class="flex items-center gap-1">
-                <button
-                  type="button"
-                  @click="selectWhatIfPitchSide('right')"
-                  :class="[
-                    'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
-                    whatIfPitchSide === 'right'
-                      ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
-                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-                  ]"
-                >
-                  <span
-                    class="w-1.5 h-1.5 rounded-full"
-                    :style="{ backgroundColor: whatIfPitchSide === 'right' ? '#ffffff' : rightPitchAttackingClub.primaryColor }"
-                  ></span>
-                  <span>{{ t('audit_right_pitch') }}</span>
-                </button>
                 <button
                   type="button"
                   @click="selectWhatIfPitchSide('left')"
                   :class="[
                     'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
                     whatIfPitchSide === 'left'
-                      ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                      ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
                       : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                   ]"
                 >
@@ -1005,6 +1011,22 @@
                     :style="{ backgroundColor: whatIfPitchSide === 'left' ? '#ffffff' : leftPitchAttackingClub.primaryColor }"
                   ></span>
                   <span>{{ t('audit_left_pitch') }}</span>
+                </button>
+                <button
+                  type="button"
+                  @click="selectWhatIfPitchSide('right')"
+                  :class="[
+                    'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
+                    whatIfPitchSide === 'right'
+                      ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                  ]"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :style="{ backgroundColor: whatIfPitchSide === 'right' ? '#ffffff' : rightPitchAttackingClub.primaryColor }"
+                  ></span>
+                  <span>{{ t('audit_right_pitch') }}</span>
                 </button>
               </div>
             </div>
@@ -1019,19 +1041,19 @@
                   {{ activeWhatIfAttackingClub.shortCode }}
                 </span>
                 <span>
-                  {{ whatIfPitchSide === 'right' ? t('right_pitch_title') : t('left_pitch_title') }}:
+                  {{ whatIfPitchSide === 'left' ? t('left_pitch_title') : t('right_pitch_title') }}:
                   <strong class="text-slate-900">{{ activeWhatIfAttackingClub.name }}</strong>
                 </span>
               </div>
               <span
                 :class="[
                   'text-[10px] px-2 py-0.5 rounded font-mono font-bold border',
-                  whatIfPitchSide === 'right'
+                  whatIfPitchSide === 'left'
                     ? 'bg-sky-100 text-sky-800 border-sky-200'
                     : 'bg-rose-100 text-rose-800 border-rose-200'
                 ]"
               >
-                {{ whatIfPitchSide === 'right' ? '→ 105m' : '0m ←' }}
+                {{ whatIfPitchSide === 'left' ? '→ 105m' : '0m ←' }}
               </span>
             </div>
 
@@ -1472,7 +1494,7 @@
         const activePreset = ref('offside_trap_test')
         const activePersona = ref('Analyst')
         const rightPanelTab = ref('offside_audit')
-        const auditPitchSide = ref('right')
+        const auditPitchSide = ref('left')
         const isSimulating = ref(false)
         const isLoadingData = ref(false)
         const elapsedSec = ref(1240)
@@ -1480,8 +1502,8 @@
         const nlQueryInput = ref('Tampilkan shot dan pass di Zone 14 setelah menit 75')
 
         // Orientasi Arah Serangan untuk Lapangan Kiri & Kanan (+1 = ke Kanan 105m, -1 = ke Kiri 0m)
-        const leftAttackDirection = ref(-1) // Default: Lapangan Kiri menyerang ke Kiri (0m)
-        const rightAttackDirection = ref(1) // Default: Lapangan Kanan menyerang ke Kanan (105m)
+        const leftAttackDirection = ref(1) // Default: Lapangan Kiri (Klub A / Home) fokus serangan ke Kanan (105m)
+        const rightAttackDirection = ref(-1) // Default: Lapangan Kanan (Klub B / Away) fokus serangan ke Kiri (0m)
 
         // SUMBER 1: Registri Klub Unik Kanonis (Terpisah dari Riwayat Pertandingan)
         const clubRegistry = reactive([
@@ -1912,21 +1934,21 @@
 
         // Klub yang menyerang pada Lapangan Kiri & Lapangan Kanan berdasarkan arah serangan
         const leftPitchAttackingClub = computed(() =>
-          leftAttackDirection.value === -1 ? clubObjB.value : clubObjA.value
+          leftAttackDirection.value === 1 ? clubObjA.value : clubObjB.value
         )
         const leftPitchDefendingClub = computed(() =>
-          leftAttackDirection.value === -1 ? clubObjA.value : clubObjB.value
+          leftAttackDirection.value === 1 ? clubObjB.value : clubObjA.value
         )
         const rightPitchAttackingClub = computed(() =>
-          rightAttackDirection.value === 1 ? clubObjA.value : clubObjB.value
+          rightAttackDirection.value === -1 ? clubObjB.value : clubObjA.value
         )
         const rightPitchDefendingClub = computed(() =>
-          rightAttackDirection.value === 1 ? clubObjB.value : clubObjA.value
+          rightAttackDirection.value === -1 ? clubObjA.value : clubObjB.value
         )
 
         // Evaluasi Offside Simetris untuk Lapangan Sisi Kiri
         const leftOffsideReport = computed(() => {
-          const attackingKey = leftAttackDirection.value === -1 ? 'away' : 'home'
+          const attackingKey = leftAttackDirection.value === 1 ? 'home' : 'away'
           return evaluateOffsideState({
             allPlayers: players,
             attackingTeamKey: attackingKey,
@@ -1939,7 +1961,7 @@
 
         // Evaluasi Offside Simetris untuk Lapangan Sisi Kanan
         const rightOffsideReport = computed(() => {
-          const attackingKey = rightAttackDirection.value === 1 ? 'home' : 'away'
+          const attackingKey = rightAttackDirection.value === -1 ? 'away' : 'home'
           return evaluateOffsideState({
             allPlayers: players,
             attackingTeamKey: attackingKey,
@@ -1979,18 +2001,18 @@
           uncertainty_95ci: { zone14_dominance_pct: 1.2, shot_quality_proxy: 0.04 }
         })
 
-        const whatIfPitchSide = ref('right') // 'right' | 'left'
+        const whatIfPitchSide = ref('left') // 'left' | 'right'
 
         const activeWhatIfAttackingClub = computed(() => {
-          return whatIfPitchSide.value === 'right'
-            ? rightPitchAttackingClub.value
-            : leftPitchAttackingClub.value
+          return whatIfPitchSide.value === 'left'
+            ? leftPitchAttackingClub.value
+            : rightPitchAttackingClub.value
         })
 
         const activeWhatIfDefendingClub = computed(() => {
-          return whatIfPitchSide.value === 'right'
-            ? rightPitchDefendingClub.value
-            : leftPitchDefendingClub.value
+          return whatIfPitchSide.value === 'left'
+            ? leftPitchDefendingClub.value
+            : rightPitchDefendingClub.value
         })
 
         function selectWhatIfPitchSide(side) {
@@ -2019,9 +2041,9 @@
           if (whatIfApiExplanation.value) return whatIfApiExplanation.value
           const pDelta = whatIfForm.pressingIntensity - 50
           const lDelta = whatIfForm.defensiveLineHeight - 45
-          const pitchName = whatIfPitchSide.value === 'right'
-            ? (currentLang.value === 'en' ? 'Right Pitch' : 'Lapangan Kanan')
-            : (currentLang.value === 'en' ? 'Left Pitch' : 'Lapangan Kiri')
+          const pitchName = whatIfPitchSide.value === 'left'
+            ? (currentLang.value === 'en' ? 'Left Pitch' : 'Lapangan Kiri')
+            : (currentLang.value === 'en' ? 'Right Pitch' : 'Lapangan Kanan')
           const clubName = activeWhatIfAttackingClub.value.name
 
           if (currentLang.value === 'en') {
@@ -2472,8 +2494,8 @@
           const attackDir = side === 'left' ? leftAttackDirection.value : rightAttackDirection.value
           const attackingTeamKey =
             side === 'left'
-              ? leftAttackDirection.value === -1 ? 'away' : 'home'
-              : rightAttackDirection.value === 1 ? 'home' : 'away'
+              ? leftAttackDirection.value === 1 ? 'home' : 'away'
+              : rightAttackDirection.value === -1 ? 'away' : 'home'
           const offsideReport = side === 'left' ? leftOffsideReport.value : rightOffsideReport.value
 
           ctx.clearRect(0, 0, W, H)
@@ -2575,10 +2597,11 @@
           ctx.fillStyle = 'rgba(255, 255, 255, 0.22)'
           ctx.font = 'bold 11px Inter, sans-serif'
           ctx.textAlign = 'center'
+          const attackingClub = side === 'left' ? leftPitchAttackingClub.value : rightPitchAttackingClub.value
           const arrowText =
             attackDir === 1
-              ? `ARAH SERANGAN ${rightPitchAttackingClub.value.shortCode} (→ 105m)`
-              : `(${leftPitchAttackingClub.value.shortCode} 0m ←) ARAH SERANGAN`
+              ? `ARAH SERANGAN ${attackingClub.shortCode} (→ 105m)`
+              : `(${attackingClub.shortCode} 0m ←) ARAH SERANGAN`
           ctx.fillText(arrowText, W / 2, H - 10)
           ctx.restore()
 
@@ -2871,8 +2894,10 @@
           selectedClubB.value = 'CLUB_B'
           selectedCompetitionFilter.value = 'ALL'
           selectedMatchId.value = 'SYN_001'
-          leftAttackDirection.value = -1
-          rightAttackDirection.value = 1
+          leftAttackDirection.value = 1
+          rightAttackDirection.value = -1
+          auditPitchSide.value = 'left'
+          whatIfPitchSide.value = 'left'
           activePlayContext.value = 'open_play'
           applyPreset('offside_trap_test')
           runWhatIfSimulation()
@@ -2880,7 +2905,7 @@
 
         function togglePitchOrientation(side) {
           if (side === 'left') {
-            leftAttackDirection.value = leftAttackDirection.value === -1 ? 1 : -1
+            leftAttackDirection.value = leftAttackDirection.value === 1 ? -1 : 1
           } else {
             rightAttackDirection.value = rightAttackDirection.value === 1 ? -1 : 1
           }
@@ -2928,7 +2953,7 @@
 
         function applyPressingIntensityShift() {
           const pDelta = whatIfForm.pressingIntensity - 50
-          if (whatIfPitchSide.value === 'right') {
+          if (whatIfPitchSide.value === 'left') {
             players.forEach((p) => {
               if (basePressingAway[p.id]) {
                 const cfg = basePressingAway[p.id]
@@ -2950,7 +2975,7 @@
 
         function applyDefensiveLineShift() {
           const targetLineOffset = (whatIfForm.defensiveLineHeight - 45) * 0.25
-          if (whatIfPitchSide.value === 'right') {
+          if (whatIfPitchSide.value === 'left') {
             players.forEach((p) => {
               if (baseDefLineAwayX[p.id] !== undefined) {
                 p.x = clampToPitch(baseDefLineAwayX[p.id] - targetLineOffset, p.y, 5.0).x
