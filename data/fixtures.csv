@@ -1,11 +1,11 @@
 match_id,home_team_id,home_team_name,away_team_id,away_team_name,round,competition,profile,kickoff_utc
-SYN_001,CLUB_A,Moorfield Town,CLUB_B,Stonebridge FC,1,TactiVision Synthetic League,High press vs compact block,2026-10-17T14:00:00Z
-SYN_002,CLUB_A,Moorfield Town,CLUB_C,Redwick Athletic,2,TactiVision Synthetic League,Patient possession vs direct counterattack,2026-10-18T14:00:00Z
-SYN_003,CLUB_A,Moorfield Town,CLUB_D,Northgate FC,3,TactiVision Synthetic League,Wide overload vs narrow defensive block,2026-10-19T14:00:00Z
-SYN_004,CLUB_A,Moorfield Town,CLUB_E,Port Alder FC,4,TactiVision Synthetic League,Direct attack vs aggressive high line,2026-10-20T14:00:00Z
-SYN_005,CLUB_B,Stonebridge FC,CLUB_C,Redwick Athletic,5,TactiVision Synthetic League,Pressing trap vs controlled build-up,2026-10-21T14:00:00Z
-SYN_006,CLUB_B,Stonebridge FC,CLUB_D,Northgate FC,6,TactiVision Synthetic League,High press vs compact block,2026-10-22T14:00:00Z
-SYN_007,CLUB_B,Stonebridge FC,CLUB_E,Port Alder FC,7,TactiVision Synthetic League,Patient possession vs direct counterattack,2026-10-23T14:00:00Z
-SYN_008,CLUB_C,Redwick Athletic,CLUB_D,Northgate FC,8,TactiVision Synthetic League,Wide overload vs narrow defensive block,2026-10-24T14:00:00Z
-SYN_009,CLUB_C,Redwick Athletic,CLUB_E,Port Alder FC,9,TactiVision Synthetic League,Direct attack vs aggressive high line,2026-10-25T14:00:00Z
-SYN_010,CLUB_D,Northgate FC,CLUB_E,Port Alder FC,10,TactiVision Synthetic League,Pressing trap vs controlled build-up,2026-10-26T14:00:00Z
+SYN_001,CLUB_A,Moorfield Town,CLUB_B,Stonebridge FC,1,Alcyone Synthetic League,High press vs compact block,2026-10-17T14:00:00Z
+SYN_002,CLUB_A,Moorfield Town,CLUB_C,Redwick Athletic,2,Alcyone Synthetic League,Patient possession vs direct counterattack,2026-10-18T14:00:00Z
+SYN_003,CLUB_A,Moorfield Town,CLUB_D,Northgate FC,3,Alcyone Synthetic League,Wide overload vs narrow defensive block,2026-10-19T14:00:00Z
+SYN_004,CLUB_A,Moorfield Town,CLUB_E,Port Alder FC,4,Alcyone Synthetic League,Direct attack vs aggressive high line,2026-10-20T14:00:00Z
+SYN_005,CLUB_B,Stonebridge FC,CLUB_C,Redwick Athletic,5,Alcyone Synthetic League,Pressing trap vs controlled build-up,2026-10-21T14:00:00Z
+SYN_006,CLUB_B,Stonebridge FC,CLUB_D,Northgate FC,6,Alcyone Synthetic League,High press vs compact block,2026-10-22T14:00:00Z
+SYN_007,CLUB_B,Stonebridge FC,CLUB_E,Port Alder FC,7,Alcyone Synthetic League,Patient possession vs direct counterattack,2026-10-23T14:00:00Z
+SYN_008,CLUB_C,Redwick Athletic,CLUB_D,Northgate FC,8,Alcyone Synthetic League,Wide overload vs narrow defensive block,2026-10-24T14:00:00Z
+SYN_009,CLUB_C,Redwick Athletic,CLUB_E,Port Alder FC,9,Alcyone Synthetic League,Direct attack vs aggressive high line,2026-10-25T14:00:00Z
+SYN_010,CLUB_D,Northgate FC,CLUB_E,Port Alder FC,10,Alcyone Synthetic League,Pressing trap vs controlled build-up,2026-10-26T14:00:00Z

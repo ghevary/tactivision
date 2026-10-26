@@ -46,7 +46,7 @@ class GeminiLLMAdapter:
         """
         if self.client is not None:
             system_instruction = (
-                "You are a deterministic tactical query parser for TactiVision AI. "
+                "You are a deterministic tactical query parser for Alcyone AI. "
                 "Convert the user's football question into a strict JSON object with only allowed keys: "
                 "event_types (list of strings), team_id (string), period (1 or 2), "
                 "min_period_minute (number), max_period_minute (number), outcome (string), "
@@ -81,7 +81,7 @@ class GeminiLLMAdapter:
         lang_instruction = "Respond in English." if language.lower() == "en" else "Jawab dalam Bahasa Indonesia."
         if self.client is not None:
             system_instruction = (
-                f"You are TactiVision AI Narrative Producer ({persona} Persona). "
+                f"You are Alcyone AI Narrative Producer ({persona} Persona). "
                 "Summarize ONLY the provided deterministic metrics and event IDs. "
                 "Never invent event IDs, player names, or numbers. Mention synthetic provenance. "
                 f"{lang_instruction}"

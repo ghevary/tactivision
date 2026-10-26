@@ -4,12 +4,12 @@
       <div>
         <div class="flex items-center gap-2">
           <span class="px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider bg-sky-500/20 text-sky-400 border border-sky-500/30 rounded-full">
-            TactiVision AI · Dataset v1.1.0 (Synthetic)
+            Alcyone AI · Dataset v1.1.0 (Synthetic)
           </span>
           <span class="text-xs text-slate-400">Grounded AI + d3-delaunay Engine</span>
         </div>
         <h1 class="text-2xl font-bold tracking-tight mt-1">
-          TactiVision AI <span class="text-sky-400 font-normal">| Spatial & Multi-Agent Sandbox</span>
+          Alcyone AI <span class="text-sky-400 font-normal">| Spatial & Multi-Agent Sandbox</span>
         </h1>
       </div>
       <div class="flex flex-wrap items-center gap-2">

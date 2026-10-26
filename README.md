@@ -1,4 +1,4 @@
-# TactiVision AI
+# Alcyone AI
 
 <p align="center">
   <strong>Grounded AI Football Tactical Intelligence, Symmetrical Spatial Pitch Engine & What-If Sandbox</strong>
@@ -20,10 +20,10 @@
 ---
 
 <p align="center">
-  <img src="docs/images/tactivision-preview.png" alt="TactiVision AI Dual-Pitch Board & Offside Evaluator" width="100%" />
+  <img src="docs/images/alcyone-preview.png" alt="Alcyone AI Dual-Pitch Board & Offside Evaluator" width="100%" />
 </p>
 
-> **Figure 1:** *TactiVision AI Symmetrical Dual-Pitch Board. Left pitch evaluates Borough United FC attacking left ($x=0\text{m}$), while Right pitch evaluates Albion Athletic FC attacking right ($x=105\text{m}$). Interactive voronoi space partitioning, Zone 14 key attacking pocket, 2nd-last defender tracking, and strict IFAB Law 11 offside boundary lines with real-time player status audit.*
+> **Figure 1:** *Alcyone AI Symmetrical Dual-Pitch Board. Left pitch evaluates Borough United FC attacking left ($x=0\text{m}$), while Right pitch evaluates Albion Athletic FC attacking right ($x=105\text{m}$). Interactive voronoi space partitioning, Zone 14 key attacking pocket, 2nd-last defender tracking, and strict IFAB Law 11 offside boundary lines with real-time player status audit.*
 
 ---
 
@@ -57,9 +57,9 @@
 
 ## 1. Executive Summary
 
-**TactiVision AI** is an advanced football analytics, spatial modeling, and simulation platform designed for tactical analysts, coaches, sports data scientists, and creators.
+**Alcyone AI** is an advanced football analytics, spatial modeling, and simulation platform designed for tactical analysts, coaches, sports data scientists, and creators.
 
-Traditional sports analytics LLM tools suffer from severe domain hallucinations—fabricating player coordinates, inventing fictional event IDs, and producing statistically impossible offside evaluations. TactiVision AI solves this fundamentally by adopting an uncompromising architectural standard: **Compute facts deterministically; synthesize insights through grounded AI.**
+Traditional sports analytics LLM tools suffer from severe domain hallucinations—fabricating player coordinates, inventing fictional event IDs, and producing statistically impossible offside evaluations. Alcyone AI solves this fundamentally by adopting an uncompromising architectural standard: **Compute facts deterministically; synthesize insights through grounded AI.**
 
 All spatial metrics, Voronoi control zones, IFAB offside margins, and What-If counterfactual scenarios are computed mathematically via robust Python and JavaScript deterministic engines. Large Language Models (powered by **Google Gemini 3.8 Flash**) act strictly as narrative producers, translating verifiable mathematical outputs into grounded insights for Analysts, Broadcasters, and Fans without altering the underlying ground truth.
 
@@ -67,7 +67,7 @@ All spatial metrics, Voronoi control zones, IFAB offside margins, and What-If co
 
 ## 2. System Architecture & Core Philosophy
 
-TactiVision AI separates data storage, deterministic computation, and AI narration into clean, isolated layers:
+Alcyone AI separates data storage, deterministic computation, and AI narration into clean, isolated layers:
 
 ```mermaid
 flowchart TD
@@ -181,7 +181,7 @@ Generates tailored, evidence-backed commentary across three specialized operatio
 
 ## 4. Synthetic Dataset Specifications
 
-The platform is bundled with the **TactiVision Synthetic Dataset v1.1.0**, featuring 5 canonical fictional clubs competing in a balanced round-robin league.
+The platform is bundled with the **Alcyone Synthetic Dataset v1.1.0**, featuring 5 canonical fictional clubs competing in a balanced round-robin league.
 
 | Metric / Dimension | Quantity / Value | Description |
 | :--- | :---: | :--- |
@@ -244,7 +244,7 @@ $$C_{\text{team}} = \frac{\sum_{p_i \in \text{Team}} \text{Area}(V(p_i))}{\text{
 │       ├── vite.config.js             # Vite configuration with /api reverse proxy
 │       └── src/
 │           ├── components/
-│           │   └── TactiVisionBoard.vue # Reusable Vue 3 SFC component
+│           │   └── AlcyoneBoard.vue # Reusable Vue 3 SFC component
 │           └── services/
 │               └── geminiClient.ts    # Client-side Google GenAI SDK interface
 │
@@ -277,7 +277,7 @@ $$C_{\text{team}} = \frac{\sum_{p_i \in \text{Team}} \text{Area}(V(p_i))}{\text{
     ├── PRD.md                         # Product Requirements Document
     ├── SYSTEM_ARCHITECTURE.md         # Detailed architectural specification
     └── images/
-        └── tactivision-preview.png    # High-resolution platform preview screenshot
+        └── alcyone-preview.png    # High-resolution platform preview screenshot
 ```
 
 ---
@@ -416,7 +416,7 @@ cp .env.example .env
 | Variable | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
 | `GEMINI_API_KEY` | String | *Optional* | Google Gemini API key. If omitted, the engine automatically falls back to deterministic local narrative synthesis. |
-| `TACTIVISION_DATA_DIR` | String | `./data` | Filepath to canonical synthetic dataset directory. |
+| `ALCYONE_DATA_DIR` | String | `./data` | Filepath to canonical synthetic dataset directory. |
 
 ---
 

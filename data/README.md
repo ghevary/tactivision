@@ -1,6 +1,6 @@
-# TactiVision AI — Standalone `data/` folder v1.1.0
+# Alcyone AI — Standalone `data/` folder v1.1.0
 
-This directory is the ready-to-use synthetic dataset for the TactiVision AI project. It contains five persistent fictional clubs, a stable 55-player registry, ten round-robin matches, canonical per-match JSON/JSONL, master dictionaries, global What-If/query files, and flat CSV exports.
+This directory is the ready-to-use synthetic dataset for the Alcyone AI project. It contains five persistent fictional clubs, a stable 55-player registry, ten round-robin matches, canonical per-match JSON/JSONL, master dictionaries, global What-If/query files, and flat CSV exports.
 
 ## Master registries
 - `clubs.csv`: five unique fictional clubs and default tactical archetypes.

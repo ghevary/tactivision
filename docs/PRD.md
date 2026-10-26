@@ -1,13 +1,13 @@
-# Product Requirements Document (PRD) — TactiVision AI
+# Product Requirements Document (PRD) — Alcyone AI
 
 **Versi dokumen:** 1.0.0  
 **Status:** Draf untuk perencanaan MVP  
-**Baseline dataset:** TactiVision Synthetic Dataset 1.1.0  
+**Baseline dataset:** Alcyone Synthetic Dataset 1.1.0  
 **Platform utama:** Aplikasi web responsif
 
 ## 1. Ringkasan produk
 
-TactiVision AI adalah ruang kerja analisis taktik berbasis web untuk pertandingan sepak bola fiktif. Sistem mengubah event pertandingan terstruktur dan posisi pemain tersinkronisasi menjadi visualisasi yang bisa diperiksa. Pengguna dapat menelusuri hubungan operan, heatmap event/okupansi, wilayah Voronoi, mencari rangkaian taktik dengan bahasa alami, dan membandingkan intervensi taktik yang didukung menggunakan simulator sintetis.
+Alcyone AI adalah ruang kerja analisis taktik berbasis web untuk pertandingan sepak bola fiktif. Sistem mengubah event pertandingan terstruktur dan posisi pemain tersinkronisasi menjadi visualisasi yang bisa diperiksa. Pengguna dapat menelusuri hubungan operan, heatmap event/okupansi, wilayah Voronoi, mencari rangkaian taktik dengan bahasa alami, dan membandingkan intervensi taktik yang didukung menggunakan simulator sintetis.
 
 Produk ini bukan pengganti layanan skor langsung dan tidak mengklaim membuat prediksi akurat tentang pertandingan Premier League nyata. Nilai pembeda utamanya adalah hubungan antara **bukti visual, analitik deterministik, dan penjelasan AI yang berlandaskan bukti tersebut**.
 
@@ -15,7 +15,7 @@ Produk ini bukan pengganti layanan skor langsung dan tidak mengklaim membuat pre
 
 Penggemar yang ingin memahami taktik sering menemui dua kondisi ekstrem: aplikasi skor/statistik yang terlalu sederhana dan tidak menjelaskan pola, atau alat analitik spesialis yang membutuhkan pengetahuan teknis dan proses filtering manual. Pembelajar taktik dan kreator konten membutuhkan cara untuk mengubah pertanyaan seperti “mengapa pressing membuka ruang tengah?” menjadi bukti yang dapat diperiksa di lapangan.
 
-Masalah kedua adalah kepercayaan. AI bahasa alami dapat memberi jawaban yang terdengar meyakinkan tetapi mengarang angka atau interpretasi. TactiVision harus memisahkan hasil perhitungan dari teks generatif dan menunjukkan event sumber serta batasan model.
+Masalah kedua adalah kepercayaan. AI bahasa alami dapat memberi jawaban yang terdengar meyakinkan tetapi mengarang angka atau interpretasi. Alcyone harus memisahkan hasil perhitungan dari teks generatif dan menunjukkan event sumber serta batasan model.
 
 ## 3. Target pengguna
 

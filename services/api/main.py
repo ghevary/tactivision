@@ -1,5 +1,5 @@
 """
-REST API FastAPI TactiVision AI (/api/v1) sesuai SYSTEM_ARCHITECTURE.md & PRD.md.
+REST API FastAPI Alcyone AI (/api/v1) sesuai SYSTEM_ARCHITECTURE.md & PRD.md.
 """
 import os
 import json
@@ -15,10 +15,10 @@ from what_if_service import run_paired_what_if_simulation, SUPPORTED_INTERVENTIO
 from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 DEFAULT_DATA_DIR = str(Path(__file__).resolve().parents[2] / "data")
-DATA_DIR = os.environ.get("TACTIVISION_DATA_DIR", DEFAULT_DATA_DIR)
+DATA_DIR = os.environ.get("ALCYONE_DATA_DIR", DEFAULT_DATA_DIR)
 
 app = FastAPI(
-    title="TactiVision AI REST API",
+    title="Alcyone AI REST API",
     version="1.0.0",
     description="Deterministic tactical analytics, Voronoi spatial engine, paired-seed What-If simulator, and Gemini 3.8 Flash grounded explanation service.",
 )

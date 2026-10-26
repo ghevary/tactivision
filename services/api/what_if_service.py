@@ -91,7 +91,7 @@ def run_paired_what_if_simulation(
         "intervention": {"type": intervention_type, "target_id": team_id, "parameters": {"delta": delta}, "bounded": True},
         "candidate_config": {"team_id": team_id, "tactics": cand},
         "simulation": {
-            "engine_version": "tactivision-rule-sim-0.1",
+            "engine_version": "alcyone-rule-sim-0.1",
             "seed": seed,
             "repetitions": repetitions,
             "paired_seeds": True,

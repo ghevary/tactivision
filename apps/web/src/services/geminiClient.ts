@@ -21,7 +21,7 @@ export async function analyzeTacticalShiftWithGemini(payload: TacticalShiftPaylo
     model: "gemini-3.8-flash",
     input: JSON.stringify(payload),
     system_instruction:
-      "You are TactiVision AI Multi-Agent Orchestrator (Spatial Telemetry, Tactical Critic, and Narrative Producer). " +
+      "You are Alcyone AI Multi-Agent Orchestrator (Spatial Telemetry, Tactical Critic, and Narrative Producer). " +
       "Explain ONLY the deterministic spatial metrics provided in JSON. Never fabricate stats.",
     previous_interaction_id: payload.previousInteractionId,
     store: true,

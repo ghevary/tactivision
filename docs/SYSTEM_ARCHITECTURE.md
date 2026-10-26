@@ -1,12 +1,12 @@
-# TactiVision AI — Arsitektur Sistem
+# Alcyone AI — Arsitektur Sistem
 
 **Versi dokumen:** 1.0.0  
 **Status:** Arsitektur yang diusulkan untuk MVP  
-**Baseline data:** TactiVision Synthetic Dataset 1.1.0
+**Baseline data:** Alcyone Synthetic Dataset 1.1.0
 
 ## 1. Gambaran arsitektur
 
-TactiVision AI dipisahkan menjadi lapisan presentasi web, API/aplikasi Python, layanan analitik dan simulasi deterministik, lapisan akses data, serta adapter provider LLM opsional. Batas terpentingnya: layanan deterministik bertanggung jawab atas filter event dan kalkulasi numerik; LLM hanya menafsirkan bahasa dan menjelaskan hasil yang sudah dihitung.
+Alcyone AI dipisahkan menjadi lapisan presentasi web, API/aplikasi Python, layanan analitik dan simulasi deterministik, lapisan akses data, serta adapter provider LLM opsional. Batas terpentingnya: layanan deterministik bertanggung jawab atas filter event dan kalkulasi numerik; LLM hanya menafsirkan bahasa dan menjelaskan hasil yang sudah dihitung.
 
 ```mermaid
 flowchart TB

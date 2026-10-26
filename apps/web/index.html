@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TactiVision AI — Match Analytics, Symmetric Offside Engine & Spatial Board</title>
+  <title>Alcyone AI — Match Analytics, Symmetric Offside Engine & Spatial Board</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -62,7 +62,7 @@
       <div class="flex flex-wrap items-center gap-3">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
-          <span class="font-bold text-sm tracking-tight text-slate-900">TactiVision Studio</span>
+          <span class="font-bold text-sm tracking-tight text-slate-900">Alcyone Studio</span>
           <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">v1.1.0</span>
         </div>
         <span class="hidden sm:inline text-slate-300">|</span>
@@ -1133,11 +1133,11 @@
         const PITCH_M_HEIGHT = 68.0
         const SCALE = 8
 
-        const currentLang = ref(localStorage.getItem('tactivision_lang') || 'id')
+        const currentLang = ref(localStorage.getItem('alcyone_lang') || 'id')
         function setLanguage(lang) {
           currentLang.value = lang
           try {
-            localStorage.setItem('tactivision_lang', lang)
+            localStorage.setItem('alcyone_lang', lang)
           } catch (e) {}
           document.documentElement.lang = lang
           renderAllPitches()
