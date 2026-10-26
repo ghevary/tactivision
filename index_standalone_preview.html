@@ -965,10 +965,73 @@
           class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex-1 flex flex-col justify-between space-y-4"
         >
           <div class="space-y-3 text-xs">
-            <div class="flex items-center justify-between">
-              <span class="font-bold uppercase tracking-wider text-slate-700">{{ t('whatif_title') }}</span>
-              <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 font-mono text-[10px]">
-                simulated_estimate
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="font-bold uppercase tracking-wider text-slate-700">{{ t('whatif_title') }}</span>
+                <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 font-mono text-[10px]">
+                  simulated_estimate
+                </span>
+              </div>
+              <!-- Pitch Side Selector for What-If (Right vs Left Pitch) -->
+              <div class="flex items-center gap-1">
+                <button
+                  type="button"
+                  @click="selectWhatIfPitchSide('right')"
+                  :class="[
+                    'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
+                    whatIfPitchSide === 'right'
+                      ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                  ]"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :style="{ backgroundColor: whatIfPitchSide === 'right' ? '#ffffff' : rightPitchAttackingClub.primaryColor }"
+                  ></span>
+                  <span>{{ t('audit_right_pitch') }}</span>
+                </button>
+                <button
+                  type="button"
+                  @click="selectWhatIfPitchSide('left')"
+                  :class="[
+                    'px-2 py-1 rounded text-[11px] font-semibold border transition flex items-center gap-1.5',
+                    whatIfPitchSide === 'left'
+                      ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                  ]"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :style="{ backgroundColor: whatIfPitchSide === 'left' ? '#ffffff' : leftPitchAttackingClub.primaryColor }"
+                  ></span>
+                  <span>{{ t('audit_left_pitch') }}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Pitch Target Info Bar -->
+            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span
+                  class="w-5 h-5 rounded flex items-center justify-center text-white font-bold text-[10px] shrink-0"
+                  :style="{ backgroundColor: activeWhatIfAttackingClub.primaryColor }"
+                >
+                  {{ activeWhatIfAttackingClub.shortCode }}
+                </span>
+                <span>
+                  {{ whatIfPitchSide === 'right' ? t('right_pitch_title') : t('left_pitch_title') }}:
+                  <strong class="text-slate-900">{{ activeWhatIfAttackingClub.name }}</strong>
+                </span>
+              </div>
+              <span
+                :class="[
+                  'text-[10px] px-2 py-0.5 rounded font-mono font-bold border',
+                  whatIfPitchSide === 'right'
+                    ? 'bg-sky-100 text-sky-800 border-sky-200'
+                    : 'bg-rose-100 text-rose-800 border-rose-200'
+                ]"
+              >
+                {{ whatIfPitchSide === 'right' ? '→ 105m' : '0m ←' }}
               </span>
             </div>
 
@@ -1075,7 +1138,13 @@
           </div>
 
           <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
-            <span>{{ t('whatif_test_club') }} {{ clubObjA.club_id }}</span>
+            <span class="flex items-center gap-1.5">
+            <span>{{ t('whatif_test_club') }}</span>
+            <strong class="text-slate-800">{{ activeWhatIfAttackingClub.name }} ({{ activeWhatIfAttackingClub.club_id }})</strong>
+            <span class="text-[10px] px-1 rounded bg-slate-100 text-slate-600 font-mono">
+              [{{ whatIfPitchSide === 'right' ? t('audit_right_pitch') : t('audit_left_pitch') }}]
+            </span>
+          </span>
             <span>Endpoint: /api/v1/matches/{{ selectedMatchId }}/what-if</span>
           </div>
         </div>
@@ -1910,6 +1979,28 @@
           uncertainty_95ci: { zone14_dominance_pct: 1.2, shot_quality_proxy: 0.04 }
         })
 
+        const whatIfPitchSide = ref('right') // 'right' | 'left'
+
+        const activeWhatIfAttackingClub = computed(() => {
+          return whatIfPitchSide.value === 'right'
+            ? rightPitchAttackingClub.value
+            : leftPitchAttackingClub.value
+        })
+
+        const activeWhatIfDefendingClub = computed(() => {
+          return whatIfPitchSide.value === 'right'
+            ? rightPitchDefendingClub.value
+            : leftPitchDefendingClub.value
+        })
+
+        function selectWhatIfPitchSide(side) {
+          whatIfPitchSide.value = side
+          auditPitchSide.value = side
+          whatIfApiExplanation.value = ''
+          runWhatIfSimulation()
+          renderAllPitches()
+        }
+
         const whatIfApiExplanation = ref('')
         const whatIfPostureLabel = computed(() => {
           const p = whatIfForm.pressingIntensity
@@ -1928,20 +2019,25 @@
           if (whatIfApiExplanation.value) return whatIfApiExplanation.value
           const pDelta = whatIfForm.pressingIntensity - 50
           const lDelta = whatIfForm.defensiveLineHeight - 45
+          const pitchName = whatIfPitchSide.value === 'right'
+            ? (currentLang.value === 'en' ? 'Right Pitch' : 'Lapangan Kanan')
+            : (currentLang.value === 'en' ? 'Left Pitch' : 'Lapangan Kiri')
+          const clubName = activeWhatIfAttackingClub.value.name
+
           if (currentLang.value === 'en') {
             if (pDelta > 15) {
-              return `Aggressive pressing intensity (+${pDelta}%) pushes the front line into opponent buildup, increasing Zone 14 dominance by ${whatIfResult.deltas.zone14_dominance_pct}%, with transition exposure risk at ${whatIfResult.candidate.transition_exposure_risk}.`
+              return `[${pitchName} - ${clubName}] Aggressive pressing (+${pDelta}%) pushes the front line into opponent buildup, increasing Zone 14 dominance by ${whatIfResult.deltas.zone14_dominance_pct}%, with transition exposure risk at ${whatIfResult.candidate.transition_exposure_risk}.`
             } else if (pDelta < -15) {
-              return `Conservative low block posture (${pDelta}%) concedes central midfield control (-${Math.abs(whatIfResult.deltas.zone14_dominance_pct)}% Zone 14) to protect defensive depth.`
+              return `[${pitchName} - ${clubName}] Conservative low block posture (${pDelta}%) concedes central midfield control (-${Math.abs(whatIfResult.deltas.zone14_dominance_pct)}% Zone 14) to protect defensive depth.`
             }
-            return `Balanced pressing intensity maintains standard defensive lines with moderate transition exposure (${whatIfResult.candidate.transition_exposure_risk}) and stable Zone 14 dominance (${whatIfResult.candidate.zone14_dominance_pct}%).`
+            return `[${pitchName} - ${clubName}] Balanced pressing intensity maintains standard defensive lines with moderate transition exposure (${whatIfResult.candidate.transition_exposure_risk}) and stable Zone 14 dominance (${whatIfResult.candidate.zone14_dominance_pct}%).`
           } else {
             if (pDelta > 15) {
-              return `Intensitas pressing agresif (+${pDelta}%) mendorong garis depan menekan build-up lawan, meningkatkan dominasi Zone 14 sebesar ${whatIfResult.deltas.zone14_dominance_pct}%, dengan risiko transisi balik ${whatIfResult.candidate.transition_exposure_risk}.`
+              return `[${pitchName} - ${clubName}] Intensitas pressing agresif (+${pDelta}%) mendorong garis depan menekan build-up lawan, meningkatkan dominasi Zone 14 sebesar ${whatIfResult.deltas.zone14_dominance_pct}%, dengan risiko transisi balik ${whatIfResult.candidate.transition_exposure_risk}.`
             } else if (pDelta < -15) {
-              return `Postur blok rendah pasif (${pDelta}%) memberikan keleluasaan di lini tengah (-${Math.abs(whatIfResult.deltas.zone14_dominance_pct)}% Zone 14) demi menjaga kedalaman pertahanan.`
+              return `[${pitchName} - ${clubName}] Postur blok rendah pasif (${pDelta}%) memberikan keleluasaan di lini tengah (-${Math.abs(whatIfResult.deltas.zone14_dominance_pct)}% Zone 14) demi menjaga kedalaman pertahanan.`
             }
-            return `Intensitas pressing seimbang menjaga struktur kompak dengan risiko transisi moderat (${whatIfResult.candidate.transition_exposure_risk}) dan dominasi Zone 14 stabil (${whatIfResult.candidate.zone14_dominance_pct}%).`
+            return `[${pitchName} - ${clubName}] Intensitas pressing seimbang menjaga struktur kompak dengan risiko transisi moderat (${whatIfResult.candidate.transition_exposure_risk}) dan dominasi Zone 14 stabil (${whatIfResult.candidate.zone14_dominance_pct}%).`
           }
         })
 
@@ -2809,7 +2905,10 @@
           renderAllPitches()
         }
 
-        const basePressingOffsets = {
+        const baseDefLineAwayX = { P_A02: 86.5, P_A03: 86.5, P_A04: 85.0, P_A05: 84.5 }
+        const baseDefLineHomeX = { P_H02: 46.0, P_H03: 40.0, P_H04: 45.0, P_H05: 44.0 }
+
+        const basePressingAway = {
           P_A06: { baseX: 74.0, dxFactor: -0.25 },
           P_A07: { baseX: 73.0, dxFactor: -0.25 },
           P_A08: { baseX: 58.0, dxFactor: 0.16 },
@@ -2818,14 +2917,32 @@
           P_A11: { baseX: 37.2, dxFactor: 0.28 }
         }
 
+        const basePressingHome = {
+          P_H06: { baseX: 60.5, dxFactor: 0.22 },
+          P_H07: { baseX: 76.0, dxFactor: 0.22 },
+          P_H08: { baseX: 78.0, dxFactor: 0.18 },
+          P_H09: { baseX: 83.0, dxFactor: 0.16 },
+          P_H10: { baseX: 84.0, dxFactor: 0.16 },
+          P_H11: { baseX: 89.2, dxFactor: 0.14 }
+        }
+
         function applyPressingIntensityShift() {
           const pDelta = whatIfForm.pressingIntensity - 50
-          players.forEach((p) => {
-            if (basePressingOffsets[p.id]) {
-              const cfg = basePressingOffsets[p.id]
-              p.x = clampToPitch(cfg.baseX + pDelta * cfg.dxFactor, p.y, 4.0).x
-            }
-          })
+          if (whatIfPitchSide.value === 'right') {
+            players.forEach((p) => {
+              if (basePressingAway[p.id]) {
+                const cfg = basePressingAway[p.id]
+                p.x = clampToPitch(cfg.baseX + pDelta * cfg.dxFactor, p.y, 4.0).x
+              }
+            })
+          } else {
+            players.forEach((p) => {
+              if (basePressingHome[p.id]) {
+                const cfg = basePressingHome[p.id]
+                p.x = clampToPitch(cfg.baseX - pDelta * cfg.dxFactor, p.y, 4.0).x
+              }
+            })
+          }
           whatIfApiExplanation.value = ''
           runWhatIfSimulation()
           renderAllPitches()
@@ -2833,11 +2950,19 @@
 
         function applyDefensiveLineShift() {
           const targetLineOffset = (whatIfForm.defensiveLineHeight - 45) * 0.25
-          players.forEach((p) => {
-            if (['P_A02', 'P_A03', 'P_A04', 'P_A05'].includes(p.id)) {
-              p.x = clampToPitch(86.5 - targetLineOffset, p.y, 5.0).x
-            }
-          })
+          if (whatIfPitchSide.value === 'right') {
+            players.forEach((p) => {
+              if (baseDefLineAwayX[p.id] !== undefined) {
+                p.x = clampToPitch(baseDefLineAwayX[p.id] - targetLineOffset, p.y, 5.0).x
+              }
+            })
+          } else {
+            players.forEach((p) => {
+              if (baseDefLineHomeX[p.id] !== undefined) {
+                p.x = clampToPitch(baseDefLineHomeX[p.id] + targetLineOffset, p.y, 5.0).x
+              }
+            })
+          }
           whatIfApiExplanation.value = ''
           runWhatIfSimulation()
           renderAllPitches()
@@ -2897,7 +3022,7 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                team_id: clubObjA.value.club_id,
+                team_id: activeWhatIfAttackingClub.value.club_id,
                 intervention_type: 'press_intensity',
                 delta: boundedDelta,
                 seed: whatIfForm.seed,
@@ -3065,6 +3190,10 @@
           applyPressingIntensityShift,
           whatIfPostureLabel,
           whatIfExplanationText,
+          whatIfPitchSide,
+          selectWhatIfPitchSide,
+          activeWhatIfAttackingClub,
+          activeWhatIfDefendingClub,
           whatIfApiExplanation,
           onFixtureSelectChange,
           onTimeScrub,
